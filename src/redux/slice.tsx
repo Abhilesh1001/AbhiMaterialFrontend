@@ -1,3 +1,4 @@
+'use client'
 
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
@@ -14,7 +15,7 @@ export interface CounterState {
 const initialState: CounterState = {
   baseurl : 'http://127.0.0.1:8000/',
   logindata : {},
-  authToken : document.cookie=== null || document.cookie=== undefined ? null :{'refresh':document.cookie?.split(';')[0]?.split('tokenRefresh=')[1],'access':document.cookie?.split(';')[1]?.split('tokenAcess=')[1]},
+  authToken : '',
   user : "",
   userId:null
 }

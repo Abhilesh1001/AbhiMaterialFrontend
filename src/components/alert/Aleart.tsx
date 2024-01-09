@@ -8,7 +8,6 @@ interface propsType {
 
 
 const Aleart = (props:propsType) => {
-
     const handlClick = () =>{
         console.log('ok')
     }
