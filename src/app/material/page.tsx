@@ -1,6 +1,6 @@
 'use client'
 // tyscript 
-import { statePropsMaterial } from '@/type/type'
+import { statePropsMaterial,StateProps } from '@/type/type'
 import { QueryResponse } from '@/type/material/materia-type'
 
 // dependencies 
@@ -11,13 +11,17 @@ import { set, setDate } from 'date-fns'
 
 // hooks 
 import { useMaterial } from '@/hooks/material/useMaterial'
+import { useSelector } from 'react-redux'
+
+
 
 
 
 const page = () => {
 
+    const {authToken} = useSelector((state:StateProps)=>state.counter)
     const { fetchData, handleSubmit, setDate, data,loadingNewCreation,newMatNo } = useMaterial()
-    const { data: matdata } = useQuery<QueryResponse>({ queryKey: ['matData',newMatNo], queryFn: fetchData })
+    const { data: matdata } = useQuery<QueryResponse>({ queryKey: ['matData',newMatNo,authToken], queryFn: fetchData })
     return (
         <div className=' dark:bg-gray-800 bg-sky-600 h-auto text-gray-50 min-h-[500px]'>
             <div className='container'>

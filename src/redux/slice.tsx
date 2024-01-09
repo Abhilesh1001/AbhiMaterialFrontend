@@ -1,12 +1,11 @@
 'use client'
-
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface CounterState {
   baseurl:string
   logindata :{}
-  authToken: {} | null,
+  authToken: { refresh: string; access: string }| null,
   user : string
   userId : number|null
 }
@@ -15,7 +14,7 @@ export interface CounterState {
 const initialState: CounterState = {
   baseurl : 'http://127.0.0.1:8000/',
   logindata : {},
-  authToken : '',
+  authToken : null,
   user : "",
   userId:null
 }
@@ -27,7 +26,7 @@ export const counterSlice = createSlice({
     getLogindata: (state, action: PayloadAction<{}>) => {
       state.logindata = action.payload
     },
-    getAuthToken : (state,action:PayloadAction<{}>)=>{
+    getAuthToken : (state,action:PayloadAction<{ refresh: string; access: string }| null>)=>{3
         state.authToken = action.payload
     },
     getUser : (state,action:PayloadAction<string>) =>{

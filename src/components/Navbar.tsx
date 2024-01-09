@@ -1,9 +1,12 @@
 'use client'
-import React from 'react'
+import React,{useEffect} from 'react'
 import Link from 'next/link'
 import { useLogin } from '@/hooks/login/useLogin'
 import './style.css'
 import {useSelector,useDispatch} from 'react-redux'
+import {getAuthToken} from '@/redux/slice' 
+
+
 export type StateProps = {
     counter : {
         user : string|null,
@@ -12,9 +15,24 @@ export type StateProps = {
   
 
 const Navbar = () => {
+    const dispatch = useDispatch()
     const {user} =useSelector((state:StateProps)=>state.counter)
     const data = { email: '', password: '' }
     const { handleLogout } = useLogin(data)
+
+    useEffect(() => {
+        const authTokenData = document.cookie === null || document.cookie === undefined
+            ? null
+            : {
+                'refresh': document.cookie?.split(';')[0]?.split('tokenRefresh=')[1],
+                'access': document.cookie?.split(';')[1]?.split('tokenAcess=')[1]
+              };
+
+        dispatch(getAuthToken(authTokenData));
+    }, [dispatch]);
+
+    
+
 
     return (     
             <nav className="lg:px-16 z-10 dark:bg-black bg-sky-500 shadow-md flex flex-wrap items-center justify-center lg:py-0 fixed  top-0 w-full">
