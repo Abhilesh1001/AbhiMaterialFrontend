@@ -1,4 +1,4 @@
-import {datatypePr,StateProps} from '@/type/type'
+import {datatypePr,StateProps,prsliiceState} from '@/type/type'
 
 // dependenciees
 import { useSelector, useDispatch } from 'react-redux'
@@ -7,25 +7,15 @@ import axios from 'axios'
 
 // hooks 
 import {useMutation} from '@tanstack/react-query'
-
-
-
-
+import {getPrData,setPrMainData} from '@/redux/pr/prslicer'
+import { praldata } from '@/components/dataAll/data'
 
 export const usePr =()=>{
     const { baseurl, authToken, user, userId } = useSelector((state: StateProps) => state.counter)
     const [loadingNewPrCreation, setLoading] = useState(false);
+    const { datapr:data} = useSelector((state: prsliiceState) => state.prslicer)
     const [newPrNo,setNewPrNo] = useState<null|number>(null)
-    const [data, setData] = useState<datatypePr[]>([{
-        line_no: 1,
-        material_name: '',
-        material_unit: '',
-        material_no: null,
-        material_price: null,
-        material_qty: null,
-        material_text: '',
-        total_price: null
-    }])
+    const dispatch = useDispatch()
 
     const mutation = useMutation<any,any,any,unknown>({
         mutationFn : async (dataRes:any)=>
@@ -42,16 +32,7 @@ export const usePr =()=>{
                   setNewPrNo(data.data.data.pr_no)
                   setLoading(false)
                 // setNewMatNo(data.data.data.s_no) 
-                setData([{
-                    line_no: 1,
-                    material_name: '',
-                    material_unit: '',
-                    material_no: null,
-                    material_price: null,
-                    material_qty: null,
-                    material_text: '',
-                    total_price: null
-                }])               
+                dispatch(getPrData(praldata))             
             }
             ,
     })
@@ -59,29 +40,23 @@ export const usePr =()=>{
     
 
     const handleChange = (value: any, key: keyof datatypePr, index: number) => {
-
         const updatedData: any = [...data];
         const numericValue = typeof value === 'string' ? parseFloat(value) : value;
-
+    
         if (key === 'material_qty' || key === 'material_price') {
             const qty = key === 'material_qty' ? numericValue : updatedData[index].material_qty;
             const price = key === 'material_price' ? numericValue : updatedData[index].material_price;
-
-            updatedData[index][key] = numericValue;
-            updatedData[index].total_price = qty * price;
+            
+            updatedData[index] = {...updatedData[index], [key]: numericValue,total_price: qty * price,};
         } else {
-            updatedData[index][key] = value;
+            updatedData[index] = {...updatedData[index],[key]: value,};
         }
-
-        setData(updatedData);
-
-    }
-
-
     
+        dispatch(getPrData(updatedData));
+    }
     const handleForm = () => {
         const newLineNo = data.length + 1
-        setData([...data, {
+        dispatch(getPrData([...data, {
             line_no: newLineNo,
             material_name: '',
             material_unit: '',
@@ -90,8 +65,7 @@ export const usePr =()=>{
             material_qty: null,
             material_text: '',
             total_price: null
-        }])
-
+        }]))
 
     }
 
@@ -105,9 +79,6 @@ export const usePr =()=>{
 
         mutation.mutate(result)
     }
-
-
-
 
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>, indexval: number) => {
         const value = (e.target as HTMLInputElement).value;
@@ -126,18 +97,20 @@ export const usePr =()=>{
                 const result = {
                     [indexval]: res.data
                 }
-                console.log(res.data)
-                setData(prevData => prevData.map((item, index) => {
+
+                const newData = data.map((item: any, index: number) => {
                     if (index === indexval) {
-                        return {
-                            ...item,
-                            material_no: res.data.s_no,
-                            material_name: res.data.material_name,
-                            material_unit: res.data.unit
-                        };
+                      return {
+                        ...item,
+                        material_no: res.data.s_no,
+                        material_name: res.data.material_name,
+                        material_unit: res.data.unit,
+                      };
                     }
                     return item;
-                }))
+                  });
+                console.log(newData)
+                dispatch(getPrData(newData))
 
 
             } catch (error) {
@@ -150,7 +123,7 @@ export const usePr =()=>{
         }
     }
 
-    const handlePRView = () => { }
+   
 
-    return {handleChange,handlePRView,data,handleKeyDown,handleSubmit,handleForm,newPrNo,loadingNewPrCreation}
+    return {handleChange,handleKeyDown,handleSubmit,handleForm,newPrNo,loadingNewPrCreation}
 }

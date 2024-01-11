@@ -4,15 +4,22 @@ import { posliiceState,mainType } from '@/type/type'
 import React,{memo} from 'react'
 import {useSelector,useDispatch} from 'react-redux'
 import Loading from '../loading/Loading'
+import PrBurron from '../button/PrBurron'
+import { usePoview } from '@/hooks/purchseorder/usePoview'
+
+
+
 
 
 const SelectionHeader = () => {
-   const {handleRadioChange,handlePRPOView,handleViewClick,handleForm,handleSubmit,loadingNewPoCreation} = usePo()
-   const {podata,selectedValue,mainData} = useSelector((state:posliiceState)=>state.poslicer)
+   const {handleRadioChange,handlePRPOView,handleForm,handleSubmit,loadingNewPoCreation} = usePo()
+   const {handleViewClick,handlePochange,handleInsert,handleInsertPrInpo,handleUpdatePo}  = usePoview()
+   const {podata,selectedValue,mainData,pochange} = useSelector((state:posliiceState)=>state.poslicer)
    let mainamount:mainType = {TotalAmount:null, TotalWithtax:null, TotalTax:null}
    if(podata.maindata){
       mainamount = JSON.parse(podata.maindata)
    }
+   
  
   return (
     <div >
@@ -28,22 +35,30 @@ const SelectionHeader = () => {
         <input type="text" className='form-control w-20 text-sm' onChange={handlePRPOView} />
 
         {
-            selectedValue === 'PO' && <> <button className="btn btn-secondary mx-2 text-gray-800 dark:bg-slate-400  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleViewClick}>View</button>
-                <button className="btn btn-primary mx-2  text-gray-800 dark:bg-slate-400  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button'>Change</button>
-                <button className="btn btn-secondary mx-2  text-gray-800 dark:bg-slate-400  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleForm}>Add Form</button>
-                <button className="btn btn-success mx-2  text-gray-800 dark:bg-slate-400  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Update</button>
+            selectedValue === 'PO' && <>
+            <PrBurron label={'View'} onClick={handleViewClick} />
+            <PrBurron label={'Change'} onClick={handlePochange} />
+            {pochange  && <PrBurron label={'Insert PR'} onClick={handleInsertPrInpo } />}
+                {pochange && <button className="btn btn-success mx-2  text-gray-800 dark:bg-slate-400  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdatePo(Number(podata.po_no))} >Update</button>}
             </>
         }
         {
-            selectedValue === 'PR' && <> <button className="btn btn-secondary mx-2 dark:bg-slate-400 text-gray-800   bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleViewClick}>Create PO</button><button className="btn btn-success mx-2 dark:bg-slate-400 text-gray-800   bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>
+            selectedValue === 'PR' && <> 
+            <PrBurron label={'Insert PR'} onClick={handleInsert} />
+
+            <button className="btn btn-success mx-2 dark:bg-slate-400 text-gray-800   bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>
+
             </>
         }
+        
         <button className="btn btn-warning mx-2  text-gray-800 dark:bg-slate-400  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button'>Print</button>
         <div className='flex items-center mr-4'>Total Tax</div>
         <div className='flex items-center  text-green-400'>{selectedValue === 'PO'?mainamount.TotalTax:mainData.TotalTax}</div>
         <div className='flex items-center ml-4'>Total Amount</div>
         <div className='flex items-center text-green-400 ml-4'>{selectedValue === 'PO'?mainamount.TotalWithtax:mainData.TotalWithtax}</div>
         <div className='w-full flex justify-center'>{loadingNewPoCreation && <Loading />}</div>
+        {podata.po_no && <div className=' text-gray-50'>Purchase Order : {podata.po_no}</div>}
+
     </div>
 </div>
   )

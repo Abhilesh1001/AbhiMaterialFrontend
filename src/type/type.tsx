@@ -1,5 +1,4 @@
 
-
 export interface datatype {
     line_no : null|number,
     pr_no: null|number,
@@ -38,16 +37,7 @@ export type StateProps = {
 export type mainType = { TotalAmount: null|number, TotalWithtax: null|number, TotalTax:null|number }
 
 export interface posliiceState {
-    poslicer:{
-    deliveryadress:vendorType,
-    vendoradress :vendorType,
-    data : datatype[]
-    podata : podataType
-    selectedValue : string
-    mainData :mainType,
-    newPoNo : null|number
-}
-    
+    poslicer:CounterStatePo
   }
 
 export interface podataType {
@@ -88,7 +78,8 @@ export interface datatypePr {
 
 export interface prsliiceState {
     prslicer:{
-    prdata : datatypePr[]
+    datapr : datatypePr[]
+    prmaindata : prmainData
 }
     
   }
@@ -106,3 +97,27 @@ export interface statePropsMaterial{
 
 
 
+export interface prmainData {
+    pr_no : number|null,
+    user : number|null,
+    time :string,
+    item_json : string
+  }
+  
+  export interface CounterState {
+    datapr : datatypePr[],
+    prmaindata : prmainData
+  }
+  
+  export interface CounterStatePo {
+    deliveryadress:vendorType,
+    vendoradress :vendorType,
+    data : datatype[]
+    podata :podataType
+    selectedValue : string, 
+    mainData :mainType,
+    newPoNo:null|number
+    poprview : null | number
+    poview : boolean
+    pochange :boolean
+  }

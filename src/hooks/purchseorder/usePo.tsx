@@ -1,5 +1,6 @@
 // typescript 
 import { datatype, vendorType, posliiceState, StateProps,updataData } from '@/type/type'
+import {pomainall} from '@/components/dataAll/data'
 
 // dependencies 
 import { useState } from 'react';
@@ -8,13 +9,15 @@ import axios from 'axios';
 import {useMutation,useQueries} from '@tanstack/react-query'
 
 // redux 
-import { getData,getPoData,getSelectedValue,getMainData,getNewPO,getVendorAdress } from '@/redux/po/poslicer';
+import { getData,getPoData,getSelectedValue,getMainData,getNewPO,getVendorAdress,getPoPrView,getPoview, getPochange } from '@/redux/po/poslicer';
+
+
+
 
 
 export const usePo = () => {
     const dispatch = useDispatch()
     const { baseurl, authToken,userId } = useSelector((state: StateProps) => state.counter)
-    const [poprview, setPpPrView] = useState<number | string>('')
     const { vendoradress, deliveryadress ,data,selectedValue,mainData} = useSelector((state: posliiceState) => state.poslicer)
     const [loadingNewPoCreation, setLoading] = useState(false);
     const mutation = useMutation<any,any,any,unknown>(({
@@ -29,22 +32,7 @@ export const usePo = () => {
             setLoading(false)
             dispatch(getMainData({ TotalAmount: 0, TotalWithtax: 0, TotalTax: 0}))
             dispatch(getVendorAdress({name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: ''}))
-            dispatch(getData([
-                {
-                    line_no : null,
-                    pr_no: null,
-                    material_no: null,
-                    material_name: '',
-                    material_unit: '',
-                    material_price: null,
-                    material_tax: null,
-                    total_tax: null,
-                    material_qty: null,
-                    material_text: '',
-                    total_amount: null,
-                }
-
-            ]))
+            dispatch(getData(pomainall))
         },
         onError:(error)=>{
             console.log(error)
@@ -108,11 +96,10 @@ export const usePo = () => {
                 return acc
             }, 0)
             dispatch(getMainData({ TotalAmount: TotalAmount, TotalWithtax: TotalWithtax, TotalTax: TotalTax }))
+            console.log('new data',newData)
             dispatch(getData((newData)));
         }
     };
-
-
 
     // create new PO 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -132,112 +119,19 @@ export const usePo = () => {
 
     }
 
-
-
-
-
     const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(getSelectedValue(e.target.value));
-        dispatch(getData([{
-            line_no:null,
-            pr_no: null,
-            material_no: null,
-            material_name: '',
-            material_unit: '',
-            material_price: null,
-            material_tax: null,
-            total_tax: null,
-            material_qty: null,
-            material_text: '',
-            total_amount: null,
-        }]))
-
+        dispatch(getData(pomainall))
         dispatch(getPoData( {po_no:null,time:'',item_pr:'',vendor_address:'',delivery_address:'',user:null,maindata:''}))
-
-
-
+        dispatch(getPoview(false))
+        dispatch(getPochange(false))
     };
 
     const handlePRPOView = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPpPrView(parseInt(e.target.value))
-       
+        dispatch(getPoPrView((parseInt(e.target.value))))
     }
 
-    const handleViewClick = async () => {
 
-        // pr operation 
-        if (selectedValue === 'PR' && poprview !=='' && !Object.is(poprview,NaN)) {
 
-            try {
-                const res = await axios.get(`${baseurl}mat/createpurchase/${poprview}/`, {
-                    headers: {
-                        Authorization: `Bearer ${authToken?.access}`
-                    }
-                })
-                const newData = JSON.parse(res.data.item_json)
-                console.log(newData)
-                const newDataUpdata = newData.map((item: any) => {
-                    const element = {
-                        line_no:item.line_no,
-                        pr_no: item.pr_no,
-                        material_no: item.material_no,
-                        material_name: item.material_name,
-                        material_unit: item.material_unit,
-                        material_price: item.material_price,
-                        material_tax: null,
-                        total_tax: null,
-                        material_qty: item.material_qty,
-                        material_text: item.material_text,
-                        total_amount: item.total_price,
-                    }
-                    return element
-                })
-                if (data[0].pr_no !== null) {
-                    console.log(data)
-                    const newElem = [...data, ...newDataUpdata]
-                    dispatch(getData((newElem)))
-                } else {
-                    dispatch(getData(newDataUpdata))
-                }
-            } catch (error) {
-                console.log(error)
-            }
-
-        }
-
-        // po operation 
-        if(selectedValue === 'PO' && poprview !=='' && !Object.is(poprview,NaN)){
-            try{
-                const response =  await axios.get(`${baseurl}mat/createpo/${poprview}/`,{headers:{
-                    Authorization:`Bearer ${authToken?.access}`
-                }})
-                dispatch(getPoData(response.data))
-
-                const newData = JSON.parse(response.data.item_pr)
-                console.log('newdta',newData)
-                const newDataUpdata = newData.map((item: any) => {
-                    const element = {
-                        pr_no: item.pr_no,
-                        material_no: item.material_no,
-                        material_name: item.material_name,
-                        material_unit: item.material_unit,
-                        material_price: item.material_price,
-                        material_tax: item.material_tax,
-                        total_tax: item.total_tax,
-                        material_qty: item.material_qty,
-                        material_text: item.material_text,
-                        total_amount: item.total_amount,
-                    }
-                    return element
-                })
-                    dispatch(getData(newDataUpdata))
-            }catch(error){
-                console.log(error)
-            }
-
-        }
-
-    }
-
-    return {handleViewClick, handleForm, handleSubmit, handleChange,handlePRPOView, handleRadioChange,loadingNewPoCreation }
+    return { handleForm, handleSubmit, handleChange,handlePRPOView, handleRadioChange,loadingNewPoCreation }
 }

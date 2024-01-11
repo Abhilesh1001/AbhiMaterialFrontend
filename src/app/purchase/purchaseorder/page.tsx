@@ -7,24 +7,27 @@ import {useSelector} from 'react-redux'
 import VendorDetails from '@/components/purchaseorder/VendorDetails'
 import DeliveryAdress from '@/components/purchaseorder/DeliveryAdress'
 import SelectionHeader from '@/components/purchaseorder/SelectionHeader'
-import PoView from '@/components/purchaseorder/poview'
 import DumyInput from '@/components/dummyinput/DumyInput'
 import Aleart from '@/components/alert/Aleart'
+import PrBurron from '@/components/button/PrBurron'
 
 // hooks / typescript 
 import { usePo } from '@/hooks/purchseorder/usePo'
+import { usePoview } from '@/hooks/purchseorder/usePoview'
 import {posliiceState,datatype} from '@/type/type'
 
 
+
 const PurchaseOrder = () => {
-    const {data,podata,selectedValue,newPoNo} = useSelector((state:posliiceState)=>state.poslicer)
+    const {data,newPoNo,poview} = useSelector((state:posliiceState)=>state.poslicer)
+    const {handleDelete} =usePoview()
     const {handleChange} = usePo()
-    console.log(newPoNo)
+
     return (
-        <div className=' dark:bg-gray-800 bg-sky-600 min-h-[500px]' >
+        <div className=' dark:bg-gray-800 bg-sky-600 min-h-screen' >
         <div className='container mt-4 overflow-auto text-nowrap'>
             <VendorDetails />
-
+            
             <SelectionHeader />
             <form >
                 <div className='h-[300px] overflow-auto  relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
@@ -47,12 +50,11 @@ const PurchaseOrder = () => {
                                 <th scope="col" ><div className='ml-2 mr-2'>Created By</div></th>
                                 <th scope="col" ><div className='ml-2 mr-2'>Date</div></th>
                                 <th scope="col" ><div className='ml-2 mr-2'></div></th>
-
                             </tr>
                         </thead>
                         <tbody >
                             
-                            {selectedValue=='PO' ? <PoView /> : data?.map((item, index) => {
+                            { data?.map((item, index) => {
                                     return <tr key={index}>
                                         <th><input type="checkbox" onChange={(e) => handleChange(e.target.value, 'material_no', index)} />
                                         </th>
@@ -62,22 +64,33 @@ const PurchaseOrder = () => {
                                         <td><DumyInput indum={item.material_name} /></td>
                                         <td><DumyInput indum={item.material_name} /></td>
 
-                                        <td><input type="number" value={item.material_price !== null ? item.material_price : ''} onChange={(e) => handleChange(e.target.value, 'material_price', index)} className="form-control  text-sm  w-26" /></td>
+                                        <td>
+                                            {poview ? <DumyInput indum={item.material_price}/> :<input type="number" value={item.material_price !== null ? item.material_price : ''} onChange={(e) => handleChange(e.target.value, 'material_price', index)} className="form-control  text-sm  w-26" />}
+                                        </td>
 
-                                        <td><input type="number" value={item.material_qty != null ? item.material_qty : ''} onChange={(e) => handleChange(e.target.value, 'material_qty', index)} className="form-control  text-sm  w-28" /></td>
+                                        <td>
+                                            {poview ?<DumyInput indum={item.material_qty}/>:<input type="number" value={item.material_qty != null ? item.material_qty : ''} onChange={(e) => handleChange(e.target.value, 'material_qty', index)} className="form-control  text-sm  w-28" />}
+                                        </td>
 
                                         <td><DumyInput indum={item.total_amount} /></td>
 
-                                        <td><input type="number" value={item.material_tax !== null ? item.material_tax : ''} onChange={(e) => handleChange(e.target.value, 'material_tax', index)} className="form-control text-sm  w-26" /></td>
+                                        <td>
+                                            {poview ?<DumyInput indum={item.material_tax}/>:<input type="number" value={item.material_tax !== null ? item.material_tax : ''} onChange={(e) => handleChange(e.target.value, 'material_tax', index)} className="form-control text-sm  w-26" />}
+                                            
+                                        </td>
 
                                         <td>
                                         <DumyInput indum={item.total_tax} /></td>
 
-                                        <td><div className='flex'><input type="text" onChange={(e) => handleChange(e.target.value, 'material_text', index)} value={item.material_text} className="form-control w-[200px] text-sm  w-26" /></div></td>
+                                        <td>
+                                            {poview ?<DumyInput indum={item.material_text}/>:<div className='flex'><input type="text" onChange={(e) => handleChange(e.target.value, 'material_text', index)} value={item.material_text} className="form-control w-[200px] text-sm  w-26" /></div>}
+                                        </td>
 
-                                        <td><button className="btn btn-danger text-black text-sm  w-26" type='button'>Delete</button></td>
+                                        <td>{poview ?'' : <PrBurron onClick={()=>handleDelete(index)} label={'Delete'} />}</td>
+
                                         <td ><DumyInput indum={'User Name'} /></td>
                                         <td ><DumyInput indum={'02-01-2021'} /></td>
+                                       
                                     </tr>
                                 })}
                         

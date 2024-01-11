@@ -5,6 +5,8 @@ import { useLogin } from '@/hooks/login/useLogin'
 import './style.css'
 import {useSelector,useDispatch} from 'react-redux'
 import {getAuthToken} from '@/redux/slice' 
+import PrBurron from './button/PrBurron'
+import { useRouter } from 'next/navigation';
 
 
 export type StateProps = {
@@ -19,6 +21,13 @@ const Navbar = () => {
     const {user} =useSelector((state:StateProps)=>state.counter)
     const data = { email: '', password: '' }
     const { handleLogout } = useLogin(data)
+   
+    const router = useRouter()
+
+    const handleLogin = () =>{
+        console.log('ok')     
+        router.push('/')
+    }
 
     useEffect(() => {
         const authTokenData = document.cookie === null || document.cookie === undefined
@@ -30,9 +39,6 @@ const Navbar = () => {
 
         dispatch(getAuthToken(authTokenData));
     }, [dispatch]);
-
-    
-
 
     return (     
             <nav className="lg:px-16 z-10 dark:bg-black bg-sky-500 shadow-md flex flex-wrap items-center justify-center lg:py-0 fixed  top-0 w-full">
@@ -117,7 +123,8 @@ const Navbar = () => {
                                 </a>
                             </li>
                             <li className="py-2 lg:py-0 ">
-                            <button type='button' onClick={handleLogout} className='btn btn-secondary text-sm text-gray-950 dark:text-gray-50'>Logout</button>
+                            <PrBurron onClick={handleLogout}  label={'Logout'}/> 
+                            <PrBurron onClick={handleLogin}  label={'Login'}/> 
                             </li>
                         </ul>
                     </nav>

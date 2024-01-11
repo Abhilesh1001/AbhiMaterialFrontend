@@ -1,38 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import {vendorType,datatype,podataType,mainType,updataData} from '@/type/type'
+import {vendorType,datatype,podataType,mainType,updataData,CounterStatePo} from '@/type/type'
+import {pomainall } from '@/components/dataAll/data'
 
-export interface CounterState {
-  deliveryadress:vendorType,
-  vendoradress :vendorType,
-  data : datatype[]
-  podata :podataType
-  selectedValue : string, 
-  mainData :mainType,
-  newPoNo:null|number
-}
 
-const initialState: CounterState = {
+
+const initialState: CounterStatePo = {
     deliveryadress:{ name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' },
     vendoradress :{ name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' },
-    data : [{
-        line_no : null,
-        pr_no: null,
-        material_no: null,
-        material_name: '',
-        material_unit: '',
-        material_price: null,
-        material_tax: null,
-        total_tax: null,
-        material_qty: null,
-        material_text: '',
-        total_amount: null,
-    }],
+    data :pomainall, 
     podata : {po_no:null,time:'',item_pr:'',vendor_address:'',delivery_address:'',user:null,maindata:''},
     selectedValue : 'PR',
     mainData : { TotalAmount: 0, TotalWithtax: 0, TotalTax: 0 },
     newPoNo : null,
-
+    poprview : null,
+    poview : false,
+    pochange :false
 }
 
 
@@ -46,7 +29,7 @@ export const poSlice = createSlice({
     getVendorAdress : (state, action: PayloadAction<vendorType>) => {
       state.vendoradress = action.payload
     },
-    getData : (state:CounterState,action:PayloadAction<datatype[]>) =>{
+    getData : (state:CounterStatePo,action:PayloadAction<datatype[]>) =>{
         state.data = action.payload
     },
     getPoData : (state,action:PayloadAction<podataType>) =>{
@@ -60,12 +43,28 @@ export const poSlice = createSlice({
     },
     getNewPO : (state,action:PayloadAction<null|number>) =>{
       state.newPoNo = action.payload
+    },
+    getPoPrView :(state,action:PayloadAction<null|number>) =>{
+      state.poprview = action.payload
+    },
+    getPoview : (state,action:PayloadAction<boolean>) =>{
+      state.poview = action.payload
+    },
+    deletePoLine : (state,action) =>{
+      const  {index}  = action.payload
+      console.log(index,'index')
+      const newDataMain =  state.data.filter((item,indexes)=>indexes!==index)
+      state.data = newDataMain
+
+    },
+    getPochange : (state,action:PayloadAction<boolean>) =>{
+      state.pochange = action.payload
     }
 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { getDEliveryAdress,getVendorAdress,getData,getPoData,getSelectedValue,getMainData,getNewPO} = poSlice.actions
+export const { getDEliveryAdress,getVendorAdress,getData,getPoData,getSelectedValue,getMainData,getNewPO,getPoPrView,getPoview,deletePoLine,getPochange} = poSlice.actions
 
 export default poSlice.reducer

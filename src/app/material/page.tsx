@@ -7,7 +7,6 @@ import { QueryResponse } from '@/type/material/materia-type'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import Aleart from '@/components/alert/Aleart'
 import Loading from '@/components/loading/Loading'
-import { set, setDate } from 'date-fns'
 
 // hooks 
 import { useMaterial } from '@/hooks/material/useMaterial'
@@ -23,7 +22,7 @@ const page = () => {
     const { fetchData, handleSubmit, setDate, data,loadingNewCreation,newMatNo } = useMaterial()
     const { data: matdata } = useQuery<QueryResponse>({ queryKey: ['matData',newMatNo,authToken], queryFn: fetchData })
     return (
-        <div className=' dark:bg-gray-800 bg-sky-600 h-auto text-gray-50 min-h-[500px]'>
+        <div className=' dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
             <div className='container'>
                 <div className="row my-4">
                     <div className="col-sm-6">

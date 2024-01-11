@@ -1,26 +1,14 @@
 'use_client'
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import {datatypePr} from '@/type/type'
+import {datatypePr,CounterState,prmainData} from '@/type/type'
 
-export interface CounterState {
-  datapr : datatypePr[]
-}
+import {praldata,prmainall} from '@/components/dataAll/data'
+
 
 const initialState: CounterState = {
-    
-    datapr : [{
-        line_no: 1,
-        material_name: '',
-        material_unit: '',
-        material_no: null,
-        material_price: null,
-        material_qty: null,
-        material_text: '',
-        total_price: null
-    }],
-   
-
+    datapr :praldata,
+    prmaindata : prmainall
 }
 
 
@@ -30,6 +18,18 @@ export const prSlice = createSlice({
   reducers: {
     getPrData : (state:CounterState,action:PayloadAction<datatypePr[]>) =>{
         state.datapr = action.payload
+    },
+    resetPr : (state:CounterState,action:PayloadAction<datatypePr[]>)=>{
+      state.datapr = praldata
+    },
+    deleteLine : (state,action) =>{
+     const  {index} = action.payload
+
+     const newData = state.datapr.filter((item, indexData) => indexData !== index);
+     state.datapr = newData
+    },
+    setPrMainData : (state,action:PayloadAction<prmainData>) =>{
+      state.prmaindata = action.payload
     }
 
 }
@@ -37,6 +37,6 @@ export const prSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { getPrData} = prSlice.actions
+export const { getPrData,resetPr,deleteLine,setPrMainData} = prSlice.actions
 
 export default prSlice.reducer

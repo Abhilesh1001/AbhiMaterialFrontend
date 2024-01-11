@@ -1,6 +1,5 @@
 'use client'
 import { loginaction, loginred } from "@/reducer/loginreducer"
-import { loginUser } from "@/components/server/loginService"
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
@@ -34,12 +33,7 @@ export const useLogin = (data: loginred) => {
             return error
         }
     }
-
 // updatetoken 
-
-
-
-
 useEffect(() => {
     let time = 1000 * 4 * 60
     if (authToken?.access !== undefined) {
@@ -76,9 +70,6 @@ function handleLogout() {
     dispatch(clearAuthToken(''))
     dispatch(clearUser(""))
 }
-
-
-
 
 return { handleSubmit, handleLogout }
 }
