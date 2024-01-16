@@ -8,18 +8,11 @@ import PrBurron from '../button/PrBurron'
 import { usePoview } from '@/hooks/purchseorder/usePoview'
 
 
-
-
-
 const SelectionHeader = () => {
-   const {handleRadioChange,handlePRPOView,handleForm,handleSubmit,loadingNewPoCreation} = usePo()
-   const {handleViewClick,handlePochange,handleInsert,handleInsertPrInpo,handleUpdatePo}  = usePoview()
+   const {handleRadioChange,handlePRPOView,handleSubmit,loadingNewPoCreation,hasTrueValue} = usePo()
+   const {handleViewClick,handlePochange,handleInsert,handleInsertPrInpo,handleUpdatePo,ResetPo}  = usePoview()
    const {podata,selectedValue,mainData,pochange} = useSelector((state:posliiceState)=>state.poslicer)
-   let mainamount:mainType = {TotalAmount:null, TotalWithtax:null, TotalTax:null}
-   if(podata.maindata){
-      mainamount = JSON.parse(podata.maindata)
-   }
-   
+   console.log('hasvalue',podata.po_no)
  
   return (
     <div >
@@ -32,30 +25,31 @@ const SelectionHeader = () => {
     </div>
 
     <div className='' style={{ display: 'flex' }}>
-        <input type="text" className='form-control w-20 text-sm' onChange={handlePRPOView} />
+        <input type="number" className='form-control w-20 text-sm' onChange={handlePRPOView} />
 
         {
             selectedValue === 'PO' && <>
             <PrBurron label={'View'} onClick={handleViewClick} />
             <PrBurron label={'Change'} onClick={handlePochange} />
             {pochange  && <PrBurron label={'Insert PR'} onClick={handleInsertPrInpo } />}
-                {pochange && <button className="btn btn-success mx-2  text-gray-800 dark:bg-slate-400  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdatePo(Number(podata.po_no))} >Update</button>}
+                {pochange && <>{!hasTrueValue?<button className="btn btn-success mx-2  text-gray-800 dark:bg-slate-800  bg-green-400 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdatePo(Number(podata.po_no))} >Update</button>:<PrBurron label='Update'/>}</>}
             </>
         }
         {
             selectedValue === 'PR' && <> 
             <PrBurron label={'Insert PR'} onClick={handleInsert} />
 
-            <button className="btn btn-success mx-2 dark:bg-slate-400 text-gray-800   bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>
+           {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-slate-800 text-gray-800 bg-green-400  dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>:<PrBurron label='Save'/>}
 
             </>
         }
+        <PrBurron label={'Reset'} onClick={ResetPo} />
         
-        <button className="btn btn-warning mx-2  text-gray-800 dark:bg-slate-400  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button'>Print</button>
-        <div className='flex items-center mr-4'>Total Tax</div>
-        <div className='flex items-center  text-green-400'>{selectedValue === 'PO'?mainamount.TotalTax:mainData.TotalTax}</div>
-        <div className='flex items-center ml-4'>Total Amount</div>
-        <div className='flex items-center text-green-400 ml-4'>{selectedValue === 'PO'?mainamount.TotalWithtax:mainData.TotalWithtax}</div>
+        <button className="btn btn-warning mx-2  text-gray-800 dark:bg-slate-800  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button'>Print</button>
+        <div className='flex items-center mr-4 text-slate-50'>Total Tax</div>
+        <div className='flex items-center  text-green-400'>{mainData.TotalTax}</div>
+        <div className='flex items-center ml-4 dark:text-slate-50'>Total Amount</div>
+        <div className='flex items-center text-green-400 ml-4'>{mainData.TotalWithtax}</div>
         <div className='w-full flex justify-center'>{loadingNewPoCreation && <Loading />}</div>
         {podata.po_no && <div className=' text-gray-50'>Purchase Order : {podata.po_no}</div>}
 

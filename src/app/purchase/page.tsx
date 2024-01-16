@@ -17,7 +17,7 @@ const PurchasePR = () => {
     const { handleChange, handleKeyDown, handleSubmit, handleForm, newPrNo, loadingNewPrCreation } = usePr()
     const { datapr: data,prmaindata } = useSelector((state: prsliiceState) => state.prslicer)
     const {handleUpdate, FormReset,handleDelete,handleView,handlePRView,view,handleChangePr,change,upprno,loadingNewPrUpdate } = usePrPreview()
-    console.log(prmaindata)
+    console.log('prdata',data[0].pr_no)
     let formattedDateString = ''
     if (prmaindata.time) {
         const time = prmaindata.time
@@ -29,7 +29,7 @@ const PurchasePR = () => {
         <div className=' dark:bg-gray-800 bg-sky-600  min-h-screen'>
             <div className='container mt-4 overflow-auto text-nowrap'>
                 <form onSubmit={handleSubmit}>
-                    <div >
+                    <div className='overflow-auto' >
                         <div className='h-2'></div>
                         <label className="form-label font-bold dark:text-gray-50">PR No</label>
                         <div className='' style={{ display: 'flex' }}>
@@ -41,11 +41,12 @@ const PurchasePR = () => {
                             <PrBurron label={'Print'} />
                             <PrBurron onClick={FormReset} label={'Reset'} />
                             {loadingNewPrCreation || loadingNewPrUpdate && <Loading />}
+                            {data[0].pr_no!==null && <div className='flex justify-end w-full text-gray-50'>Purchase Request :<div className='text-green-400'>{data[0].pr_no}</div> </div>}
                         </div>
                     </div>
                     <div className='h-[360px] overflow-auto my-2 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
                         <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400 ">
-                            <thead className='sticky top-0 z-1 bg-sky-800 dark:bg-slate-500 text-gray-50 h-10'>
+                            <thead className='sticky top-0 z-1 bg-sky-800 dark:bg-gray-950 text-gray-50 h-10'>
                                 <tr >
                                     <th scope="col"></th>
                                     <th scope="col">S.No</th>
@@ -59,6 +60,7 @@ const PurchasePR = () => {
                                     <th scope="col">Delete</th>
                                     <th scope="col">Created By</th>
                                     <th scope="col">Date</th>
+                                    <th scope="col">Po No</th>
 
                                 </tr>
                             </thead>
@@ -69,30 +71,29 @@ const PurchasePR = () => {
                                             <th><input type="checkbox" /></th>
                                             <th><DumyInput indum={index + 1} /> </th>
                                             <td>
-                                                {view ?<DumyInput indum={item.material_no} /> :<input required value={item.material_no !== null ? item.material_no : ''} type="number" onKeyDown={(e) => handleKeyDown(e, index)} onChange={(e) => handleChange(e.target.value, 'material_no', index)} className="form-control  text-sm  w-24" />}
+                                                {view ?<DumyInput indum={item.material_no} /> :<>{item.po_no !==null ?<DumyInput indum={item.material_no}/>:<input required value={item.material_no !== null ? item.material_no : ''} type="number" onKeyDown={(e) => handleKeyDown(e, index)} onChange={(e) => handleChange(e.target.value, 'material_no', index)} className="form-control  text-sm  w-24" />}</>}
                                             </td>
                                             <td><DumyInput indum={item.material_name} /></td>
                                             <td><DumyInput indum={item.material_unit} /></td>
 
                                             <td>
-                                                {view ?<DumyInput indum={item.material_price} /> :<input required type="number" value={item.material_price !== null ? item.material_price : ''} onChange={(e) => handleChange(e.target.value, 'material_price', index)} className="form-control  text-sm  w-24" />}
+                                                {view   ?<DumyInput indum={item.material_price} /> :<>{item.po_no !==null ?<DumyInput indum={item.material_price}/>:<input required type="number" value={item.material_price !== null ? item.material_price : ''} onChange={(e) => handleChange(e.target.value, 'material_price', index)} className="form-control  text-sm  w-24" />}</>}
                                             </td>
                                             <td>
-                                                {view ?<DumyInput indum={item.material_qty} /> : <input required type="number" value={item.material_qty !== null ? item.material_qty : ''} onChange={(e) => handleChange(e.target.value, 'material_qty', index)} className="form-control text-sm w-24" />}
+                                                {view ?<DumyInput indum={item.material_qty} /> : <>{item.po_no !==null ?<DumyInput indum={item.material_qty}/>:<input required type="number" value={item.material_qty !== null ? item.material_qty : ''} onChange={(e) => handleChange(e.target.value, 'material_qty', index)} className="form-control text-sm w-24" />}</>}
                                             </td>
                                             <td><DumyInput indum={item.total_price} /> </td>
                                             <td>
-                                                {view ? <DumyInput indum={item.material_text} />: <div className='flex'><input type="text" value={item.material_text !== null ? item.material_text : ''} onChange={(e) => handleChange(e.target.value, 'material_text', index)} className="form-control  text-sm w-80" /></div>}
+                                                {view ? <DumyInput indum={item.material_text} />: <>{item.po_no !==null ?<DumyInput indum={item.material_text}/>:<input type="text" value={item.material_text !== null ? item.material_text : ''} onChange={(e) => handleChange(e.target.value, 'material_text', index)} className="form-control  text-sm w-80" />}</>}
                                             </td>
                                             
-                                            <td>{view ? '':<PrBurron label={'Delete'} onClick={()=>handleDelete(index)} />} </td>
+                                            <td>{view ? '':<>{item.po_no !==null ?'':<PrBurron label={'Delete'} onClick={()=>handleDelete(index)} />}</>} </td>
                                             <td >{prmaindata.user !==null ?<DumyInput indum={prmaindata.user} />: "user"}</td>
-                                            <td >{prmaindata.user !==null ?<DumyInput indum={formattedDateString} />: "02-01-2021"}</td>
+                                            <td >{prmaindata.user !==null ?<DumyInput indum={formattedDateString} />: ""}</td>
+                                            <td >{<DumyInput indum={item.po_no} />}</td>
                                         </tr>
                                     })
                                 }
-
-
                             </tbody>
                         </table>
                     </div>

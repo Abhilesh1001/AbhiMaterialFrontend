@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { counterSlice } from './slice'
 import {poSlice} from './po/poslicer'
 import {prSlice} from './pr/prslicer'
+import {grnSlice} from './grn/grnslicer'
 
 
 
@@ -11,6 +12,7 @@ export const store = configureStore({
      counter: counterSlice.reducer,
      poslicer:poSlice.reducer,
      prslicer : prSlice.reducer,
+     grnslice : grnSlice.reducer,
   },
 })
 

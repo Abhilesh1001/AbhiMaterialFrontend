@@ -55,7 +55,7 @@ const VendorDetails = () => {
           <div className='h-[100px] relative overflow-y-auto shadow-md dark:bg-gray-900 mt-4 mb-2 bg-sky-500 sm:rounded-lg'>
             <table className='w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400'>
                 <thead>
-                    <tr className='sticky top-0 z-1 bg-sky-800 dark:bg-slate-500 text-gray-50 h-10'>
+                    <tr className='sticky top-0 z-1 bg-sky-800 dark:bg-gray-950 text-gray-50 h-10'>
                         <th>Party Id</th>
                         <><th>Name</th>
                         <th>Phone No</th>
@@ -69,7 +69,7 @@ const VendorDetails = () => {
                         <tr>
                             <td>{selectedValue==='PO'? <DumyInput indum={vendorAdress.s_no !== null && vendorAdress.s_no !== undefined ?vendorAdress.s_no:''} />:<input type="text" className="form-control text-sm w-24"  onChange={(e) => handleClickVendor(e)} />}</td>
                             { 
-                            <><td><DumyInput indum={selectedValue==='PO'?vendorAdress.vendor_name:vendor.name} /></td>
+                            <><td><DumyInput indum= {selectedValue==='PO'?vendorAdress.vendor_name:vendor.name} /></td>
                             <td><DumyInput indum={selectedValue==='PO'?vendorAdress.phone_no:vendor.phone_no} /></td>
                             <td><DumyInput indum={selectedValue==='PO'?vendorAdress.vendor_name:vendor.vendor_name} /></td>
                             <td><DumyInput indum={selectedValue==='PO'?vendorAdress.address:vendor.address} /></td>

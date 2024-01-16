@@ -15,8 +15,8 @@ export const usePr =()=>{
     const [loadingNewPrCreation, setLoading] = useState(false);
     const { datapr:data} = useSelector((state: prsliiceState) => state.prslicer)
     const [newPrNo,setNewPrNo] = useState<null|number>(null)
+    console.log(data)
     const dispatch = useDispatch()
-
     const mutation = useMutation<any,any,any,unknown>({
         mutationFn : async (dataRes:any)=>
             await axios.post(`${baseurl}mat/createpurchase`, dataRes, {
@@ -51,13 +51,15 @@ export const usePr =()=>{
         } else {
             updatedData[index] = {...updatedData[index],[key]: value,};
         }
-    
+        console.log('updated',updatedData)
         dispatch(getPrData(updatedData));
     }
     const handleForm = () => {
         const newLineNo = data.length + 1
         dispatch(getPrData([...data, {
             line_no: newLineNo,
+            pr_no:null,
+            po_no :null,
             material_name: '',
             material_unit: '',
             material_no: null,
@@ -66,6 +68,7 @@ export const usePr =()=>{
             material_text: '',
             total_price: null
         }]))
+       
 
     }
 

@@ -13,9 +13,6 @@ export type loginaction ={
     'value' : string
 }
 
-
-
-
 export const reducer = (state:loginred, action:loginaction) => {
 
     switch (action.type) {

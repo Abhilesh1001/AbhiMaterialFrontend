@@ -38,10 +38,11 @@ export const usePrPreview =() =>{
                 console.log(data.data)
                 dispatch(setPrMainData(data.data))
                 const newData =  JSON.parse(data.data.item_json)
-                console.log(newData)
+                console.log('newDataPo',newData)
                 const mapDataUpdata =  newData.map((item:any)=>{
                     const element = {
-                        pr_no:item.pr_no,
+                        pr_no:prno,
+                        po_no : item.po_no===0?null:item.po_no,
                         line_no:item.line_no,
                         material_name: item.material_name,
                         material_no: item.material_no,

@@ -13,9 +13,6 @@ import { useMaterial } from '@/hooks/material/useMaterial'
 import { useSelector } from 'react-redux'
 
 
-
-
-
 const page = () => {
 
     const {authToken} = useSelector((state:StateProps)=>state.counter)
@@ -32,16 +29,15 @@ const page = () => {
                         <input type="number" className="form-control mb-2  text-xs dark:text-white dark:bg-slate-950" />
                         <form onSubmit={handleSubmit}>
                             <label htmlFor="material name" className='dark:text-gray-50 form-label text-xs'>Material Name</label>
-                            <input type="text" className="form-control my-2  text-xs dark:text-white dark:bg-slate-950" required onChange={(e) => setDate({ ...data, material_name: e.target.value })} />
+                            <input type="text" className="form-control my-2  text-xs dark:text-gray-50 dark:bg-slate-950" required onChange={(e) => setDate({ ...data, material_name: e.target.value })} />
                             <select onChange={(e) => setDate({ ...data, material_group: e.target.value })} value={data.material_group} required className="form-select form-select-lg mb-3 my-4  text-xs dark:text-white dark:bg-slate-950" aria-label="Large select example">
-                                <option value='material_group' selected>Material Group</option>
+                                {/* <option value='material_group' selected>Material Group</option> */}
                                 <option value="electrical">Electrical</option>
                                 <option value="instrumentation">Instrumentation</option>
                                 <option value="mechanical">Mechanical</option>
                                 <option value="civil">Civil</option>
                             </select>
-                            <select onChange={(e) => setDate({ ...data, unit: e.target.value })} value={data.unit} required className="form-select form-select-lg mb-3 my-4 text-xs dark:text-white dark:bg-slate-950" aria-label="Large select example">
-                                <option value='unit' selected>Unit</option>
+                            <select onChange={(e) => setDate({ ...data, unit: e.target.value })}  value={data.unit} required className="form-select form-select-lg mb-3 my-4 text-xs dark:text-white dark:bg-slate-950" aria-label="Large select example">
                                 <option value="KG">KG</option>
                                 <option value="number">NOS</option>
                                 <option value="packet">Packet</option>
@@ -51,7 +47,7 @@ const page = () => {
                             <button type='submit' className="btn btn-secondary bg-sky-500 dark:bg-gray-600  dark:text-gray-50 text-gray-50">Submit</button>
                         </form>
                     </div>
-                    <div className="col-sm-6 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-600 sm:rounded-lg  h-96">
+                    <div className="col-sm-6 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-600 sm:rounded-lg max-h-screen h-full">
                         <table className="w-full text-sm mt-4 text-left rtl:text-right text-gray-500 bg-sky-600 dark:text-gray-400">
                             <thead className='text-xs text-gray-50 uppercase bg-sky-700 dark:bg-gray-700 dark:text-gray-400'>
                                 <tr>

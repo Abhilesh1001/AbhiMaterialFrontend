@@ -1,24 +1,26 @@
 // typescript 
-import { datatype, vendorType, posliiceState, StateProps,updataData } from '@/type/type'
+import { datatype, posliiceState, StateProps } from '@/type/type'
 import {pomainall} from '@/components/dataAll/data'
 
 // dependencies 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios';
-import {useMutation,useQueries} from '@tanstack/react-query'
+import {useMutation} from '@tanstack/react-query'
+import { usePoview } from './usePoview'
 
 // redux 
-import { getData,getPoData,getSelectedValue,getMainData,getNewPO,getVendorAdress,getPoPrView,getPoview, getPochange } from '@/redux/po/poslicer';
-
-
-
+import { getData,getPoData,getSelectedValue,getMainData,getNewPO,getVendorAdress,getPoPrView,getPoview, getPochange,getUppono, getOrignalData,getTotalQuantity } from '@/redux/po/poslicer';
 
 
 export const usePo = () => {
     const dispatch = useDispatch()
     const { baseurl, authToken,userId } = useSelector((state: StateProps) => state.counter)
-    const { vendoradress, deliveryadress ,data,selectedValue,mainData} = useSelector((state: posliiceState) => state.poslicer)
+    const { vendoradress, deliveryadress ,data,selectedValue,mainData,orignalData,totalQuantity} = useSelector((state: posliiceState) => state.poslicer)
+    const {TotalQuantity} = usePoview()
+    console.log('orignalDAta',totalQuantity,orignalData)
+    const [qerror,setQerror] = useState<boolean[]>([])
+    const hasTrueValue = qerror.some((value) => value === true);
     const [loadingNewPoCreation, setLoading] = useState(false);
     const mutation = useMutation<any,any,any,unknown>(({
         mutationFn:async (payload) =>
@@ -33,6 +35,7 @@ export const usePo = () => {
             dispatch(getMainData({ TotalAmount: 0, TotalWithtax: 0, TotalTax: 0}))
             dispatch(getVendorAdress({name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: ''}))
             dispatch(getData(pomainall))
+            getUppono(null)
         },
         onError:(error)=>{
             console.log(error)
@@ -40,26 +43,10 @@ export const usePo = () => {
         }
     }))
    
-    const handleForm = () => {
-        const newDataItem = {
-            line_no:null,
-            pr_no: null,
-            material_no: null,
-            material_name: '',
-            material_unit: '',
-            material_price: null,
-            material_tax: null,
-            total_tax: null,
-            material_qty: null,
-            material_text: '',
-            total_amount: null,
-        };
-        dispatch(getData([...data, newDataItem]))
-    }
 
-    const handleChange = (value: any, key: keyof datatype, index: number) => {
-        const newData = [...data]; // Create a copy of the state array
-
+    const handleChange = async (value: any, key: keyof datatype, index: number) => {
+        const newData:datatype[] = [...data]; // Create a copy of the state array
+        
         if (value !== null) {
             if (key === 'total_amount' || key === 'total_tax' || key === 'material_price' || key === 'material_qty' || key === 'material_tax') {
                 const qty = key === 'material_qty' ? value : newData[index].material_qty;
@@ -72,7 +59,6 @@ export const usePo = () => {
                     newData[index] = { ...newData[index], total_amount: totalAmount, total_tax: total_tax };
                 }
             }
-
             newData[index] = { ...newData[index], [key]: value };
 
             const TotalAmount = newData.reduce((acc, item) => {
@@ -96,15 +82,14 @@ export const usePo = () => {
                 return acc
             }, 0)
             dispatch(getMainData({ TotalAmount: TotalAmount, TotalWithtax: TotalWithtax, TotalTax: TotalTax }))
-            console.log('new data',newData)
             dispatch(getData((newData)));
+            const totalQuality = TotalQuantity(data)
+            dispatch(getTotalQuantity(totalQuality))
         }
     };
 
     // create new PO 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log('submit', data,vendoradress,deliveryadress,userId)
-        console.log(data,selectedValue,vendoradress.name)
         if (selectedValue === 'PR' && vendoradress.name!=='' && deliveryadress.name !== '' && data[0].material_name !== '') {
             setLoading(true)
             const redata = {
@@ -125,13 +110,43 @@ export const usePo = () => {
         dispatch(getPoData( {po_no:null,time:'',item_pr:'',vendor_address:'',delivery_address:'',user:null,maindata:''}))
         dispatch(getPoview(false))
         dispatch(getPochange(false))
+        dispatch(getOrignalData(pomainall))
     };
 
     const handlePRPOView = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(getPoPrView((parseInt(e.target.value))))
     }
 
+    useEffect(() => {
+        const totalQuality = TotalQuantity(data);
+        dispatch(getTotalQuantity(totalQuality));
+    
+        // new setting 
+        const error: boolean[] = [];
+    
+        totalQuality.forEach((item) => {
+            const orignalItem = orignalData.find(
+                (orignalItem) => orignalItem.line_no === item.line_no && orignalItem.pr_no === item.pr_no
+            );
+            if (item?.material_qty !== null && orignalItem?.material_qty !== null && orignalItem !== undefined) {
+                if (item?.material_qty > orignalItem?.material_qty) {
+                    error.push(true);
+                } else {
+                    error.push(false);
+                }
+            }
+        });
+    
+        setQerror([...error]);
+
+        
+
+    }, [data, orignalData]); // Include orignalData in the dependency array
 
 
-    return { handleForm, handleSubmit, handleChange,handlePRPOView, handleRadioChange,loadingNewPoCreation }
+
+    
+
+
+    return { handleSubmit, handleChange,handlePRPOView, handleRadioChange,loadingNewPoCreation,hasTrueValue }
 }

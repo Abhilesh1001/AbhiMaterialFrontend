@@ -1,7 +1,9 @@
 
 export interface datatype {
     line_no : null|number,
+    po_line :null | number,
     pr_no: null|number,
+    grn_no:null|number,
     material_no: null|number,
     material_name: string,
     material_unit: string,
@@ -67,6 +69,8 @@ export const updataData = {
 
 export interface datatypePr {
     line_no: null|number,
+    po_no:null|number,
+    pr_no:null|number,
     material_name: string,
     material_unit: string,
     material_no: number | null,
@@ -119,5 +123,8 @@ export interface prmainData {
     newPoNo:null|number
     poprview : null | number
     poview : boolean
-    pochange :boolean
+    pochange :boolean,
+    uppono:null|number
+    orignalData:datatype[]
+    totalQuantity:datatype[]
   }

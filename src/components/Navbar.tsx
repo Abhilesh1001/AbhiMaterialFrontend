@@ -67,19 +67,10 @@ const Navbar = () => {
                     <nav>
                         <ul className="text-xl text-center items-center gap-x-5 md:gap-x-4 lg:text-lg lg:flex  lg:pt-0">
                             <li className="py-2 lg:py-0 ">
-                                <a
-                                    className=" dark:text-gray-50 text-sm text-gray-950"
-                                    href="#"
-                                >
-                                    Search
-                                </a>
+                                <a className=" dark:text-gray-50 text-sm text-gray-950" href="#">Search</a>
                             </li>
                             <li className="py-2 lg:py-0 ">
-                                <Link 
-                                    className="text-gray-950 text-sm dark:text-gray-50 "
-                                    href={'/material'}
-                                >
-                                    Material Create
+                                <Link className="text-gray-950 text-sm dark:text-gray-50 " href={'/material'}>Materia Create
                                 </Link>
                             </li>
                             <li className="py-2 lg:py-0 ">
@@ -107,12 +98,12 @@ const Navbar = () => {
                                 </Link>
                             </li>
                             <li className="py-2 lg:py-0 ">
-                                <a
+                                <Link
                                     className="text-gray-950 text-sm dark:text-gray-50"
-                                    href="#"
+                                    href={'/grn'}
                                 >
                                     GRN 
-                                </a>
+                                </Link>
                             </li>
                             <li className="py-2 lg:py-0 ">
                                 <a
@@ -123,8 +114,8 @@ const Navbar = () => {
                                 </a>
                             </li>
                             <li className="py-2 lg:py-0 ">
-                            <PrBurron onClick={handleLogout}  label={'Logout'}/> 
-                            <PrBurron onClick={handleLogin}  label={'Login'}/> 
+                            {user && <PrBurron onClick={handleLogout}  label={'Logout'}/> }
+                            {!user && < PrBurron onClick={handleLogin}  label={'Login'}/>} 
                             </li>
                         </ul>
                     </nav>

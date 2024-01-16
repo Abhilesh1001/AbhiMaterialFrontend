@@ -15,14 +15,24 @@ import PrBurron from '@/components/button/PrBurron'
 import { usePo } from '@/hooks/purchseorder/usePo'
 import { usePoview } from '@/hooks/purchseorder/usePoview'
 import {posliiceState,datatype} from '@/type/type'
+import { format } from 'date-fns';
 
 
 
 const PurchaseOrder = () => {
-    const {data,newPoNo,poview} = useSelector((state:posliiceState)=>state.poslicer)
+    
+    const {data,newPoNo,poview,uppono,podata} = useSelector((state:posliiceState)=>state.poslicer)
+   
     const {handleDelete} =usePoview()
     const {handleChange} = usePo()
-
+   
+    let formattedDateString = ''
+    if (podata.time) {
+        const time = podata.time
+        const dateObject = new Date(time);
+        formattedDateString = format<Date>(dateObject, 'dd-MM-yyyy')
+    }
+   console.log(uppono,'uppono')
     return (
         <div className=' dark:bg-gray-800 bg-sky-600 min-h-screen' >
         <div className='container mt-4 overflow-auto text-nowrap'>
@@ -32,7 +42,7 @@ const PurchaseOrder = () => {
             <form >
                 <div className='h-[300px] overflow-auto  relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
                     <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400">
-                        <thead className='sticky top-0 z-1 bg-sky-800 dark:bg-slate-500 text-gray-50 h-10'>
+                        <thead className='sticky top-0 z-1 bg-sky-800 dark:bg-slate-950 text-gray-50 h-10'>
                             <tr>
                                 <th scope="col"></th>
                                 <th scope="col" ><div className='ml-2 mr-2'>S.No</div></th>
@@ -47,6 +57,7 @@ const PurchaseOrder = () => {
                                 <th scope="col" ><div className='ml-2 mr-2'>Total Amount Tax (%)</div></th>
                                 <th scope="col" ><div className='ml-2 mr-2'>Material Text</div></th>
                                 <th scope="col" ><div className='ml-2 mr-2'>Delete</div></th>
+                                <th scope="col" ><div className='ml-2 mr-2'>GRN No.</div></th>
                                 <th scope="col" ><div className='ml-2 mr-2'>Created By</div></th>
                                 <th scope="col" ><div className='ml-2 mr-2'>Date</div></th>
                                 <th scope="col" ><div className='ml-2 mr-2'></div></th>
@@ -65,17 +76,17 @@ const PurchaseOrder = () => {
                                         <td><DumyInput indum={item.material_name} /></td>
 
                                         <td>
-                                            {poview ? <DumyInput indum={item.material_price}/> :<input type="number" value={item.material_price !== null ? item.material_price : ''} onChange={(e) => handleChange(e.target.value, 'material_price', index)} className="form-control  text-sm  w-26" />}
+                                            {poview ? <DumyInput indum={item.material_price}/> :<>{item.grn_no!==null && item.grn_no!==undefined ?<DumyInput indum={item.material_price}/>:<input type="number" value={item.material_price !== null ? item.material_price : ''} onChange={(e) => handleChange(Number(e.target.value), 'material_price', index)} className="form-control  text-sm  w-26" />}</>}
                                         </td>
 
                                         <td>
-                                            {poview ?<DumyInput indum={item.material_qty}/>:<input type="number" value={item.material_qty != null ? item.material_qty : ''} onChange={(e) => handleChange(e.target.value, 'material_qty', index)} className="form-control  text-sm  w-28" />}
+                                            {poview ?<DumyInput indum={item.material_qty}/>:<>{item.grn_no!==null && item.grn_no!==undefined?<DumyInput indum={item.material_qty}/>:<input type="number" value={item.material_qty != null ? item.material_qty : ''} onChange={(e) => handleChange(Number(e.target.value), 'material_qty', index)} className="form-control  text-sm  w-28" />}</>}
                                         </td>
 
                                         <td><DumyInput indum={item.total_amount} /></td>
 
                                         <td>
-                                            {poview ?<DumyInput indum={item.material_tax}/>:<input type="number" value={item.material_tax !== null ? item.material_tax : ''} onChange={(e) => handleChange(e.target.value, 'material_tax', index)} className="form-control text-sm  w-26" />}
+                                            {poview ?<DumyInput indum={item.material_tax}/>:<>{item.grn_no!==null&& item.grn_no!==undefined?<DumyInput indum={item.material_tax}/>:<input type="number" value={item.material_tax !== null ? item.material_tax : ''} onChange={(e) => handleChange(e.target.value, 'material_tax', index)} className="form-control text-sm  w-26" />}</>}
                                             
                                         </td>
 
@@ -83,13 +94,16 @@ const PurchaseOrder = () => {
                                         <DumyInput indum={item.total_tax} /></td>
 
                                         <td>
-                                            {poview ?<DumyInput indum={item.material_text}/>:<div className='flex'><input type="text" onChange={(e) => handleChange(e.target.value, 'material_text', index)} value={item.material_text} className="form-control w-[200px] text-sm  w-26" /></div>}
+                                            {poview ?<DumyInput indum={item.material_text}/>:<>{item.grn_no!==null&& item.grn_no!==undefined?<DumyInput indum={item.material_text}/>:<input type="text" onChange={(e) => handleChange(e.target.value, 'material_text', index)} value={item.material_text} className="form-control w-[200px] text-sm  w-26" />}</>}
+                                        </td>
+                                        <td>
+                                        {poview ? '':<>{item.grn_no !==null && item.grn_no!==undefined ?'':<PrBurron label={'Delete'} onClick={()=>handleDelete(index)} />}</>} </td>
+                                          
+                                            <td >{<DumyInput indum={item.grn_no} />}
                                         </td>
 
-                                        <td>{poview ?'' : <PrBurron onClick={()=>handleDelete(index)} label={'Delete'} />}</td>
-
-                                        <td ><DumyInput indum={'User Name'} /></td>
-                                        <td ><DumyInput indum={'02-01-2021'} /></td>
+                                        <td >{podata.user !==null ?<DumyInput indum={podata.user} />: "user"}</td>
+                                        <td >{podata.user !==null ?<DumyInput indum={formattedDateString} />: ""}</td>
                                        
                                     </tr>
                                 })}
@@ -101,7 +115,8 @@ const PurchaseOrder = () => {
 
             </form>
             <div className='my-2'>
-            {newPoNo !== null &&  <Aleart newMat = {newPoNo} alertname={'Purchase Order'}/>}
+            {newPoNo !== null &&  <Aleart newMat = {newPoNo} alertname={'Purchase Order'} label='Created'/>}
+            {uppono !== null &&  <Aleart newMat = {uppono} alertname={'Purchase Order'} label={'Updated'}/>}
             </div>
             <DeliveryAdress />
         </div>
