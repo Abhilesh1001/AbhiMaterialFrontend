@@ -110,9 +110,7 @@ export const usePoview = () => {
                         Authorization: `Bearer ${authToken?.access}`
                     }
                 })
-                console.log('responsedata',response.data)
                 dispatch(getPoData(response.data))
-                console.log('newDAta',JSON.parse(response.data.item_pr))
                 const newData = JSON.parse(response.data.item_pr)
                 const mainPrice = JSON.parse(response.data.maindata)
                 const newDataUpdata = newData.map((item: any) => {

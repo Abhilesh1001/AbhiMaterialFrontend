@@ -49,8 +49,10 @@ export interface CounterStateGRN {
     grnpoview : null | number
     grnview : boolean
     grnchange :boolean,
-    upgrnno:null|number
-    billData : billDetails
+    upgrnno:null|number,
+    billData : billDetails,
+    orignalData:datatype[],
+    totalQuantity : datatype[]
   }
 
 export interface grnsliiceState {

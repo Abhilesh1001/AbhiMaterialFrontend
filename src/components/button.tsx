@@ -20,8 +20,8 @@ const Button = () => {
         <div className="form-label">Password</div>
         <input type="text" className="form-control  dark:bg-gray-800" onChange={(e) => dispatch({ type: "PASSWORD", value: e.target.value })} />
         <div className='flex justify-between'>
-          <button type='submit' className="btn btn-secondary my-4  text-black ">Submit</button>
-          <button type='button' className="btn btn-secondary my-4 text-black">Forget Password</button>
+          <button type='submit' className="btn btn-secondary my-4 text-slate-950  dark:text-gray-50">Submit</button>
+          <button type='button' className="btn btn-secondary my-4 text-slate-950  dark:text-gray-50">Forget Password</button>
         </div>
       </form>
     </div>

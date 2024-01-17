@@ -3,6 +3,7 @@ export interface datatype {
     line_no : null|number,
     po_line :null | number,
     pr_no: null|number,
+   
     grn_no:null|number,
     material_no: null|number,
     material_name: string,

@@ -72,17 +72,12 @@ export const poSlice = createSlice({
     getTotalQuantity : (state,action:PayloadAction<datatype[]>)=>{
       state.totalQuantity = action.payload
     },
-    getQuery : (state,action:PayloadAction<boolean[]>)=>{
-      const orignalData = state.orignalData;
-      const totalQuantity = state.totalQuantity;
-     
 
-    }
   },
  
 })
 
 // Action creators are generated for each case reducer function
-export const { getDEliveryAdress,getVendorAdress,getData,getPoData,getSelectedValue,getMainData,getNewPO,getPoPrView,getPoview,deletePoLine,getPochange,getUppono,getOrignalData,getTotalQuantity,getQuery} = poSlice.actions
+export const { getDEliveryAdress,getVendorAdress,getData,getPoData,getSelectedValue,getMainData,getNewPO,getPoPrView,getPoview,deletePoLine,getPochange,getUppono,getOrignalData,getTotalQuantity} = poSlice.actions
 
 export default poSlice.reducer

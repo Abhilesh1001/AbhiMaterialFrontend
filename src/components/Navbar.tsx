@@ -1,5 +1,5 @@
 'use client'
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import Link from 'next/link'
 import { useLogin } from '@/hooks/login/useLogin'
 import './style.css'
@@ -21,23 +21,38 @@ const Navbar = () => {
     const {user} =useSelector((state:StateProps)=>state.counter)
     const data = { email: '', password: '' }
     const { handleLogout } = useLogin(data)
+    const [input,setInput] = useState('')
    
     const router = useRouter()
 
-    const handleLogin = () =>{
-        console.log('ok')     
+    const handleInput =() =>{
+
+    }
+    const handleLogin = () =>{    
         router.push('/')
     }
 
-    useEffect(() => {
-        const authTokenData = document.cookie === null || document.cookie === undefined
-            ? null
-            : {
-                'refresh': document.cookie?.split(';')[0]?.split('tokenRefresh=')[1],
-                'access': document.cookie?.split(';')[1]?.split('tokenAcess=')[1]
-              };
+    const handleInputCahnge = () =>{
 
-        dispatch(getAuthToken(authTokenData));
+    }
+
+    useEffect(() => {
+        if(document.cookie !==undefined && document.cookie!==null){
+            const authTokenData:any = (() => {
+                const cookies = document.cookie.split(';');
+                const tokenRefresh = cookies.find(cookie => cookie.trim().startsWith('tokenRefresh='));
+                const tokenAccess = cookies.find(cookie => cookie.trim().startsWith('tokenAcess='));
+            
+                return {
+                    'refresh': tokenRefresh?.split('tokenRefresh=')[1],
+                    'access': tokenAccess?.split('tokenAcess=')[1]
+                };
+            })(); 
+            dispatch(getAuthToken(authTokenData));
+        }
+       
+              console.log(document.cookie)
+       
     }, [dispatch]);
 
     return (     
@@ -47,7 +62,7 @@ const Navbar = () => {
                         <div className="relative  text-gray-900 dark:text-gray-50">AbhiMaterials</div>
                     </Link>
                 <div className="flex-1 flex justify-between items-center ml-5 mr-5">
-                    <input type="text" className='form-control  dark:text-white dark:bg-slate-950    ' />
+                    <input type="text" value={input} onChange={handleInputCahnge} className='form-control  dark:text-white dark:bg-slate-950    ' />
                 </div>
                 </div>
                 <label htmlFor="menu-toggle" className="cursor-pointer mr-10 lg:hidden block">
@@ -62,7 +77,8 @@ const Navbar = () => {
                         <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
                     </svg>
                 </label>
-                <input className="hidden" type="checkbox" id="menu-toggle" />
+                <input className="hidden" onChange={handleInput} type="checkbox" id="menu-toggle" />
+
                 <div className="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
                     <nav>
                         <ul className="text-xl text-center items-center gap-x-5 md:gap-x-4 lg:text-lg lg:flex  lg:pt-0">

@@ -8,8 +8,9 @@ import {useGrnView} from '@/hooks/grn/useGrnView'
 
 const SelectionHeader = () => {
    const {grndata,selectedValue,mainData,grnchange} = useSelector((state:grnsliiceState)=>state.grnslice)
-   const {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation} =useGrn()
+   const {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,hasTrueValue} =useGrn()
    const {handleViewClick,handleGrnchange,handleInsert,handleInsertPoInGRN,handleUpdateGRN,ResetGRN} = useGrnView()
+   console.log(hasTrueValue)
  
   return (
     <div >
@@ -28,15 +29,14 @@ const SelectionHeader = () => {
             selectedValue === 'GRN' && <>
             <PrBurron label={'View'} onClick={handleViewClick} />
             <PrBurron label={'Change'} onClick={handleGrnchange} />
-            {grnchange  && <PrBurron label={'Insert PO'} onClick={handleInsertPoInGRN } />}
-                {grnchange && <button className="btn btn-success mx-2  text-gray-800 dark:bg-slate-800  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdateGRN(Number(grndata.grn_no))} >Update</button>}
+                {grnchange && <>{!hasTrueValue?<button className="btn btn-success mx-2  text-gray-800 dark:bg-green-500 bg-green-500 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdateGRN(Number(grndata.grn_no))} >Update</button>:<PrBurron label='Update'/>}</>}
             </>
         }
         {
             selectedValue === 'PO' && <> 
             <PrBurron label={'Insert PO'} onClick={handleInsert} />
 
-            <button className="btn btn-success mx-2 dark:bg-slate-800 text-gray-800   bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>
+            {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-green-800 text-gray-800 bg-green-500 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>:<PrBurron label='Save'/>}
 
             </>
         }

@@ -73,7 +73,7 @@ const GoodReceipt = () => {
                                     <td> <DumyInput indum={item.material_price}/></td>
 
                                     <td>
-                                        {grnview ?<DumyInput indum={item.material_qty}/>:<input type="number" value={item.material_qty != null ? item.material_qty : ''} onChange={(e) => handleChange(e.target.value, 'material_qty', index)} className="form-control  text-sm  w-28" />}
+                                        {grnview ?<DumyInput indum={item.material_qty}/>:<input type="number" value={item.material_qty != null ? item.material_qty : ''} onChange={(e) => handleChange(Number(e.target.value), 'material_qty', index)} className="form-control  text-sm  w-28" />}
                                     </td>
                                     <td><DumyInput indum={item.total_amount} /></td>
                                     <td><DumyInput indum={item.material_tax}/></td>

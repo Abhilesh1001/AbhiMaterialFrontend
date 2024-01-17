@@ -1,15 +1,14 @@
-import { grnsliiceState } from "@/type/grn/grntype"
+import { grnsliiceState,datatype } from "@/type/grn/grntype"
 import { useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
-import { getSelectedValue, getGrnPoView, getData, getVendorAdress, getDEliveryAdress, getMainData, getUpgrno, getBillData, getGrnview, getGrnchange, getGrndata,deleteGrnLine, getNewGRN } from '@/redux/grn/grnslicer'
+import { getSelectedValue, getGrnPoView, getData, getVendorAdress, getDEliveryAdress, getMainData, getUpgrno, getBillData, getGrnview, getGrnchange, getGrndata,deleteGrnLine, getNewGRN,getOrignalData,getTotalQuantity } from '@/redux/grn/grnslicer'
 import axios from "axios"
 import { StateProps } from '@/type/type'
 import { grnmainall } from '@/components/dataAll/data'
-import { json } from "node:stream/consumers"
 
 
 export const useGrnView = () => {
-    const { data, grnpoview, selectedValue,mainData,billData } = useSelector((state: grnsliiceState) => state.grnslice)
+    const { data, grnpoview, selectedValue,mainData,billData,orignalData } = useSelector((state: grnsliiceState) => state.grnslice)
     const { baseurl, authToken, userId } = useSelector((state: StateProps) => state.counter)
     const dispatch = useDispatch()
     const [vendorView, setVendorView] = useState('view')
@@ -69,8 +68,10 @@ export const useGrnView = () => {
         dispatch(getMainData({ TotalAmount: 0, TotalWithtax: 0, TotalTax: 0 }))
         dispatch(getVendorAdress({ name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' }))
         dispatch(getData(grnmainall))
+        dispatch(getOrignalData(grnmainall))
         dispatch(getUpgrno(null))
         dispatch(getBillData({ bill_date: null, bill_no: null, delivery_note: null, transporter_name: null, way_bill: null }))
+        dispatch(getSelectedValue('PO'))
     }
 
 
@@ -85,12 +86,13 @@ export const useGrnView = () => {
         // GRN operation 
         if (selectedValue === 'GRN' && grnpoview !== null && !Object.is(grnpoview, NaN)) {
             try {
-                const response = await axios.get(`${baseurl}grn/grncreated/${grnpoview}/`, {
+                const response = await axios.get(`${baseurl}grn/grnview/${grnpoview}/`, {
                     headers: {
                         Authorization: `Bearer ${authToken?.access}`
                     }
                 })
                 dispatch(getGrndata(response.data))
+                console.log(response.data.item_po)
                 const newData = JSON.parse(response.data.item_po)
                 const resData = JSON.parse(response.data.vendor_address)
                 const resDelivery = JSON.parse(response.data.delivery_address)
@@ -116,10 +118,36 @@ export const useGrnView = () => {
                     }
                     return element
                 })
-                console.log('newupda',newDataUpdata)
 
+
+
+                const orignalUpdataData = newData.map((item: any) => {
+                    const element = {
+                        line_no: item.line_no,
+                        pr_no: item.pr_no,
+                        po_line: item.po_line,
+                        po_no: item.po_no,
+                        material_no: item.material_no,
+                        material_name: item.material_name,
+                        material_unit: item.material_unit,
+                        material_price: item.material_price,
+                        material_tax: item.material_tax,
+                        total_tax: item.total_tax,
+                        material_qty: item.original_qty_po,
+                        material_text: item.material_text,
+                        total_amount: item.total_amount,
+                    }
+                    return element
+                })
+               
                 dispatch(getMainData(mainPrice))
                 dispatch(getData(newDataUpdata))
+
+                // use for orignal po data 
+                dispatch(getOrignalData(orignalUpdataData));
+
+
+
             } catch (error) {
                 console.log(error)
             }
@@ -146,6 +174,7 @@ export const useGrnView = () => {
             dispatch(getDEliveryAdress(resDelivery))
 
             const newDataUpdata = newData.map((item: any, index: number) => {
+            
                 const element = {
                     line_no: item.line_no,
                     pr_no: item.pr_no,
@@ -164,21 +193,56 @@ export const useGrnView = () => {
                 }
                 return element
             })
-            console.log('new DelayUpdatew', newDataUpdata)
-            if (data[0].po_no !== null) {
-                console.log('oldData', data, newDataUpdata, 'newdata')
-                const oldData = [...data]
-                const newElem = [...oldData, ...newDataUpdata]
-                dispatch(getData((newElem)))
-            } else {
+           
                 dispatch(getData(newDataUpdata))
-            }
+                // Used for Quantity check to the original Quantity
+                const remmodeData:datatype[] = removeDuplicates(newDataUpdata)
+                const totalQty= TotalQuantity(newDataUpdata)
+                dispatch(getTotalQuantity(totalQty))
+                dispatch(getOrignalData(remmodeData));
         } catch (error) {
             console.log(error)
         }
     }
 
+    function removeDuplicates(originalData: datatype[]): datatype[] {
+        const uniqueItems: Record<string, datatype> = {};
+        const result: datatype[] = [];
+    
+        originalData.forEach(item => {
+            const key = `${item.po_line}-${item.po_no}`;
+    
+            if (!uniqueItems[key]) {
+                uniqueItems[key] = { ...item };
+                result.push(uniqueItems[key]);
+            } 
+        });
+    
+        return result;
+    }
+    
+    function TotalQuantity(originalData: datatype[]): datatype[] {
+        const uniqueItems: Record<string, datatype> = {};
+        const result: datatype[] = [];
 
+        const orignalDa= [...originalData]
+        
+        orignalDa.forEach(item => {
+            const key = `${item.po_line}-${item.po_no}`;
+    
+            if (!uniqueItems[key]) {
+                uniqueItems[key] = { ...item };
+                result.push(uniqueItems[key]);
+            } else {
+                const existingItem = uniqueItems[key];
+                if (existingItem.material_qty !==null && item.material_qty!== null) {
+                    existingItem.material_qty +=item.material_qty;
+                }
+            }
+        });
+    
+        return result;
+    }
 
 
 
@@ -197,5 +261,5 @@ export const useGrnView = () => {
     }
 
 
-    return { handleViewClick, handleGrnchange, handleInsert, handleInsertPoInGRN, handleUpdateGRN, ResetGRN, handleDelete, handleDelivery, handleVdetails, vendorView, deliveryView, handleBilling, billingView }
+    return { handleViewClick, handleGrnchange, handleInsert, handleInsertPoInGRN, handleUpdateGRN, ResetGRN, handleDelete, handleDelivery, handleVdetails, vendorView, deliveryView, handleBilling, billingView,TotalQuantity}
 }

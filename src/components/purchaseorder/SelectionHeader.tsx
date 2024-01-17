@@ -32,14 +32,14 @@ const SelectionHeader = () => {
             <PrBurron label={'View'} onClick={handleViewClick} />
             <PrBurron label={'Change'} onClick={handlePochange} />
             {pochange  && <PrBurron label={'Insert PR'} onClick={handleInsertPrInpo } />}
-                {pochange && <>{!hasTrueValue?<button className="btn btn-success mx-2  text-gray-800 dark:bg-slate-800  bg-green-400 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdatePo(Number(podata.po_no))} >Update</button>:<PrBurron label='Update'/>}</>}
+                {pochange && <>{!hasTrueValue?<button className="btn btn-success mx-2  text-gray-800 dark:bg-green-400  bg-green-400 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdatePo(Number(podata.po_no))} >Update</button>:<PrBurron label='Update'/>}</>}
             </>
         }
         {
             selectedValue === 'PR' && <> 
             <PrBurron label={'Insert PR'} onClick={handleInsert} />
 
-           {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-slate-800 text-gray-800 bg-green-400  dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>:<PrBurron label='Save'/>}
+           {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-green-400 text-gray-800 bg-green-400  dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>:<PrBurron label='Save'/>}
 
             </>
         }

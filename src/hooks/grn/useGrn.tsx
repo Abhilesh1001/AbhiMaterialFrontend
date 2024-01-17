@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {datatype,grnsliiceState} from '@/type/grn/grntype'
 import {useSelector,useDispatch} from 'react-redux' 
-import {getSelectedValue,getGrnPoView,getData,getMainData,getNewGRN} from '@/redux/grn/grnslicer'
+import {getSelectedValue,getGrnPoView,getData,getMainData,getNewGRN,getTotalQuantity,getVendorAdress,getOrignalData,getUpgrno,getBillData} from '@/redux/grn/grnslicer'
+import {grnmainall} from '@/components/dataAll/data'
 import {useMutation} from '@tanstack/react-query'
 import axios from "axios";
 import {  StateProps } from '@/type/type'
@@ -10,14 +11,23 @@ import {useGrnView} from  './useGrnView'
 
 export const useGrn =() =>{
     const dispatch = useDispatch() 
-    const {ResetGRN}  = useGrnView()
+    const {ResetGRN,TotalQuantity}  = useGrnView()
     const { baseurl, authToken,userId } = useSelector((state: StateProps) => state.counter)
     const [loadingNewPoCreation, setLoading] = useState(false);
-    const {data,grnpoview,selectedValue,vendoradress,deliveryadress,mainData,billData} = useSelector((state:grnsliiceState)=>state.grnslice)
+    const {data,grnpoview,selectedValue,vendoradress,deliveryadress,mainData,billData,orignalData,totalQuantity} = useSelector((state:grnsliiceState)=>state.grnslice)
+    console.log('orignalDAta',totalQuantity,orignalData)
+    const [qerror,setQerror] = useState<boolean[]>([])
+    const hasTrueValue = qerror.some((value) => value === true);
+
+    
     const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
         dispatch(getSelectedValue(e.target.value))
-        ResetGRN()
-
+        dispatch(getMainData({ TotalAmount: 0, TotalWithtax: 0, TotalTax: 0 }))
+        dispatch(getVendorAdress({ name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' }))
+        dispatch(getData(grnmainall))
+        dispatch(getOrignalData(grnmainall))
+        dispatch(getUpgrno(null))
+        dispatch(getBillData({ bill_date: null, bill_no: null, delivery_note: null, transporter_name: null, way_bill: null }))
     }
 
     const mutation = useMutation<any,any,any,unknown>(({
@@ -101,8 +111,42 @@ export const useGrn =() =>{
             }, 0)
             dispatch(getMainData({ TotalAmount: TotalAmount, TotalWithtax: TotalWithtax, TotalTax: TotalTax }))
             dispatch(getData((newData)));
+            const totalQuality = TotalQuantity(data)
+            dispatch(getTotalQuantity(totalQuality))
         }
     }
 
-    return {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,handleChange}
+    useEffect(() => {
+        const totalQuality = TotalQuantity(data);
+        dispatch(getTotalQuantity(totalQuality));
+    
+        // new setting 
+        const error: boolean[] = [];
+        
+        totalQuality.forEach((item) => {
+            
+            const orignalItem = orignalData.find(
+                (orignalItem) => orignalItem.po_line === item.po_line && orignalItem.po_no === item.po_no
+            );
+            console.log(item?.material_qty,orignalItem?.material_qty)
+            if (item?.material_qty !== null && orignalItem?.material_qty !== null && orignalItem !== undefined) {
+                console.log('error',)
+                if (item?.material_qty > orignalItem?.material_qty) {
+                    error.push(true);
+                } else {
+                    error.push(false);
+                }
+            }
+        });
+      
+        setQerror([...error]);
+
+
+    }, [data, orignalData]); // Include orignalData in the dependency array
+
+
+
+
+
+    return {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,handleChange,hasTrueValue}
 }
