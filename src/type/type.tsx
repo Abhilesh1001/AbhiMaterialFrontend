@@ -21,8 +21,8 @@ export interface vendorType {
     phone_no: number|null,
     vendor_name: string,
     address: string,
-    gst: '',
-    email: ''
+    gst: string,
+    email: string,
 }
 
 export type StateProps = {

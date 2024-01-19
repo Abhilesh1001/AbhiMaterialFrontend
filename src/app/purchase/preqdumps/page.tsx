@@ -36,7 +36,7 @@ const Page = () => {
         <div></div>
         <div className=' container'>
             <div className='h-3'></div>
-            <PrBurron label='All Purchase Order' onClick={handleClick}/>
+            <PrBurron label='All Purchase Request' onClick={handleClick}/>
         </div>
         <div className=' ml-2 mr-2 h-[550px] overflow-auto text-nowrap my-2 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
                         <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400 ">
