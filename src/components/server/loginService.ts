@@ -13,12 +13,5 @@ export const loginUser = async (userData: loginred) => {
   };
 
 
-export const prDumps = async (baseurl:string,authToken:string)=>{
-    console.log('ok')
-    const res =await axios.get(`${baseurl}mat/createpurchase`,{
-        headers:{
-            Authorization : `Bearer ${authToken}`
-        }})
-        return res.data
-}
+
 
