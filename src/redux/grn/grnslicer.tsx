@@ -11,7 +11,7 @@ const initialState: CounterStateGRN = {
     vendoradress :{s_no:null, name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' },
     data :grnmainall, 
     billData : {bill_date:null,bill_no : null,delivery_note:null,transporter_name:null,way_bill:null},
-    grndata : {grn_no:null,time:'',item_po:'',vendor_address:'',delivery_address:'',user:null,maindata:''},
+    grndata : {grn_no:null,time:'',item_po:'',vendor_address:'',delivery_address:'',user:null,maindata:'',billing:''},
     selectedValue : 'PO',
     mainData : { TotalAmount: 0, TotalWithtax: 0, TotalTax: 0 },
     newGrnNo : null,
