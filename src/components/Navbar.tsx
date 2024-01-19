@@ -51,7 +51,7 @@ const Navbar = () => {
             dispatch(getAuthToken(authTokenData));
         }
        
-              console.log(document.cookie)
+             
        
     }, [dispatch]);
 

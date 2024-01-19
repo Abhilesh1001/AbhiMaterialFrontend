@@ -10,7 +10,7 @@ import { grndataType,vendorType,datatype,billDetails } from '@/type/grn/grntype'
 
 
 const Page = () => {
-    const { baseurl, authToken,userId } = useSelector((state: StateProps) => state.counter)
+    const { baseurl, authToken } = useSelector((state: StateProps) => state.counter)
     
     const [data,setData] = useState<grndataType[]>([])
     const fetchData = async  () =>{
@@ -18,7 +18,6 @@ const Page = () => {
             headers:{
                 Authorization : `Bearer ${authToken?.access}`
             }})
-        console.log(res.data)
         setData(res.data)
     }
 

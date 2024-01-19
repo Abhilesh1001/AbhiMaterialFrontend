@@ -1,10 +1,10 @@
 'use client'
-import { loginaction, loginred } from "@/reducer/loginreducer"
-import { useState, useEffect } from "react"
+import {  loginred } from "@/reducer/loginreducer"
+import {  useEffect } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { jwtDecode } from "jwt-decode";
-import { getUser, getAuthToken, clearAuthToken, clearUser, getUserId, clearUserId } from '@/redux/slice'
+import { getUser, getAuthToken, clearAuthToken, clearUser, getUserId } from '@/redux/slice'
 import { StateProps } from '@/type/type'
 
 
@@ -18,19 +18,19 @@ export const useLogin = (data: loginred) => {
         try {
             const response = await axios.post('http://127.0.0.1:8000/cus/authlogin/', data)
             const res = response.data
-            console.log(res, 'login')
+            // console.log(res, 'login')
             const tokenRefresh = res.token.refresh;
             const tokenAcess = res.token.access;
             document.cookie = `tokenRefresh=${tokenRefresh}; path=/`
             document.cookie = `tokenAcess=${tokenAcess}; path=/`
             dispatch(getAuthToken({ 'refresh': tokenRefresh, 'access': tokenAcess }))
             const userToken: { name: string, user_id: number } = jwtDecode(tokenAcess)
-            console.log(userToken.name)
+            // console.log(userToken.name)
             dispatch(getUser(userToken.name))
             dispatch(getUserId(userToken.user_id))
         } catch (error) {
             console.log(error)
-            return error
+            
         }
     }
 // updatetoken 
@@ -48,7 +48,6 @@ useEffect(() => {
 }, [authToken?.access])
 
 const updataToken = async () => {
-    console.log(authToken?.access)
     let data: { data: { access: string }, status: number } = await axios?.post(`${baseurl}cus/api/token/refresh/`, { 'refresh': authToken?.refresh })
 
     if (data.status === 200 && authToken?.refresh !== undefined) {
@@ -56,7 +55,6 @@ const updataToken = async () => {
         dispatch(getAuthToken({ 'refresh': authToken?.refresh, 'access': tokenAcess }))
         document.cookie = `tokenAcess=${tokenAcess}; path=/`
         document.cookie = `tokenRefresh=${authToken?.refresh}; path=/`
-        console.log(tokenAcess)
         const userToken: { name: string, user_id: number } = jwtDecode(tokenAcess)
         dispatch(getUser(userToken.name))
         dispatch(getUserId(userToken.user_id))

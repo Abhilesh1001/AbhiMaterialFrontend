@@ -7,8 +7,6 @@ import {StateProps} from '@/type/type'
 import DumyInput from '@/components/dummyinput/DumyInput'
 import {datatypePr,prmainData} from '@/type/type'
 import {format, parseISO} from 'date-fns'
-import { prDumps } from '@/components/server/loginService'
-import { access } from 'fs'
 
 
 
@@ -19,11 +17,11 @@ const Page = () => {
     
     const [data,setData] = useState<prmainData[]>([])
     const fetchData = async  () =>{
-        if(authToken?.access!== undefined){
-            const pr = await prDumps(baseurl,authToken?.access)
-            setData(pr)
-        }
-       
+        const res =await axios.get(`${baseurl}mat/createpurchase`,{
+            headers:{
+                Authorization : `Bearer ${authToken?.access}`
+            }})
+        setData(res.data)
         
     }
 
