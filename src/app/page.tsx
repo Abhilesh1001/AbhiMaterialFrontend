@@ -2,6 +2,7 @@
 import Login from '@/components/Login/Login'
 import {useDispatch,useSelector} from 'react-redux'
 import { useEffect } from 'react'
+import Main from '@/components/mainpage/Main'
 
 export type StateProps = {
   counter : {
@@ -18,9 +19,9 @@ export default function Home() {
   },[user])
   
   return (
-    <main className="min-h-screen dark:bg-gray-800 bg-sky-600 h-auto text-gray-50">
+    <main className="min-h-screen dark:bg-gray-800 bg-sky-600 h-auto text-gray-50 lg:mt-6 mt-7">
            {user === "" && <Login />}
-           
+           {user && <Main /> }
     </main>
   )
 }

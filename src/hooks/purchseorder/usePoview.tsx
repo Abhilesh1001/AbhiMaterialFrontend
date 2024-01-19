@@ -13,6 +13,8 @@ export const usePoview = () => {
     const dispatch = useDispatch()
 
     const [poview, setPoview] = useState(false)
+    const [vendorView, setVendorView] = useState('view')
+    const [deliveryView, setDeliveryView] = useState('dview')
     const handlePoview = () => {
         setPoview(true)
     }
@@ -243,7 +245,16 @@ export const usePoview = () => {
         return result;
     }
 
+
+    const handleDelivery = () => {
+        setDeliveryView(`${deliveryView === 'dview' ? null : 'dview'}`)
+    }
+    const handleVdetails = () => {
+        setVendorView(`${vendorView === 'view' ? null : 'view'}`)
+
+    }
+
    
     
-    return { handlePoview, handlePochange, handleViewClick, handleInsert, handleDelete, handleInsertPrInpo, handleUpdatePo, ResetPo,TotalQuantity }
+    return { handlePoview, handlePochange, handleViewClick, handleInsert, handleDelete, handleInsertPrInpo, handleUpdatePo, ResetPo,TotalQuantity,handleDelivery,vendorView,deliveryView,handleVdetails }
 }

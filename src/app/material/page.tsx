@@ -12,11 +12,15 @@ import Loading from '@/components/loading/Loading'
 import { useMaterial } from '@/hooks/material/useMaterial'
 import { useSelector } from 'react-redux'
 
+// components 
+import TextInput from '@/components/dummyinput/TextInput'
+
 
 const page = () => {
 
     const {authToken} = useSelector((state:StateProps)=>state.counter)
     const { fetchData, handleSubmit, setDate, data,loadingNewCreation,newMatNo } = useMaterial()
+
     const { data: matdata } = useQuery<QueryResponse>({ queryKey: ['matData',newMatNo,authToken], queryFn: fetchData })
     return (
         <div className=' dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
@@ -25,11 +29,13 @@ const page = () => {
                     <div className="col-sm-6">
                         <div className='mt-4 w-full flex justify-center h-9'>{loadingNewCreation && <Loading />}</div>
                       
-                        <label htmlFor="Material No" className="form-label mb-2 dark:text-gray-50 text-xs">Material No</label>
-                        <input type="number" className="form-control mb-2  text-xs dark:text-white dark:bg-slate-950" />
+                        <label htmlFor="Material No" className="form-label mb-2 dark:text-gray-50 text-sm">Material No</label>
+                        <input type="number" className="form-control mb-2  text-sm dark:text-white dark:bg-slate-950" />
                         <form onSubmit={handleSubmit}>
-                            <label htmlFor="material name" className='dark:text-gray-50 form-label text-xs'>Material Name</label>
-                            <input type="text" className="form-control my-2  text-xs dark:text-gray-50 dark:bg-slate-950" required onChange={(e) => setDate({ ...data, material_name: e.target.value })} />
+                            <label htmlFor="material name" className='dark:text-gray-50 form-label text-sm'>Material Name</label>
+
+                            <TextInput onChange={(e) => setDate({ ...data, material_name: e.target.value })} value={data.material_name} />
+
                             <select onChange={(e) => setDate({ ...data, material_group: e.target.value })} value={data.material_group} required className="form-select form-select-lg mb-3 my-4  text-xs dark:text-white dark:bg-slate-950" aria-label="Large select example">
                                 {/* <option value='material_group' selected>Material Group</option> */}
                                 <option value="electrical">Electrical</option>

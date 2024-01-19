@@ -1,12 +1,9 @@
 "use client"
 import { useReducer } from 'react'
 import { useLogin } from '@/hooks/login/useLogin'
-
-
-
-
-import React from 'react'
 import { reducer, initialState } from '@/reducer/loginreducer'
+import PrBurron from '@/components/button/PrBurron'
+import TextInput from './dummyinput/TextInput'
 
 const Button = () => {
   const [data, dispatch] = useReducer(reducer, initialState)
@@ -16,12 +13,12 @@ const Button = () => {
     <div>
       <form onSubmit={handleSubmit}>
         <div className="form-label">Email</div>
-        <input type="text" className="form-control dark:bg-gray-800" onChange={(e) => dispatch({ type: "EMAIL", value: e.target.value })} />
+        <TextInput value={data.email} onChange={(e) => dispatch({ type: "EMAIL", value: e.target.value })} />
         <div className="form-label">Password</div>
-        <input type="text" className="form-control  dark:bg-gray-800" onChange={(e) => dispatch({ type: "PASSWORD", value: e.target.value })} />
-        <div className='flex justify-between'>
-          <button type='submit' className="btn btn-secondary my-4 text-slate-950  dark:text-gray-50">Submit</button>
-          <button type='button' className="btn btn-secondary my-4 text-slate-950  dark:text-gray-50">Forget Password</button>
+        <TextInput value={data.password} onChange={(e) => dispatch({ type: "PASSWORD", value: e.target.value })} />
+        <div className='flex justify-between my-2'>
+          <PrBurron label={'Submit'} buttomType={'submit'} />
+          <PrBurron label={'Forget Password'} />
         </div>
       </form>
     </div>

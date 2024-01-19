@@ -18,6 +18,7 @@ export const useMaterial = () =>{
                 Authorization : `Bearer ${authToken?.access}`
             }}),
             onError:(e) =>{
+                console.log(e)
                 setLoading(false)
             },
             onSuccess:(data, variables, context)=>{

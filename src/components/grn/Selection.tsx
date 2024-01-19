@@ -10,8 +10,7 @@ const SelectionHeader = () => {
    const {grndata,selectedValue,mainData,grnchange} = useSelector((state:grnsliiceState)=>state.grnslice)
    const {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,hasTrueValue} =useGrn()
    const {handleViewClick,handleGrnchange,handleInsert,handleInsertPoInGRN,handleUpdateGRN,ResetGRN} = useGrnView()
-   console.log(hasTrueValue)
- 
+  
   return (
     <div >
     <div className='flex'>

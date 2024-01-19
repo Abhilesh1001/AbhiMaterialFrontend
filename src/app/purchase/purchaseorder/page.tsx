@@ -23,7 +23,7 @@ const PurchaseOrder = () => {
     
     const {data,newPoNo,poview,uppono,podata} = useSelector((state:posliiceState)=>state.poslicer)
    
-    const {handleDelete} =usePoview()
+    const {handleDelete,handleDelivery,handleVdetails,vendorView,deliveryView} =usePoview()
     const {handleChange} = usePo()
    
     let formattedDateString = ''
@@ -36,11 +36,16 @@ const PurchaseOrder = () => {
     return (
         <div className=' dark:bg-gray-800 bg-sky-600 min-h-screen' >
         <div className='container mt-4 overflow-auto text-nowrap'>
-            <VendorDetails />
-            
+        <div className='my-3'>
+         <PrBurron onClick={handleDelivery} label={'Delivery Adress'} />
+         <PrBurron onClick={handleVdetails} label={'Vendor Details'} />
+         
+      </div>
+      {vendorView!=='view' && <VendorDetails />}
+        {deliveryView!=='dview' && <DeliveryAdress />}
             <SelectionHeader />
             <form >
-                <div className='h-[300px] overflow-auto  relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
+                <div className='h-[500px] overflow-auto  relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
                     <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400">
                         <thead className='sticky top-0 z-1 bg-sky-800 dark:bg-slate-950 text-gray-50 h-10'>
                             <tr>
@@ -118,7 +123,7 @@ const PurchaseOrder = () => {
             {newPoNo !== null &&  <Aleart newMat = {newPoNo} alertname={'Purchase Order'} label='Created'/>}
             {uppono !== null &&  <Aleart newMat = {uppono} alertname={'Purchase Order'} label={'Updated'}/>}
             </div>
-            <DeliveryAdress />
+           
         </div>
         </div>
     )

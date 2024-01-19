@@ -32,8 +32,9 @@ export interface grndataType {
     item_po:string,
     vendor_address:string,
     delivery_address:string,
-    user:null|number
-    maindata:string 
+    user:null|number,
+    maindata:string, 
+    billing:string,
 }
 
 export type mainType = { TotalAmount: null|number, TotalWithtax: null|number, TotalTax:null|number }
