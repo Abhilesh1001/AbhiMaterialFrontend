@@ -21,11 +21,10 @@ const Vendor = () => {
           return await axios.post(`${baseurl}mat/createvender`, newTodo,{headers:{
             Authorization:`Bearer ${authToken?.access}`
           }})
-        },
+        },    
     })
     const {data,isError,isPending,error} = mutation
    
-
     const handleSubmit = async( e: React.FormEvent<HTMLFormElement>) =>{
         e.preventDefault()
         mutation.mutate(vendor)
@@ -47,9 +46,7 @@ const Vendor = () => {
 
   return (
     <div className='dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
-        <div className='container'>
-
-            
+        <div className='container'>  
         <div className="row my-4">
             <div className="col-sm-6 mt-4">
                 <div>

@@ -16,7 +16,7 @@ export const useLogin = (data: loginred) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
-            const response = await axios.post('http://127.0.0.1:8000/cus/authlogin/', data)
+            const response = await axios.post(`${baseurl}cus/authlogin/`, data)
             const res = response.data
             // console.log(res, 'login')
             const tokenRefresh = res.token.refresh;
