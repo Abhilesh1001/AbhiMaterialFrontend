@@ -61,10 +61,12 @@ const Navbar = () => {
                     <Link href="/" className="flex text-lg font-semibold">
                         <div className="relative  text-gray-900 dark:text-gray-50">AbhiMaterials</div>
                     </Link>
-                <div className="flex-1 flex justify-between items-center ml-5 mr-5">
-                    <input type="text" value={input} onChange={handleInputCahnge} className='form-control  dark:text-white dark:bg-slate-950    ' />
+                <div className="flex-1  text-gray-900 dark:text-gray-50 flex justify-between items-center ml-5 mr-5 w-full">
+                   View
                 </div>
+            
                 </div>
+
                 <label htmlFor="menu-toggle" className="cursor-pointer mr-10 lg:hidden block">
                     <svg
                         className="fill-current text-black text-sm"
@@ -82,9 +84,9 @@ const Navbar = () => {
                 <div className="hidden lg:flex lg:items-center lg:w-auto w-full" id="menu">
                     <nav>
                         <ul className="text-xl text-center items-center gap-x-5 md:gap-x-4 lg:text-lg lg:flex  lg:pt-0">
-                            <li className="py-2 lg:py-0 ">
+                            {/* <li className="py-2 lg:py-0 ">
                                 <a className=" dark:text-gray-50 text-sm text-gray-950" href="#">Search</a>
-                            </li>
+                            </li> */}
                             <li className="py-2 lg:py-0 ">
                                 <Link className="text-gray-950 text-sm dark:text-gray-50 " href={'/material'}>Materia Create
                                 </Link>
