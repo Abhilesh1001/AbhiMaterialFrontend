@@ -8,11 +8,14 @@ import { StateProps } from '@/type/type'
 import { useSelector } from 'react-redux'
 import axios from 'axios';
 
+interface Entry {
+    [rdHolderId: string]: number | null;
+}
 
+interface Data {
+    [date: string]: Entry;
+}
 
-  interface Data {
-    [rdHolderId: string]: { [date: string]: number | null }[];
-  }
 
 const App: React.FC = () => {
     const { baseurl, authToken } = useSelector((state: StateProps) => state.counter);
@@ -37,6 +40,7 @@ const App: React.FC = () => {
             console.log(error)
         }
     }
+
 
     return (
         <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6'>
