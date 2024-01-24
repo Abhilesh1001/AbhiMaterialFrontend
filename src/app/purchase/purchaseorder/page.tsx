@@ -22,7 +22,7 @@ import { format } from 'date-fns';
 const PurchaseOrder = () => {
     
     const {data,newPoNo,poview,uppono,podata} = useSelector((state:posliiceState)=>state.poslicer)
-   
+
     const {handleDelete,handleDelivery,handleVdetails,vendorView,deliveryView} =usePoview()
     const {handleChange} = usePo()
    

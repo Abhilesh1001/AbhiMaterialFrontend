@@ -9,9 +9,6 @@ import {datatypePr,prmainData} from '@/type/type'
 import {format, parseISO} from 'date-fns'
 
 
-
-
-
 const Page = () => {
     const { baseurl, authToken } = useSelector((state: StateProps) => state.counter)
     

@@ -8,6 +8,16 @@ export interface shareholderName {
     time?: string,
     pan_no: string,
 }
+export interface rdholderName {
+    rdp_id?: null|number,
+    name: string,
+    phone_no: string,
+    email: string,
+    time?: string,
+    pan_no: string,
+}
+
+
 export interface MyData {
     data:{
         msg : string,
@@ -24,3 +34,20 @@ export interface sharefund {
     name: string,
     particulars:string
 }
+export interface collData {
+    user:null|number,
+    person : null|number,
+    amount_collected : null|number,
+    remarks: string
+    name : '',
+}
+
+export interface Entry {
+    date: string;
+    amount:number;
+  }
+  
+  export interface Data {
+    [rdHolderId: string]: Entry[];
+  }
+  

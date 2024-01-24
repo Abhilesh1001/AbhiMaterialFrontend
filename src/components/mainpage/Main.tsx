@@ -13,6 +13,8 @@ const Main = () => {
         hiddenDelivery:string,
         hiddenFundName:string,
         capitalDis : string,
+        rdpername :string,
+        rdColl : string,
     }>({
         hiddenmaterial:"hidden",
         hiddenPr:"hidden",
@@ -22,7 +24,10 @@ const Main = () => {
         hiddenVendor:"hidden",
         hiddenDelivery:"hidden",
         hiddenFundName:"hidden",
-        capitalDis :'hidden'
+        capitalDis :'hidden',
+        rdpername: 'hidden',
+        rdColl : 'hidden'
+
     })
 
 
@@ -34,36 +39,26 @@ const Main = () => {
             <div className='' >Main Page</div>
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden,hiddenmaterial: `${hidden.hiddenmaterial==='hidden'?'flex':'hidden'}`})}>📁 Material  </div>    
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenmaterial} flex-col`}>
-                <Link href={'/material'}>⭐ Create Material</Link>
-                <Link href={'/material'}>⭐ Change Material</Link>
-                <Link href={'/material'}>⭐View Material</Link>
+                <Link href={'/material'}>⭐ Material create/Update/Change</Link>
             </ul>
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden,hiddenPr:`${hidden.hiddenPr==='hidden'?'flex':'hidden'}`})}>📁 Purchase Request </div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenPr} flex-col`}>
-                <Link href={'/purchase'}>⭐ Create Purchase Request</Link>
-                <Link href={'/purchase'}>⭐ Change Purchase Request</Link>
-                <Link href={'/purchase/'}>⭐View Purchase Request</Link>
+                <Link href={'/purchase'}>⭐ Purchase Request create/Update/Change</Link>
             </ul>  
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden ,hiddenPo : `${hidden.hiddenPo==='hidden'?'flex':'hidden'}`})}>📁 Purchase Order</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenPo} flex-col`}>
-                <Link href={'/purchase/purchaseorder'}>⭐ Create Purchase Order</Link>
-                <Link href={'/purchase/purchaseorder'}>⭐ Change Purchase Order</Link>
-                <Link href={'/purchase/purchaseorder'}>⭐View Purchase Order</Link>
+                <Link href={'/purchase/purchaseorder'}>⭐ Purchase Order create/Update/Cahnge</Link>
             </ul>  
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenGRN : `${hidden.hiddenGRN==='hidden'?'flex':'hidden'}`})}>📁 GRN</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenGRN} flex-col`}>
-                <Link href={'/grn'}>⭐ Create GRN</Link>
-                <Link href={'/grn'}>⭐ Change GRN</Link>
-                <Link href={'/grn'}>⭐View GRN</Link>
+                <Link href={'/grn'}>⭐ GRN create/Update/Cahnge</Link>
             </ul>  
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden ,hiddenVendor :`${hidden.hiddenVendor==='hidden'?'flex':'hidden'}`})}>📁 Vendor</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenVendor} flex-col`}>
-                <Link href={'/vendor'}>⭐ Create Vendor </Link>
-                <Link href={'/vendor'}>⭐ Change Vendor</Link>
-                <Link href={'/vendor'}>⭐View Vendor</Link>
+                <Link href={'/vendor'}>⭐ Vendor create/update/Change </Link>
             </ul>  
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenDumps: `${hidden.hiddenDumps==='hidden'?'flex':'hidden'}`})}>📁 Dumps</div>  
@@ -76,9 +71,7 @@ const Main = () => {
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenDelivery : `${hidden.hiddenDelivery==='hidden'?'flex':'hidden'}`})}>📁 Delivery Adress</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenDelivery} flex-col`}>
-                <li>⭐ Create Delivery </li>
-                <li>⭐ Change Delivery</li>
-                <li>⭐ View Delivery</li>
+                <li>⭐ Delivery Address create/Update/Change </li>
             </ul>  
         </div>
             </div>
@@ -87,29 +80,22 @@ const Main = () => {
             <div className='' >Funds Holder Main Page</div>
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden,hiddenFundName: `${hidden.hiddenFundName==='hidden'?'flex':'hidden'}`})}>📁 Fund Person  </div>    
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenFundName} flex-col`}>
-                <Link href={'/shfndname'}>⭐ Create Person</Link>
-                <Link href={'/shfndname'}>⭐ Change Person</Link>
-                <Link href={'/shfndname'}>⭐ Update Person</Link>
+                <Link href={'/shfndname'}>⭐ Person Create/Update/Cahnge</Link>
             </ul>
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden,capitalDis:`${hidden.capitalDis==='hidden'?'flex':'hidden'}`})}>📁 CAPITAL DISCLOUSRE </div>  
             <ul className={`ml-8 cursor-pointer ${hidden.capitalDis} flex-col`}>
-                <Link href={'/shfndname/shfdata'}>⭐ Create Fund Deposite</Link>
-                <Link href={'/shfndname/shfdata'}>⭐ Change Fund Deposite</Link>
-                <Link href={'/shfndname/shfdata'}>⭐View Fund Deposite</Link>
+                <Link href={'/shfndname/shfdata'}>⭐ Create Fund Deposite /View Total Deposite</Link>
             </ul>  
-            <div className='cursor-pointer' onClick={()=>setHidden({...hidden ,hiddenPo : `${hidden.hiddenPo==='hidden'?'flex':'hidden'}`})}>📁 Purchase Order</div>  
-            <ul className={`ml-8 cursor-pointer ${hidden.hiddenPo} flex-col`}>
-                <Link href={'/purchase/purchaseorder'}>⭐ Create Purchase Order</Link>
-                <Link href={'/purchase/purchaseorder'}>⭐ Change Purchase Order</Link>
-                <Link href={'/purchase/purchaseorder'}>⭐View Purchase Order</Link>
+            <div className='cursor-pointer' onClick={()=>setHidden({...hidden ,rdpername : `${hidden.rdpername==='hidden'?'flex':'hidden'}`})}>📁 Rd Person</div>  
+            <ul className={`ml-8 cursor-pointer ${hidden.rdpername} flex-col`}>
+                <Link href={'/rdname'}>⭐ Create Rd /Change/Update</Link>
             </ul>  
 
-            <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenGRN : `${hidden.hiddenGRN==='hidden'?'flex':'hidden'}`})}>📁 GRN</div>  
-            <ul className={`ml-8 cursor-pointer ${hidden.hiddenGRN} flex-col`}>
-                <Link href={'/grn'}>⭐ Create GRN</Link>
-                <Link href={'/grn'}>⭐ Change GRN</Link>
-                <Link href={'/grn'}>⭐View GRN</Link>
+            <div className='cursor-pointer' onClick={()=>setHidden({...hidden , rdColl : `${hidden.rdColl==='hidden'?'flex':'hidden'}`})}>📁 Add RD Collection</div>  
+            <ul className={`ml-8 cursor-pointer ${hidden.rdColl} flex-col`}>
+                <Link href={'/rdname/rdcoldata'}>⭐ Rd Collection</Link>
+                <Link href={'rdname/rdcolpday'}>⭐ Rd Collection View</Link>
             </ul>  
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden ,hiddenVendor :`${hidden.hiddenVendor==='hidden'?'flex':'hidden'}`})}>📁 Vendor</div>  
