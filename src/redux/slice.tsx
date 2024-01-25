@@ -3,11 +3,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface CounterState {
-  baseurl:string
-  logindata :{}
+  baseurl:string,
+  logindata :{},
   authToken: { refresh: string; access: string }| null,
-  user : string
-  userId : number|null
+  user : string,
+  userId : number|null,
+  mainheader :string,
 }
 
 
@@ -18,7 +19,8 @@ const initialState: CounterState = {
   logindata : {},
   authToken : null,
   user : "",
-  userId:null
+  userId:null,
+  mainheader: 'mainPage'
 }
 
 export const counterSlice = createSlice({
@@ -45,11 +47,14 @@ export const counterSlice = createSlice({
     },
     clearUserId : (state,action:PayloadAction<number|null>) =>{
       state.userId = null 
+    },
+    getMainheader: (state,action:PayloadAction<string>)=>{
+      state.mainheader = action.payload
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { getLogindata,getAuthToken,getUser,clearAuthToken,clearUser,getUserId,clearUserId} = counterSlice.actions
+export const { getLogindata,getAuthToken,getUser,clearAuthToken,clearUser,getUserId,clearUserId,getMainheader} = counterSlice.actions
 
 export default counterSlice.reducer

@@ -9,7 +9,6 @@ import { useLoancolpday } from '@/hooks/loan/useLoancolpday';
 const App: React.FC = () => {
   const {setDate,date,handleClick,data} = useLoancolpday()    
 
-
     return (
         <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6'>
             <div className='h-3'></div>

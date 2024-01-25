@@ -2,6 +2,7 @@
 import React,{useEffect, useState} from 'react'
 import Link from 'next/link'
 import { useLogin } from '@/hooks/login/useLogin'
+import { getMainheader } from '@/redux/slice'
 import './style.css'
 import {useSelector,useDispatch} from 'react-redux'
 import {getAuthToken} from '@/redux/slice' 
@@ -12,13 +13,14 @@ import { useRouter } from 'next/navigation';
 export type StateProps = {
     counter : {
         user : string|null,
+        mainheader :string,
     }   
   }
   
 
 const Navbar = () => {
     const dispatch = useDispatch()
-    const {user} =useSelector((state:StateProps)=>state.counter)
+    const {user,mainheader} =useSelector((state:StateProps)=>state.counter)
     const data = { email: '', password: '' }
     const { handleLogout } = useLogin(data)
     const [input,setInput] = useState('')
@@ -55,14 +57,22 @@ const Navbar = () => {
        
     }, [dispatch]);
 
+
+    const hanclickMainHead =(value:string)=>{
+        dispatch(getMainheader(value))
+    }
+
+
+
+
     return (     
             <nav className="lg:px-16 z-10 dark:bg-black bg-sky-500 shadow-md flex flex-wrap items-center justify-center lg:py-0 fixed  top-0 w-full">
                 <div className="flex-1 flex justify-between items-center">
                     <Link href="/" className="flex text-lg font-semibold">
-                        <div className="relative  text-gray-900 dark:text-gray-50">AbhiMaterials</div>
+                        <div className="relative  text-gray-900 dark:text-red-700" onClick={()=>hanclickMainHead('Index Page')}>AbhiMaterials</div>
                     </Link>
-                <div className="flex-1  text-gray-900 dark:text-gray-50 flex justify-between items-center ml-5 mr-5 w-full">
-                   View
+                <div className="flex-1  text-gray-900 dark:text-green-600 flex justify-between items-center ml-5 mr-5 w-full">
+                   {mainheader}
                 </div>
             
                 </div>
@@ -95,7 +105,7 @@ const Navbar = () => {
                                 <Link
                                     className="text-gray-950 text-sm dark:text-gray-50"
                                     href={'/purchase'}
-                                >
+                                > 
                                     PR
                                 </Link>
                             </li>

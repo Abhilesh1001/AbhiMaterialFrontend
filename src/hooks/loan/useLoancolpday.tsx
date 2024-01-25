@@ -13,10 +13,6 @@ interface Entry {
 
 import axios from 'axios';
 
-
-
-
-
 export const useLoancolpday=()=>{
 
 
