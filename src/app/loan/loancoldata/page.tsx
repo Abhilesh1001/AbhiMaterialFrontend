@@ -3,28 +3,29 @@
 import Loading from '@/components/loading/Loading'
 import PrBurron from '@/components/button/PrBurron'
 import TextInput from '@/components/dummyinput/TextInput'
-import {collData} from '@/type/shareholder/shareholde'
 
 
 import DumyInput from '@/components/dummyinput/DumyInput'
+import {loancollData} from '@/type/shareholder/shareholde'
+import { format,parseISO } from 'date-fns';
+import { useLoancoldata } from '@/hooks/loan/useLoancoldata'
 
-import { useRdcoldata } from '@/hooks/rd/useRdcoldata'
 
 
 const Vendor = () => {
-
-    const {handleHOderView,handleSubmit,rdcollection,handleChange} = useRdcoldata()
- 
+    const {handleHOderView,handleSubmit,rdcollection,handleChange} = useLoancoldata()
+    
   return (
     <div className='dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
         <div className='container'>  
         <div className="row my-4">
             <div className="col-sm-4 mt-4">
-                <div>
+                <div className='flex'>
                    <PrBurron  label={'Create'}/>
                    <PrBurron onClick={handleHOderView} label={'New'} />
                    <PrBurron  label={'Change'}/>
                    <PrBurron onClick={handleSubmit} label={'Submit'}/>
+                   <div className='text-nowrap text-xl'>Loan Collection</div>
                 </div>
                 <div>
                 </div>
@@ -46,9 +47,9 @@ const Vendor = () => {
                             </tr>
                         </thead>
                         <tbody className=' text-gray-50 text-center'> 
-                            {rdcollection?.map((items:collData,index:number)=>{
-                                return  <tr key={items.person}>
-                                <th scope="row"><DumyInput indum={items.person !==undefined?items.person:null}/></th>
+                            {rdcollection?.map((items:loancollData,index:number)=>{
+                                return  <tr key={items.loan_person}>
+                                <th scope="row"><DumyInput indum={items.loan_person !==undefined?items.loan_person:null}/></th>
                                 <td><DumyInput indum={items.name}/></td>
                                 <td><TextInput type={'number'} value= {items.amount_collected} onChange={(e)=>handleChange(Number(e.target.value),'amount_collected',index)} /></td>
                                 <td><TextInput  value= {items.remarks} onChange={(e)=>handleChange(e.target.value,'remarks',index)} /></td> 

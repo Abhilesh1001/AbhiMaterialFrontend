@@ -2,7 +2,7 @@
 import React from 'react'
 
 interface DumInProps {
-    indum : string | null | number 
+    indum : string | null | number |boolean
 }
 
 

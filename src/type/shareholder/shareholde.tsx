@@ -1,5 +1,4 @@
 
-
 export interface shareholderName {
     Sh_id?: null|number,
     name: string,
@@ -21,7 +20,9 @@ export interface rdholderName {
 export interface MyData {
     data:{
         msg : string,
-        data:shareholderName
+        data:{
+            sh_id:null|number
+        }
     },
     isPending :boolean,
     
@@ -51,3 +52,26 @@ export interface Entry {
     [rdHolderId: string]: Entry[];
   }
   
+  export interface loanholderName {
+    loan_id?: null|number,
+    name: string,
+    phone_no: string,
+    email: string,
+    time?: string,
+    pan_no: string,
+}
+
+export interface loancollData {
+    user:null|number,
+    loan_person : null|number,
+    amount_collected : null|number,
+    remarks: string
+    name : '',
+}
+
+
+export interface shareholderFund  {
+    shf_id : null|number,
+    name : string,
+    totalInvested : null|number,
+}

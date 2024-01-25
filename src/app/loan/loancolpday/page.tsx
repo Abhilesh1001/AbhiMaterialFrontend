@@ -4,24 +4,11 @@ import DataTable from '@/components/Rdcoll/DataTable';
 
 import TextInput from '@/components/dummyinput/TextInput';
 import PrBurron from '@/components/button/PrBurron';
-
-import axios from 'axios';
-import { useRdcolpday } from '@/hooks/rd/useRdcolpday';
-
-
-interface Entry {
-    [rdHolderId: string]: number | null;
-}
-
-interface Data {
-    [date: string]: Entry;
-}
-
+import { useLoancolpday } from '@/hooks/loan/useLoancolpday';
 
 const App: React.FC = () => {
-    const {setDate,date,handleClick,data} = useRdcolpday()
+  const {setDate,date,handleClick,data} = useLoancolpday()    
 
-    
 
     return (
         <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6'>

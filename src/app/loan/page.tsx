@@ -1,22 +1,18 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Loading from '@/components/loading/Loading'
 import PrBurron from '@/components/button/PrBurron'
 import TextInput from '@/components/dummyinput/TextInput'
 
-
-
 import DumyInput from '@/components/dummyinput/DumyInput'
-import {shareholderName} from '@/type/shareholder/shareholde'
+import {loanholderName} from '@/type/shareholder/shareholde'
 import { format,parseISO } from 'date-fns';
-import { useShfname } from '@/hooks/shf/useShfname';
-
-
+import { useLoan } from '@/hooks/loan/useLoan'
 
 
 const Vendor = () => {
+    const {setEnabled,mutation,data,vid,setVid,rdholder,handleSubmit,setrdholder,newData} = useLoan()
     
-    const {shareholder,setShareHolder,newData,setEnabled,mutation,data,setVid,vid,handleSubmit} = useShfname()
 
   return (
     <div className='dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
@@ -30,21 +26,19 @@ const Vendor = () => {
                 </div>
                 <div>
                 </div>
-                <div className='w-full h-4 flex justify-center my-4'>{mutation.isPending && <Loading />} {mutation.isSuccess && <div><div>{data!==undefined && data.data.msg } Holder Id {data!==undefined && data.data.data.Sh_id}</div></div>}</div>
-                <label htmlFor="Vendor" className="form-label text-sm">Holder Id</label>
-
+                <div className='w-full h-4 flex justify-center my-4'>{mutation.isPending && <Loading />}{mutation.isSuccess && <div><div>{data!==undefined && data.data.msg }Loan Holder Id{data!==undefined && data.data.data.loan_id}</div></div>}</div>
+                <label htmlFor="Vendor" className="form-label text-sm">Loan Holder Id</label>
                 <TextInput value={vid} type={'number'} onChange = {(e)=>setVid(e.target.value)} />
-
                 <form onSubmit={handleSubmit}>
                 <label htmlFor="Name" className="form-label text-sm">Name</label>
-                <TextInput value={shareholder.name} onChange = {(e)=>setShareHolder({...shareholder,name :e.target.value})} />
+                <TextInput value={rdholder.name} onChange={(e)=>setrdholder({...rdholder,name :e.target.value})} />
                 <label htmlFor="Phone" className="form-label text-sm ">Phone No</label>
-                <TextInput value={shareholder.phone_no}onChange = {(e)=>setShareHolder({...shareholder,phone_no :e.target.value})} />
+                <TextInput value={rdholder.phone_no}onChange={(e)=>setrdholder({...rdholder,phone_no :e.target.value})} />
 
                 <label htmlFor="Email" className="form-label text-sm">Email</label>
-                <TextInput type={'email'}  value={shareholder.email} onChange = {(e)=>setShareHolder({...shareholder,email :e.target.value})} />
+                <TextInput type={'email'}  value={rdholder.email} onChange={(e)=>setrdholder({...rdholder,email :e.target.value})} />
                 <label htmlFor="pan" className="form-label text-sm">Pan</label>
-                <TextInput  css={'mb-4'} value={shareholder.pan_no} onChange = {(e)=>setShareHolder({...shareholder,pan_no:e.target.value})} />
+                <TextInput  css={'mb-4'} value={rdholder.pan_no} onChange={(e)=>setrdholder({...rdholder,pan_no:e.target.value})} />
                <PrBurron label={'Submit'} buttomType={'submit'} />
                </form>
             </div>
@@ -61,9 +55,9 @@ const Vendor = () => {
                             </tr>
                         </thead>
                         <tbody className=' text-gray-50 text-center'> 
-                            {newData?.map((items:shareholderName)=>{
-                                return  <tr key={items.Sh_id}>
-                                <th scope="row"><DumyInput indum={items.Sh_id !==undefined?items.Sh_id:null}/></th>
+                            {newData?.map((items:loanholderName)=>{
+                                return  <tr key={items.loan_id}>
+                                <th scope="row"><DumyInput indum={items.loan_id !==undefined?items.loan_id:null}/></th>
                                 <td><DumyInput indum={items.name}/></td>
                                 <td><DumyInput indum={items.phone_no}/>{}</td>
                                 <td><DumyInput indum={items.email}/></td>

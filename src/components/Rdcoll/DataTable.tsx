@@ -50,10 +50,11 @@ const DataTable: React.FC<DataTableProps> = ({ startDate, endDate, data }) => {
 
         return (
             <tr>
-                <th>Date</th>
-                <th>Total Amount</th>
+                <th className='sticky left-0'><DumyInput indum={'DATE'} /> </th>
+                <th className='sticky left-24'><DumyInput indum={'TOTAL AMOUNT'} /></th>
                 {rdHolderIds.map((rdHolderId) => (
-                    <th key={rdHolderId}>{rdHolderId}</th>
+                    <th key={rdHolderId}><DumyInput indum={rdHolderId} />
+                    </th>
                 ))}
             </tr>
         );
@@ -62,8 +63,8 @@ const DataTable: React.FC<DataTableProps> = ({ startDate, endDate, data }) => {
     const renderTableRows = () => {
         return Object.entries(tableData).map(([date, rowData]) => (
             <tr key={date}>
-                <td><DumyInput indum={date} /></td>
-                <td><DumyInput indum={Object.values(rowData).reduce((acc: number, amount) => acc + (amount ?? 0), 0)} /></td>
+                <td className='sticky left-0'><DumyInput indum={date} /></td>
+                <td className='sticky left-24'><DumyInput indum={Object.values(rowData).reduce((acc: number, amount) => acc + (amount ?? 0), 0)} /></td>
                 {Object.entries(rowData).map(([rdHolderId, amount], index) => (
                     <td key={index}><DumyInput indum={amount} /></td>
                 ))}
