@@ -3,6 +3,7 @@ import { counterSlice } from './slice'
 import {poSlice} from './po/poslicer'
 import {prSlice} from './pr/prslicer'
 import {grnSlice} from './grn/grnslicer'
+import {shfSlice} from './shf/shfslicer'
 
 
 
@@ -13,6 +14,7 @@ export const store = configureStore({
      poslicer:poSlice.reducer,
      prslicer : prSlice.reducer,
      grnslice : grnSlice.reducer,
+     shfSlice: shfSlice.reducer,
   },
 })
 

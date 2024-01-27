@@ -100,6 +100,7 @@ export const useGrnView = () => {
                 dispatch(getVendorAdress(resData))
                 dispatch(getDEliveryAdress(resDelivery))
                 const mainPrice = JSON.parse(response.data.maindata)
+                console.log('newdataview',newData)
                 const newDataUpdata = newData.map((item: any) => {
                     const element = {
                         line_no: item.line_no,
@@ -258,7 +259,7 @@ export const useGrnView = () => {
     const handleBilling = () => {
         setBillingView(`${billingView === 'bview' ? null : 'bview'}`)
 
-    }
+    } 
 
 
     return { handleViewClick, handleGrnchange, handleInsert, handleInsertPoInGRN, handleUpdateGRN, ResetGRN, handleDelete, handleDelivery, handleVdetails, vendorView, deliveryView, handleBilling, billingView,TotalQuantity}

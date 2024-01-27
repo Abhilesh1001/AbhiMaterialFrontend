@@ -1,10 +1,8 @@
 'use client'
-import React from 'react'
+import React,{memo} from 'react'
 import Loading from '@/components/loading/Loading'
 import PrBurron from '@/components/button/PrBurron'
 import TextInput from '@/components/dummyinput/TextInput'
-
-
 
 import DumyInput from '@/components/dummyinput/DumyInput'
 import {shareholderName} from '@/type/shareholder/shareholde'
@@ -16,26 +14,34 @@ import { useShfname } from '@/hooks/shf/useShfname';
 
 const Vendor = () => {
     
-    const {shareholder,setShareHolder,newData,setEnabled,mutation,data,setVid,vid,handleSubmit} = useShfname()
-
+    const {shareholder,setShareHolder,newData,setEnabled,mutation,data,setVid,vid,handleSubmit,sfcreate,change,handleCreate,handleKeyDown,handleChange,handleUPdate,mutationUpdate,updateData} = useShfname()
+   
   return (
     <div className='dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
         <div className='container'>  
         <div className="row my-4">
             <div className="col-sm-4 mt-4">
                 <div>
-                   <PrBurron  label={'Create'}/>
+                   <PrBurron onClick={handleCreate}  label={'Create'}/>
                    <PrBurron onClick={()=>setEnabled(true)} label={'View'} />
-                   <PrBurron  label={'Change'}/>
+                   <PrBurron  onClick={handleChange} label={'Change'}/>
+                   {change==='create' && <PrBurron  onClick={handleUPdate} label={'Update'}/>}
+
                 </div>
                 <div>
                 </div>
-                <div className='w-full h-4 flex justify-center my-4'>{mutation.isPending && <Loading />} {mutation.isSuccess && <div><div>{data!==undefined && data.data.msg } Holder Id {data!==undefined && data.data.data.Sh_id}</div></div>}</div>
-                <label htmlFor="Vendor" className="form-label text-sm">Holder Id</label>
+                {change!=='create' &&  <div className='w-full h-4 flex justify-center my-4'>{mutation.isPending && <Loading />} {mutation.isSuccess && <div><div>{data!==undefined && data.data.msg } Holder Id {data!==undefined && data.data.data.Sh_id}</div></div>}</div>}
 
-                <TextInput value={vid} type={'number'} onChange = {(e)=>setVid(e.target.value)} />
+                {change==='create' && <div className='w-full h-4 flex justify-center my-4'>{mutationUpdate.isPending && <Loading />} {mutationUpdate.isSuccess && <div><div>{updateData!==undefined && updateData.data.msg } Holder Id {updateData!==undefined && updateData.data.data.Sh_id}</div></div>}</div>}
 
-                <form onSubmit={handleSubmit}>
+
+
+                {change ==='create' && <><label htmlFor="Vendor" className="form-label text-sm">Holder Id</label>
+                <input required value={vid} type="number" onKeyDown={(e) => handleKeyDown(e)} onChange={(e)=>setVid(e.target.value)} className="form-control  text-sm  w-full" />
+                </>}
+
+               {sfcreate ==='create' &&  <form onSubmit={handleSubmit}>
+
                 <label htmlFor="Name" className="form-label text-sm">Name</label>
                 <TextInput value={shareholder.name} onChange = {(e)=>setShareHolder({...shareholder,name :e.target.value})} />
                 <label htmlFor="Phone" className="form-label text-sm ">Phone No</label>
@@ -45,8 +51,10 @@ const Vendor = () => {
                 <TextInput type={'email'}  value={shareholder.email} onChange = {(e)=>setShareHolder({...shareholder,email :e.target.value})} />
                 <label htmlFor="pan" className="form-label text-sm">Pan</label>
                 <TextInput  css={'mb-4'} value={shareholder.pan_no} onChange = {(e)=>setShareHolder({...shareholder,pan_no:e.target.value})} />
-               <PrBurron label={'Submit'} buttomType={'submit'} />
-               </form>
+
+               {change!=='create' && <PrBurron label={'Submit'} buttomType={'submit'} />}
+               </form>}
+               
             </div>
             <div className="col-sm-8 relative text-nowrap overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-600 sm:rounded-lg  h-[80vh]">
                     <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400">
@@ -61,6 +69,7 @@ const Vendor = () => {
                             </tr>
                         </thead>
                         <tbody className=' text-gray-50 text-center'> 
+
                             {newData?.map((items:shareholderName)=>{
                                 return  <tr key={items.Sh_id}>
                                 <th scope="row"><DumyInput indum={items.Sh_id !==undefined?items.Sh_id:null}/></th>
@@ -82,4 +91,4 @@ const Vendor = () => {
   )
 }
 
-export default Vendor
+export default memo(Vendor)

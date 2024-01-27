@@ -1,9 +1,8 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState,memo,useEffect } from 'react'
 import Link from 'next/link'
 import {useSelector,useDispatch} from 'react-redux'
 import { getMainheader } from '@/redux/slice'
-
 
 const Main = () => {
     const  dispatch = useDispatch()
@@ -37,10 +36,12 @@ const Main = () => {
         loanColl : 'hidden',
 
     })
-
+   
+   
 
     const handleClick = (value:string)=>{
         dispatch(getMainheader(value))
+        localStorage.setItem('mainHeader',value)
     } 
 
 
@@ -89,13 +90,12 @@ const Main = () => {
         </div>
             </div>
 
-
             <div className="col-sm-4">
             <div className='top-10 relative overflow-auto'>
             <div className='' >RD / Share Fund /Loan Main Page</div>
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden,hiddenFundName: `${hidden.hiddenFundName==='hidden'?'flex':'hidden'}`})}>📁 Fund Person  </div>    
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenFundName} flex-col`}>
-                <Link href={'/shfndname'} onClick={()=>handleClick('Fund Person Create/Update/Cahnge')}>⭐ Person Create/Update/Cahnge</Link>
+                <Link href={'/shfndname'} onClick={()=>handleClick('Fund Person Create/Update/Change')}>⭐ Person Create/Update/Cahnge</Link>
             </ul>
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden,capitalDis:`${hidden.capitalDis==='hidden'?'flex':'hidden'}`})}>📁 CAPITAL DISCLOUSRE </div>  
@@ -135,4 +135,4 @@ const Main = () => {
   )
 }
 
-export default Main
+export default memo(Main)

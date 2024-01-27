@@ -1,5 +1,5 @@
 'use client'
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState,memo} from 'react'
 import Link from 'next/link'
 import { useLogin } from '@/hooks/login/useLogin'
 import { getMainheader } from '@/redux/slice'
@@ -8,6 +8,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import {getAuthToken} from '@/redux/slice' 
 import PrBurron from './button/PrBurron'
 import { useRouter } from 'next/navigation';
+
 
 
 export type StateProps = {
@@ -24,7 +25,16 @@ const Navbar = () => {
     const data = { email: '', password: '' }
     const { handleLogout } = useLogin(data)
     const [input,setInput] = useState('')
+
+    useEffect(()=>{
+        const mainhesder = localStorage.getItem('mainHeader') 
+        console.log('ok',mainhesder)
+        if (mainhesder!==null){
+            dispatch(getMainheader(mainhesder))
+        }
+    },[])
    
+
     const router = useRouter()
 
     const handleInput =() =>{
@@ -152,4 +162,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default memo(Navbar)

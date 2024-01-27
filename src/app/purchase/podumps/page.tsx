@@ -1,17 +1,18 @@
 "use client"
-import React, { useState } from 'react'
+import dynamic from 'next/dynamic';
+import React, { useState,memo } from 'react'
 import axios from 'axios'
 import PrBurron from '@/components/button/PrBurron'
 import {useSelector} from 'react-redux'
 import {StateProps} from '@/type/type'
-import DumyInput from '@/components/dummyinput/DumyInput'
 import {datatype,podataType,vendorType} from '@/type/type'
-import {format, parseISO} from 'date-fns'
+
+const Prdumps = dynamic(() => import('@/components/purchaserequest/Prdumps'));
 
 
 const Page = () => {
     const { baseurl, authToken,userId } = useSelector((state: StateProps) => state.counter)
-    
+
     const [data,setData] = useState<podataType[]>([])
     const fetchData = async  () =>{
         const res =await axios.get(`${baseurl}mat/createpo`,{
@@ -27,7 +28,7 @@ const Page = () => {
         
          fetchData()
    }
-   let serialNumber = 0;
+   
 
   return (
     <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6'>
@@ -63,41 +64,7 @@ const Page = () => {
                                     <th scope="col"><div className='ml-2 mr-2'>Delivery Name</div></th>
                                 </tr>
                             </thead>
-                            <tbody >
-                             {data?.map((item:podataType,index:number)=>{
-                                const newItem  = JSON.parse(item.item_pr)
-                                const vendorDetails:vendorType = JSON.parse(item.vendor_address)
-                                const DeliveryDetails:vendorType = JSON.parse(item.delivery_address)
-                                return newItem.map((itemJson:datatype,indexs:number)=>{    
-                                    serialNumber += 1;
-                                    
-                                    return <tr key={indexs}>
-                                        <td></td>
-                                        <td><DumyInput indum={serialNumber}/></td>
-                                        <td><DumyInput indum={itemJson.line_no} /></td>
-                                        <td><DumyInput indum={item.po_no} /></td>
-                                        <td><DumyInput indum={itemJson.material_no} /></td>
-                                        <td><DumyInput indum={itemJson.material_name} /></td>
-                                        <td><DumyInput indum={itemJson.material_unit} /></td>
-                                        <td><DumyInput indum={itemJson.material_price} /></td>
-                                        <td><DumyInput indum={itemJson.material_qty} /></td>
-                                        <td><DumyInput indum={itemJson.total_amount} /></td>
-                                        <td><DumyInput indum={itemJson.material_tax}/></td>
-                                        <td><DumyInput indum={itemJson.total_tax} /></td>
-                                        <td><DumyInput indum={itemJson.material_text} /></td>
-                                        <td><DumyInput indum={item.user} /></td>
-                                        <td><DumyInput indum={format(parseISO(item.time),'dd.MM.yy HH.mm.ss')} /></td>
-                                        <td><DumyInput indum={itemJson.pr_no} /></td>
-                                        <td><DumyInput indum={itemJson.line_no} /></td>
-                                        <td><DumyInput indum={vendorDetails.s_no !==undefined ? vendorDetails.s_no:''  } /></td>
-                                        <td><DumyInput indum={vendorDetails.vendor_name} /></td>
-                                        <td><DumyInput indum={DeliveryDetails.s_no!==undefined ? DeliveryDetails.s_no:''} /></td>
-                                        <td><DumyInput indum={DeliveryDetails.vendor_name} /></td>
-                                    </tr>
-                                })
-
-                             })}
-                            </tbody>
+                            <Prdumps data={data} />
                         </table>
                     </div>
         
@@ -105,4 +72,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default memo(Page)
