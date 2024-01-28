@@ -6,7 +6,11 @@ import {StateProps} from '@/type/type'
 import {useMutation,useQuery} from '@tanstack/react-query'
 import {loancollData} from '@/type/shareholder/shareholde'
 
-
+interface MyData {
+    data :{
+       msg:string
+    }
+}
 
 
 
@@ -42,20 +46,22 @@ export const useLoancoldata=()=>{
 
     }
 
+    const mutation = useMutation<MyData,any,any,unknown>({
+        mutationFn: async (newTodo:loancollData[]) => {
+          return await axios.post(`${baseurl}shar/loancoll`, newTodo,{headers:{
+            Authorization:`Bearer ${authToken?.access}`
+          }})} ,
+          onSuccess: () => {
+            setRdcollection([{user:userId,loan_person :null,amount_collected : null,remarks: '',name:''}])
+          },  
+    })
+
 
     const handleSubmit = async () =>{
         console.log(rdcollection)    
-    try{
 
-        const res = await axios.post(`${baseurl}shar/loancoll`, rdcollection,{headers:{
-            Authorization:`Bearer ${authToken?.access}`
-        }})
-        const data = res.data
-        setRdcollection([{user:userId,loan_person :null,amount_collected : null,remarks: '',name:''}])
-        
-    }catch(error){
-        console.log(error)
-    }
+        mutation.mutate(rdcollection)
+    
 }
 
 
@@ -65,6 +71,33 @@ export const useLoancoldata=()=>{
         setRdcollection(freData)
     }
 
+    const [enable,setEnable] = useState(false)
+    const [Id,setId] = useState<null|number>(null)
 
-    return {handleHOderView,handleSubmit,rdcollection,handleChange}
+    const fetchData = async ()=>{
+        console.log('ok',Id)
+        setEnable(false)
+        const res =await  axios.get(`${baseurl}shar/loancoll/${Id}`,{
+            headers:{
+                Authorization:`Bearer ${authToken?.access}`
+              }
+        })
+
+
+        return res.data
+    }
+
+    const {data} = useQuery({queryKey:[`allCollLoanData${Id}`],queryFn:fetchData,enabled:enable})
+    console.log(data,'data')
+
+    const handleclickrdcolallview=(id:number|null)=>{
+        
+        setEnable(true)
+        setId(id)
+
+    }
+
+
+
+    return {handleHOderView,handleSubmit,rdcollection,handleChange,mutation,handleclickrdcolallview,data}
 }

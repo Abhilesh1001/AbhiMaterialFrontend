@@ -38,7 +38,6 @@ const Main = () => {
     })
    
    
-
     const handleClick = (value:string)=>{
         dispatch(getMainheader(value))
         localStorage.setItem('mainHeader',value)
@@ -104,7 +103,7 @@ const Main = () => {
             </ul>  
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden ,rdpername : `${hidden.rdpername==='hidden'?'flex':'hidden'}`})}>📁 Rd Person</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.rdpername} flex-col`}>
-                <Link href={'/rdname'} onClick={()=>handleClick('PR person Create/Change/Update/View')}>⭐ Create Rd /Change/Update</Link>
+                <Link href={'/rdname'} onClick={()=>handleClick('RD person Create/Change/Update/View')}>⭐ Create Rd /Change/Update</Link>
             </ul>  
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden , rdColl : `${hidden.rdColl==='hidden'?'flex':'hidden'}`})}>📁 Add RD Collection</div>  

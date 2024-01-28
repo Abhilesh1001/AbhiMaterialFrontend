@@ -128,3 +128,6 @@ export interface prmainData {
     orignalData:datatype[]
     totalQuantity:datatype[]
   }
+
+
+  

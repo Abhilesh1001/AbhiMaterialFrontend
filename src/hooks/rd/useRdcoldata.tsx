@@ -4,9 +4,15 @@ import {useMutation,useQuery} from '@tanstack/react-query'
 import {vendorType} from '@/type/type'
 import axios from 'axios'
 import {rdholderName,collData} from '@/type/shareholder/shareholde'
-import { format,parseISO } from 'date-fns';
+
 
 import React, { useEffect, useState } from 'react'
+
+interface MyData {
+     data :{
+        msg:string
+     }
+}
 
 export const useRdcoldata =()=>{
 
@@ -39,20 +45,18 @@ export const useRdcoldata =()=>{
 
     }
 
-
-    const handleSubmit = async () =>{
-        console.log(rdcollection)
-    try{
-
-        const res = await axios.post(`${baseurl}shar/rdcoll`, rdcollection,{headers:{
+    const mutation = useMutation<MyData,any,any,unknown>({
+        mutationFn: async (newTodo:collData[]) => {
+          return await axios.post(`${baseurl}shar/rdcoll`, newTodo,{headers:{
             Authorization:`Bearer ${authToken?.access}`
-        }})
-        const data = res.data
-        setRdcollection([{user:userId,person :null,amount_collected : null,remarks: '',name:''}])
-        
-    }catch(error){
-        console.log(error)
-    }
+          }})} ,
+          onSuccess: () => {
+            setRdcollection([{user:userId,person :null,amount_collected : null,remarks: '',name:''}])
+          },  
+    })
+    
+    const handleSubmit = async () =>{
+     mutation.mutate(rdcollection) 
 }
 
 
@@ -61,6 +65,32 @@ export const useRdcoldata =()=>{
         freData[index][key]=value
         setRdcollection(freData)
     }
+    const [enable,setEnable] = useState(false)
+    const [Id,setId] = useState<null|number>(null)
+    
 
-    return {handleHOderView,handleSubmit,rdcollection,handleChange}
+    const fetchData = async ()=>{
+        console.log('ok',Id)
+        setEnable(false)
+        const res =await  axios.get(`${baseurl}shar/rdcoll/${Id}`,{
+            headers:{
+                Authorization:`Bearer ${authToken?.access}`
+              }
+        })
+
+        // console.log(res.data)
+        return res.data
+    }
+
+    const {data} = useQuery({queryKey:[`allCollRdData${Id}`],queryFn:fetchData,enabled:enable})
+    console.log(data,'data')
+
+    const handleclickrdcolallview=(id:number|null)=>{
+        
+        setEnable(true)
+        setId(id)
+
+    }
+
+    return {handleHOderView,handleSubmit,rdcollection,handleChange,mutation,handleclickrdcolallview,data}
 }

@@ -10,14 +10,10 @@ import axios from 'axios'
 import {useSelector,useDispatch} from 'react-redux'
 import {StateProps} from '@/type/type'
 import React, { useEffect, useState,memo } from 'react'
+import {shfStateTypr} from '@/type/shareholder/shareholde'
 
 
 
-export type shfStateTypr = {
-    shfSlice : {
-        hide : string,
-    }   
-}
 
 interface prodatatype {
     Sh_id:string, 

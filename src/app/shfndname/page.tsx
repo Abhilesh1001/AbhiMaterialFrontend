@@ -11,7 +11,6 @@ import { useShfname } from '@/hooks/shf/useShfname';
 
 
 
-
 const Vendor = () => {
     
     const {shareholder,setShareHolder,newData,setEnabled,mutation,data,setVid,vid,handleSubmit,sfcreate,change,handleCreate,handleKeyDown,handleChange,handleUPdate,mutationUpdate,updateData} = useShfname()

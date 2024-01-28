@@ -27,12 +27,9 @@ export const useShfname = ()=>{
 
     const [shareholder,setShareHolder] = useState<shareholderName>({name:'',email:'', pan_no:'',phone_no:''})
     const [vid,setVid]= useState<string>('')
-    const [name,setName] = useState(false)
     const [sfcreate, setSfcreate] = useState('create')
     const [change, setChange] = useState('create')
-    const [vendorView, setVendorView] = useState('view')
-    const [deliveryView, setDeliveryView] = useState('dview')
-    const [billingView, setBillingView] = useState('bview')
+    
 
 
     const mutationUpdate = useMutation<MyData,any,any,unknown>({
@@ -94,27 +91,16 @@ export const useShfname = ()=>{
                     Authorization:`Bearer ${authToken?.access}`
                   }})
                   return res.data
-            
         }
+
+
+
 
     
         const [enabled, setEnabled] = useState(false);
      
         const {data:newData,error:errors} = useQuery({ queryKey: ['shname',data,mutationUpdate], queryFn: fetchTodoList,enabled:enabled })
 
-
-        const handleDelivery = () => {
-            setDeliveryView(`${deliveryView === 'dview' ? null : 'dview'}`)
-        }
-        const handleVdetails = () => {
-            setVendorView(`${vendorView === 'view' ? null : 'view'}`)
-    
-        }
-        const handleBilling = () => {
-            setBillingView(`${billingView === 'bview' ? null : 'bview'}`)
-    
-        } 
-               
 
         const handleChange = ()=>{
             setChange(`${change!=='create'?'create':null}`)
@@ -150,7 +136,6 @@ export const useShfname = ()=>{
                 Authorization:`Bearer ${authToken?.access}`
               }})} ,
               onSuccess: (data) => {
-
                 setShareHolder(prev=>{
                     return {
                         ...prev,
@@ -159,8 +144,11 @@ export const useShfname = ()=>{
                         pan_no:data.data.pan_no,
                         phone_no:data.data.phone_no
                     }
-                  })}              
+                  })},
+                
+                                
         })
+        console.log(mutationFund.error)
 
     
         async function handleUPdate(){
@@ -177,5 +165,5 @@ export const useShfname = ()=>{
     
      
 
-    return {shareholder,setShareHolder,newData,setEnabled,mutation,data,setVid,vid,handleSubmit,sfcreate, setSfcreate,change,setChange,setName,handleCreate,handleKeyDown,handleChange,handleUPdate,mutationUpdate,updateData}
+    return {shareholder,setShareHolder,newData,setEnabled,mutation,data,setVid,vid,handleSubmit,sfcreate, setSfcreate,change,setChange,handleCreate,handleKeyDown,handleChange,handleUPdate,mutationUpdate,updateData}
 }

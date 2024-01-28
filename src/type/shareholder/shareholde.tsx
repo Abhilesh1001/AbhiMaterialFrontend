@@ -75,3 +75,11 @@ export interface shareholderFund  {
     name : string,
     totalInvested : null|number,
 }
+
+export type shfStateTypr = {
+    shfSlice : {
+        hide : string,
+        rdNewData : rdholderName[]
+        loanNewNameData:loanholderName[]
+    }   
+}
