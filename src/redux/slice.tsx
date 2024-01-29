@@ -48,6 +48,7 @@ export const counterSlice = createSlice({
       state.userId = null 
     },
     getMainheader: (state,action:PayloadAction<string>)=>{
+      localStorage.setItem('mainHeader',action.payload)
       state.mainheader = action.payload
     }
   },
