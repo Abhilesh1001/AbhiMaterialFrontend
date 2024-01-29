@@ -11,8 +11,8 @@ const Login = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const handleSignup =() =>{
-     router.push('/signup')
-     dispatch(getMainheader('Signup Form'))
+    dispatch(getMainheader('Signup Form'))
+    router.push('/signup')
   }
 
   return (

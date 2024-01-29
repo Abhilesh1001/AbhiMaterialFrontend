@@ -14,8 +14,8 @@ const Button = () => {
   const dispatchData = useDispatch()
   const router = useRouter()
   const handleForgotPassword =()=>{
-    router.push('/signup/forgotpassword')
     dispatchData(getMainheader('ForgotPassword'))
+    router.push('/signup/forgotpassword')
   }
 
   return (
