@@ -24,7 +24,6 @@ const Navbar = () => {
     const {user,mainheader} =useSelector((state:StateProps)=>state.counter)
     const data = { email: '', password: '' }
     const { handleLogout } = useLogin(data)
-    const [input,setInput] = useState('')
 
     useEffect(()=>{
         const mainhesder = localStorage.getItem('mainHeader') 

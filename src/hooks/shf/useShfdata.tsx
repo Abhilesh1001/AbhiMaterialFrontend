@@ -9,7 +9,6 @@ import React, {useState } from 'react'
 
 export const useShfdata =()=>{
 
-
     const {baseurl,authToken,userId} = useSelector((state:StateProps)=>state.counter)
     const [sharfund,setShareFund] = useState<sharefund>({sh_id :null ,name:'',amount_credit:null,amount_debit:null,particulars:''})
     const [vid,setVid]= useState<string>('')

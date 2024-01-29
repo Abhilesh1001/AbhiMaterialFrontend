@@ -1,15 +1,26 @@
 import PrBurron from '@/components/button/PrBurron'
 import Button from '../button'
 
+import { useState } from 'react'
+import { useRouter } from 'next/navigation';
+import { getMainheader } from '@/redux/slice'
+import { useDispatch } from 'react-redux'
 
 const Login = () => {
+  const [signup,setSignup] = useState('sign')
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const handleSignup =() =>{
+     router.push('/signup')
+     dispatch(getMainheader('Signup Form'))
+  }
 
   return (
     <div className='container flex justify-center'>
     <div className='mt-10  border-gray-500'>
         <div className='text-bold'>Login Page</div>
-        <Button />
-        <PrBurron label={'Signup Form'}  />
+        {signup !=='' && <Button />}
+        <PrBurron onClick={handleSignup} label={'Signup Form'}  />
     </div>
 
 

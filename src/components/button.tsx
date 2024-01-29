@@ -4,10 +4,19 @@ import { useLogin } from '@/hooks/login/useLogin'
 import { reducer, initialState } from '@/reducer/loginreducer'
 import PrBurron from '@/components/button/PrBurron'
 import TextInput from './dummyinput/TextInput'
+import {useRouter} from 'next/navigation'
+import { getMainheader } from '@/redux/slice'
+import { useDispatch } from 'react-redux'
 
 const Button = () => {
   const [data, dispatch] = useReducer(reducer, initialState)
   const { handleSubmit} = useLogin(data)
+  const dispatchData = useDispatch()
+  const router = useRouter()
+  const handleForgotPassword =()=>{
+    router.push('/signup/forgotpassword')
+    dispatchData(getMainheader('ForgotPassword'))
+  }
 
   return (
     <div>
@@ -18,7 +27,7 @@ const Button = () => {
         <TextInput value={data.password} onChange={(e) => dispatch({ type: "PASSWORD", value: e.target.value })} />
         <div className='flex justify-between my-2'>
           <PrBurron label={'Submit'} buttomType={'submit'} />
-          <PrBurron label={'Forget Password'} />
+          <PrBurron onClick={handleForgotPassword} label={'Forget Password'} />
         </div>
       </form>
     </div>

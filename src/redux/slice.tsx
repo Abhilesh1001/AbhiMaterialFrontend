@@ -11,7 +11,6 @@ export interface CounterState {
   mainheader :string,
 }
 
-
 const initialState: CounterState = {
   // https://abhileshmaterial.pythonanywhere.com/
   // http://127.0.0.1:8000/
