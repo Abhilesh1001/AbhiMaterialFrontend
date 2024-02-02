@@ -72,4 +72,6 @@ const Page = (props: useparamType) => {
   )
 }
 
+
+
 export default Page

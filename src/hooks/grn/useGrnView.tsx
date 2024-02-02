@@ -202,7 +202,7 @@ export const useGrnView = () => {
                 dispatch(getTotalQuantity(totalQty))
                 dispatch(getOrignalData(remmodeData));
         } catch (error) {
-            console.log(error)
+            console.log('error',error)
         }
     }
 

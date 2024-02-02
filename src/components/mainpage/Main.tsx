@@ -20,6 +20,7 @@ const Main = () => {
         rdColl : string,
         loanpername :string,
         loanColl : string,
+        invoice:string,
     }>({
         hiddenmaterial:"hidden",
         hiddenPr:"hidden",
@@ -34,6 +35,7 @@ const Main = () => {
         rdColl : 'hidden',
         loanpername :'hidden',
         loanColl : 'hidden',
+        invoice:'hidden'
 
     })
    
@@ -68,6 +70,10 @@ const Main = () => {
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenGRN} flex-col`}>
                 <Link href={'/grn'} onClick={()=>handleClick('GRN create/Update/Cahnge')}>⭐ GRN create/Update/Cahnge</Link>
             </ul>  
+            <div className='cursor-pointer' onClick={()=>setHidden({...hidden , invoice : `${hidden.invoice==='hidden'?'flex':'hidden'}`})}>📁 IRN</div>  
+            <ul className={`ml-8 cursor-pointer ${hidden.invoice} flex-col`}>
+                <Link href={'/invoice'} onClick={()=>handleClick('IRN create/Update/Cahnge')}>⭐ IRN create/Update/Cahnge</Link>
+            </ul>  
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden ,hiddenVendor :`${hidden.hiddenVendor==='hidden'?'flex':'hidden'}`})}>📁 Vendor</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenVendor} flex-col`}>
@@ -82,7 +88,7 @@ const Main = () => {
                 <Link href={"grn/grndumps"} onClick={()=>handleClick('GRN Dumps')}>⭐  GRN</Link>
             </ul>  
 
-            <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenDelivery : `${hidden.hiddenDelivery==='hidden'?'flex':'hidden'}`})}>📁 Delivery Adress</div>  
+            <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenDelivery : `${hidden.hiddenDelivery==='hidden'?'flex':'hidden'}`})}>📁 Delivery Adress under devlopment</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenDelivery} flex-col`}>
                 <li>⭐ Delivery Address create/Update/Change </li>
             </ul>  

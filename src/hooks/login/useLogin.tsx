@@ -1,19 +1,24 @@
 'use client'
 import {  loginred } from "@/reducer/loginreducer"
-import {  useEffect } from "react"
+import {  useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { jwtDecode } from "jwt-decode";
 import { getUser, getAuthToken, clearAuthToken, clearUser, getUserId } from '@/redux/slice'
 import { StateProps } from '@/type/type'
+import { getMainheader } from '@/redux/slice'
 
 
 
 export const useLogin = (data: loginred) => {
     const { baseurl, authToken } = useSelector((state: StateProps) => state.counter)
 
+    const [loading,setLoading] = useState(false)
+    const [error,setError] = useState('')
+
     const dispatch = useDispatch()
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        setLoading(true)
         e.preventDefault()
         try {
             const response = await axios.post(`${baseurl}cus/authlogin/`, data)
@@ -28,8 +33,12 @@ export const useLogin = (data: loginred) => {
             // console.log(userToken.name)
             dispatch(getUser(userToken.name))
             dispatch(getUserId(userToken.user_id))
+            dispatch(getMainheader('Index Page'))
+            setLoading(false)
         } catch (error) {
             console.log(error)
+            setError('Email or Password Wrong')
+            setLoading(false)
             
         }
     }
@@ -69,5 +78,5 @@ function handleLogout() {
     dispatch(clearUser(""))
 }
 
-return { handleSubmit, handleLogout }
+return { handleSubmit, handleLogout,error,loading }
 }

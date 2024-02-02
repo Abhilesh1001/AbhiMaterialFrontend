@@ -1,5 +1,5 @@
 "use client"
-import React, { useState,memo } from 'react'
+import React, { useState,memo, useEffect } from 'react'
 import axios from 'axios'
 import PrBurron from '@/components/button/PrBurron'
 import {useSelector} from 'react-redux'
@@ -7,23 +7,44 @@ import {StateProps} from '@/type/type'
 import DumyInput from '@/components/dummyinput/DumyInput'
 import {format, parseISO} from 'date-fns'
 import { grndataType,vendorType,datatype,billDetails } from '@/type/grn/grntype'
+import {useQuery} from '@tanstack/react-query'
+import Loading from '@/components/loading/Loading'
 
+interface MyError {
+    response?: {
+      data?: {
+        errors?: {
+          detail?: string;
+        };
+      };
+    };
+  }
 
 const Page = () => {
     const { baseurl, authToken } = useSelector((state: StateProps) => state.counter)
+    const [enableData,setEnable] = useState(false)
     
-    const [data,setData] = useState<grndataType[]>([])
     const fetchData = async  () =>{
+        console.log('ok')
         const res =await axios.get(`${baseurl}grn/grncreated`,{
             headers:{
                 Authorization : `Bearer ${authToken?.access}`
             }})
-        setData(res.data)
+            setEnable(false)
+       return res.data
     }
 
+    
+    const {data,error,isError,isLoading} = useQuery({queryKey:['allGRn'],queryFn:fetchData,enabled:enableData})
+  
+  useEffect(() => {
+        if (isError) {
+            setEnable(false);
+        }
+    }, [isError]);
+   
    const handleClick =async  () =>{
-        
-         fetchData()
+        setEnable(true)
    }
    let serialNumber = 0;
 
@@ -32,7 +53,12 @@ const Page = () => {
         <div></div>
         <div className=' container'>
         <div className='h-3'></div>
-            <PrBurron label='All GRN' onClick={handleClick}/>
+            <div className='flex text-gray-50 text-center'>
+            <div><PrBurron label='All GRN' onClick={handleClick}/></div>
+            <div>{isLoading && <Loading />}</div>
+            <div>{(error as MyError)?.response?.data?.errors?.detail}</div>
+            </div>
+           
         </div>
 
         <div className=' ml-2 mr-2 h-[85vh] overflow-auto text-nowrap my-2 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>

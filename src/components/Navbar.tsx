@@ -27,7 +27,6 @@ const Navbar = () => {
 
     useEffect(()=>{
         const mainhesder = localStorage.getItem('mainHeader') 
-        console.log('ok',mainhesder)
         if (mainhesder!==null){
             dispatch(getMainheader(mainhesder))
         }
@@ -40,6 +39,7 @@ const Navbar = () => {
 
     }
     const handleLogin = () =>{    
+        dispatch(getMainheader('Login Page'))
         router.push('/')
     }
 
