@@ -9,8 +9,6 @@ import {getAuthToken} from '@/redux/slice'
 import PrBurron from './button/PrBurron'
 import { useRouter } from 'next/navigation';
 
-
-
 export type StateProps = {
     counter : {
         user : string|null,
@@ -80,9 +78,9 @@ const Navbar = () => {
             <nav className="lg:px-16 z-10 dark:bg-black bg-sky-500 shadow-md flex flex-wrap items-center justify-center lg:py-0 fixed  top-0 w-full">
                 <div className="flex-1 flex justify-between items-center">
                     <Link href="/" className="flex text-lg font-semibold">
-                        <div className="relative  text-gray-900 dark:text-red-700" onClick={()=>hanclickMainHead('Index Page')}>AbhiMaterials</div>
+                        <div className="relative  text-gray-900 dark:text-red-700 " onClick={()=>hanclickMainHead('Index Page')}>AbhiMaterials</div>
                     </Link>
-                <div className="flex-1  text-gray-900 dark:text-green-600 flex justify-between items-center ml-5 mr-5 w-full">
+                <div className="flex-1 h-12  text-gray-900 dark:text-green-600 flex justify-between items-center ml-5 mr-5 w-full">
                    {mainheader}
                 </div>
             
@@ -90,7 +88,7 @@ const Navbar = () => {
 
                 <label htmlFor="menu-toggle" className="cursor-pointer mr-10 lg:hidden block">
                     <svg
-                        className="fill-current text-black text-sm"
+                        className="fill-current text-gray-950 text-sm dark:text-gray-50"
                         xmlns="http://www.w3.org/2000/svg"
                         width={20}
                         height={20}

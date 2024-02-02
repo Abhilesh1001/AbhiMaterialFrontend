@@ -1,19 +1,19 @@
 import React,{memo} from 'react'
 import DumyInput from '@/components/dummyinput/DumyInput'
 import {useSelector} from 'react-redux'
-import {grnsliiceState } from '@/type/grn/grntype'
-import {useGrn} from '@/hooks/grn/useGrn'
-import {useGrnView} from '@/hooks/grn/useGrnView'
+import { irnsliiceState } from '@/type/irn/irn'
+
+import {useIrn} from '@/hooks/invoice/useIrn'
+import {useIrnView} from '@/hooks/invoice/useIrnView'
 import PrBurron from '@/components/button/PrBurron'
 
-const GrnTable = () => {
+const IrnTable = () => {
 
+const {data,irnview} = useSelector((state:irnsliiceState)=>state.irnSlice)
 
-const {data,grnview} = useSelector((state:grnsliiceState)=>state.grnslice)
+  const {handleDelete} =useIrnView()
 
-  const {handleDelete} =useGrnView()
-  console.log()
-  const {handleChange} = useGrn()
+  const {handleChange} = useIrn()
 
   return (
     <tbody >
@@ -35,7 +35,7 @@ const {data,grnview} = useSelector((state:grnsliiceState)=>state.grnslice)
 
                 <td><DumyInput indum={item.total_tax} /></td>
                 <td><DumyInput indum={item.material_text}/></td>
-                <td>{grnview ?'' : <PrBurron onClick={()=>handleDelete(index)} label={'Delete'} />}</td>
+                <td>{irnview ?'' : <PrBurron onClick={()=>handleDelete(index)} label={'Delete'} />}</td>
 
                 <td ><DumyInput indum={'User Name'} /></td>
                 <td ><DumyInput indum={'02-01-2021'} /></td>
@@ -47,4 +47,4 @@ const {data,grnview} = useSelector((state:grnsliiceState)=>state.grnslice)
   )
 }
 
-export default memo(GrnTable)
+export default memo(IrnTable)

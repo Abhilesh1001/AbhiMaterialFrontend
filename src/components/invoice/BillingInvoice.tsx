@@ -1,12 +1,12 @@
 import React from 'react'
 import DumyInput from '../dummyinput/DumyInput'
 import {useSelector,useDispatch} from 'react-redux'
-import {grnsliiceState,billDetails } from  '@/type/grn/grntype'
-import {getBillData} from '@/redux/grn/grnslicer'
+import {irnsliiceState,billDetails} from '@/type/irn/irn'
+import {getBillData} from '@/redux/irn/irnslicer'
 
 const Billing = () => {
   const dispatch = useDispatch()
-  const {grnview,billData} = useSelector((state:grnsliiceState)=>state.grnslice)
+  const {irnview,billData} = useSelector((state:irnsliiceState)=>state.irnSlice)
   const handleChange = (value:any,key:keyof billDetails) =>{
           console.log(value,key)
           const newData = {...billData}
@@ -28,15 +28,15 @@ const Billing = () => {
         </thead>
         <tbody>
                 <tr>
-                    <td>{grnview ?<DumyInput indum={billData.bill_date}/>:<input type="string" value={billData.bill_date != null ? billData.bill_date : ''} onChange={(e) => handleChange(e.target.value, 'bill_date')} className="form-control  text-sm  w-full" placeholder='DD.MM.YYYY' />}</td>
+                    <td>{irnview ?<DumyInput indum={billData.bill_date}/>:<input type="string" value={billData.bill_date != null ? billData.bill_date : ''} onChange={(e) => handleChange(e.target.value, 'bill_date')} className="form-control  text-sm  w-full" placeholder='DD.MM.YYYY' />}</td>
 
-                    <td>{grnview ?<DumyInput indum={billData.bill_no}/>:<input type="text" value={billData.bill_no != null ? billData.bill_no : ''} onChange={(e) => handleChange(e.target.value, 'bill_no')} className="form-control  text-sm  w-full" />}</td>
+                    <td>{irnview ?<DumyInput indum={billData.bill_no}/>:<input type="text" value={billData.bill_no != null ? billData.bill_no : ''} onChange={(e) => handleChange(e.target.value, 'bill_no')} className="form-control  text-sm  w-full" />}</td>
 
-                    <td>{grnview ?<DumyInput indum={billData.delivery_note}/>:<input type="text" value={billData.delivery_note != null ? billData.delivery_note: ''} onChange={(e) => handleChange(e.target.value, 'delivery_note')} className="form-control  text-sm  w-full" />}</td>
+                    <td>{irnview ?<DumyInput indum={billData.delivery_note}/>:<input type="text" value={billData.delivery_note != null ? billData.delivery_note: ''} onChange={(e) => handleChange(e.target.value, 'delivery_note')} className="form-control  text-sm  w-full" />}</td>
 
-                    <td>{grnview ?<DumyInput indum={billData.transporter_name}/>:<input type="text" value={billData.transporter_name != null ? billData.transporter_name : ''} onChange={(e) => handleChange(e.target.value, 'transporter_name')} className="form-control  text-sm  w-full" />}</td>
+                    <td>{irnview ?<DumyInput indum={billData.transporter_name}/>:<input type="text" value={billData.transporter_name != null ? billData.transporter_name : ''} onChange={(e) => handleChange(e.target.value, 'transporter_name')} className="form-control  text-sm  w-full" />}</td>
 
-                    <td>{grnview ?<DumyInput indum={billData.way_bill}/>:<input type="text" value={billData.way_bill != null ? billData.way_bill : ''} onChange={(e) => handleChange(e.target.value, 'way_bill')} className="form-control  text-sm  w-full" />}</td>
+                    <td>{irnview ?<DumyInput indum={billData.way_bill}/>:<input type="text" value={billData.way_bill != null ? billData.way_bill : ''} onChange={(e) => handleChange(e.target.value, 'way_bill')} className="form-control  text-sm  w-full" />}</td>
                 </tr>
         </tbody>
     </table>

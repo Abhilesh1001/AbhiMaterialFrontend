@@ -1,15 +1,15 @@
-import {grnsliiceState } from  '@/type/grn/grntype'
+import {irnsliiceState} from '@/type/irn/irn'
 import React,{memo} from 'react'
-import {useSelector,useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
 import Loading from '../loading/Loading'
 import PrBurron from '../button/PrBurron'
-import {useGrn} from '@/hooks/grn/useGrn'
-import {useGrnView} from '@/hooks/grn/useGrnView'
+import {useIrn} from '@/hooks/invoice/useIrn'
+import {useIrnView} from '@/hooks/invoice/useIrnView'
 
 const SelectionHeader = () => {
-   const {grndata,selectedValue,mainData,grnchange} = useSelector((state:grnsliiceState)=>state.grnslice)
-   const {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,hasTrueValue} =useGrn()
-   const {handleViewClick,handleGrnchange,handleInsert,handleInsertPoInGRN,handleUpdateGRN,ResetGRN} = useGrnView()
+    const {irndata,selectedValue,mainData,irnchange} = useSelector((state:irnsliiceState)=>state.irnSlice)
+   const {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,hasTrueValue} =useIrn()
+   const {handleViewClick,handleGrnchange,handleInsert,handleUpdateGRN,ResetGRN} = useIrnView()
   
   return (
     <div >
@@ -17,7 +17,7 @@ const SelectionHeader = () => {
         <input checked={selectedValue === 'PO'} id="default-radio-1" type="radio" value="PO" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onChange={handleRadioChange} />
         <label htmlFor="PR" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-4 mb-2">PO</label>
 
-        <input checked={selectedValue === 'IRN'} id="default-radio-1" type="radio" value="GRN" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onChange={handleRadioChange} />
+        <input checked={selectedValue === 'IRN'} id="default-radio-1" type="radio" value="IRN" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onChange={handleRadioChange} />
         <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">IRN</label>
     </div>
 
@@ -28,7 +28,7 @@ const SelectionHeader = () => {
             selectedValue === 'IRN' && <>
             <PrBurron label={'View'} onClick={handleViewClick} />
             <PrBurron label={'Change'} onClick={handleGrnchange} />
-                {grnchange && <>{!hasTrueValue?<button className="btn btn-success mx-2  text-gray-800 dark:bg-green-500 bg-green-500 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdateGRN(Number(grndata.grn_no))} >Update</button>:<PrBurron label='Update'/>}</>}
+                {irnchange && <>{!hasTrueValue?<button className="btn btn-success mx-2  text-gray-800 dark:bg-green-500 bg-green-500 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdateGRN(Number(irndata.irn_no))} >Update</button>:<PrBurron label='Update'/>}</>}
             </>
         }
         {
@@ -47,7 +47,7 @@ const SelectionHeader = () => {
         <div className='flex items-center ml-4 dark:text-slate-50'>Total Amount</div>
         <div className='flex items-center text-green-400 ml-4'>{mainData.TotalWithtax}</div>
         <div className='w-full flex justify-center'>{loadingNewPoCreation && <Loading />}</div>
-        {grndata.grn_no && <div className=' text-gray-50'>GRN : {grndata.grn_no}</div>}
+        {irndata.irn_no && <div className=' text-gray-50'>GRN : {irndata.irn_no}</div>}
 
     </div>
 </div>

@@ -4,8 +4,7 @@ import {poSlice} from './po/poslicer'
 import {prSlice} from './pr/prslicer'
 import {grnSlice} from './grn/grnslicer'
 import {shfSlice} from './shf/shfslicer'
-
-
+import {irnSlice} from './irn/irnslicer'
 
 
 export const store = configureStore({
@@ -15,6 +14,7 @@ export const store = configureStore({
      prslicer : prSlice.reducer,
      grnslice : grnSlice.reducer,
      shfSlice: shfSlice.reducer,
+     irnSlice: irnSlice.reducer,
   },
 })
 

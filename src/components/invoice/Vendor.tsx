@@ -1,29 +1,15 @@
 // dependenciew
 import React, {memo } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
-
-// typescript 
-import {vendorType,StateProps,posliiceState } from '@/type/type'
-import { grnsliiceState } from "@/type/grn/grntype"
-
-// redux 
-import { getVendorAdress } from '@/redux/po/poslicer'
-
-
+import { useSelector } from 'react-redux'
 
 // components 
 import DumyInput from '../dummyinput/DumyInput'
+import { irnsliiceState } from '@/type/irn/irn'
 
 
 const VendorDetails = () => {
-    const {vendoradress} = useSelector((state:grnsliiceState)=>state.grnslice)
+    const {vendoradress} = useSelector((state:irnsliiceState)=>state.irnSlice)
     
-
-
-
-
-
     return (
           <div className='h-[100px] relative overflow-y-auto shadow-md dark:bg-gray-900 mt-4 mb-2 bg-sky-500 sm:rounded-lg'>
             <table className='w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400'>

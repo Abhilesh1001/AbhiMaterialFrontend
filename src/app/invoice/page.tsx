@@ -7,20 +7,21 @@ import {memo} from 'react'
 import VendorDetails from '@/components/invoice/Vendor'
 import DeliveryAdress from '@/components/purchaseorder/DeliveryAdress'
 import SelectionHeader from '@/components/invoice/Selection'
-import GrnTable from '@/components/invoice/IrnTable'
+import IrnTable from '@/components/invoice/IrnTable'
 
 import Aleart from '@/components/alert/Aleart'
 import PrBurron from '@/components/button/PrBurron'
 import Billing from '@/components/invoice/BillingInvoice'
 
 // hooks / typescript 
-import {useGrnView} from '@/hooks/grn/useGrnView'
-import {grnsliiceState } from '@/type/grn/grntype'
+import {useIrnView} from '@/hooks/invoice/useIrnView'
 
-const GoodReceipt = () => {
-  const {newGrnNo,upgrnno} = useSelector((state:grnsliiceState)=>state.grnslice)
+import {irnsliiceState } from '@/type/irn/irn'
 
-  const {handleDelivery,handleVdetails,vendorView,deliveryView,handleBilling,billingView} =useGrnView()
+const InvoiceReceipt = () => {
+  const {newIrnNo,upirnno} = useSelector((state:irnsliiceState)=>state.irnSlice)
+
+  const {handleDelivery,handleVdetails,vendorView,deliveryView,handleBilling,billingView} =useIrnView()
 
   return (
     <div className=' dark:bg-gray-800 bg-sky-600 min-h-screen' >
@@ -58,15 +59,15 @@ const GoodReceipt = () => {
                             <th scope="col" ><div className='ml-2 mr-2'></div></th>
                         </tr>
                     </thead>
-                    <GrnTable />
+                    <IrnTable />
                 </table>
 
             </div>
 
         </form>
         <div className='my-2'>
-        {newGrnNo !== null &&  <Aleart newMat = {newGrnNo} alertname={'GRN'} label='Created'/>}
-        {upgrnno !== null &&  <Aleart newMat = {upgrnno} alertname={'GRN'} label={'Updated'}/>}
+        {newIrnNo !== null &&  <Aleart newMat = {newIrnNo} alertname={'GRN'} label='Created'/>}
+        {upirnno !== null &&  <Aleart newMat = {upirnno} alertname={'GRN'} label={'Updated'}/>}
         </div>
        
     </div>
@@ -74,4 +75,4 @@ const GoodReceipt = () => {
   )
 }
 
-export default memo(GoodReceipt)
+export default memo(InvoiceReceipt)
