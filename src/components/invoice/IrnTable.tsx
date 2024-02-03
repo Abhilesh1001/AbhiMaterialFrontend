@@ -10,20 +10,19 @@ import PrBurron from '@/components/button/PrBurron'
 const IrnTable = () => {
 
 const {data,irnview} = useSelector((state:irnsliiceState)=>state.irnSlice)
-
+  console.log(data)
   const {handleDelete} =useIrnView()
-
-  const {handleChange} = useIrn()
 
   return (
     <tbody >
                         
     { data?.map((item, index) => {
             return <tr key={index}>
-                <th><input type="checkbox" onChange={(e) => handleChange(e.target.value, 'material_no', index)} />
-                </th>
                 <th scope="row"> <DumyInput indum={index + 1}/></th>
+                <td>{irnview ?'' : <PrBurron onClick={()=>handleDelete(index)} label={'Delete'} />}</td>
                 <td> <DumyInput indum={item.po_no} /></td>
+                <td> <DumyInput indum={item.grn_no} /></td>
+                <td ><DumyInput indum={item.billing.bill_no} /></td>
                 <td><DumyInput indum={item.material_no} /></td>
                 <td><DumyInput indum={item.material_name} /></td>
                 <td><DumyInput indum={item.material_name} /></td>
@@ -35,10 +34,14 @@ const {data,irnview} = useSelector((state:irnsliiceState)=>state.irnSlice)
 
                 <td><DumyInput indum={item.total_tax} /></td>
                 <td><DumyInput indum={item.material_text}/></td>
-                <td>{irnview ?'' : <PrBurron onClick={()=>handleDelete(index)} label={'Delete'} />}</td>
+                <td ><DumyInput indum={'user Name'} /></td>
+                <td ><DumyInput indum={'date'} /></td>
+                <td ><DumyInput indum={item.billing.bill_date} /></td>
+                <td ><DumyInput indum={item.billing.bill_no} /></td>
+                <td ><DumyInput indum={item.billing.delivery_note} /></td>
+                <td ><DumyInput indum={item.billing.transporter_name} /></td>
+                <td ><DumyInput indum={item.billing.way_bill} /></td>
 
-                <td ><DumyInput indum={'User Name'} /></td>
-                <td ><DumyInput indum={'02-01-2021'} /></td>
                
             </tr>
         })}

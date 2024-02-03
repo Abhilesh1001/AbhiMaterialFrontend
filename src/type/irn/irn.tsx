@@ -9,7 +9,6 @@ export interface vendorType {
     email: ''
 }
 
-
 export interface datatype {
     line_no : null|number,
     pr_no: null|number,
@@ -27,10 +26,17 @@ export interface datatype {
     material_qty: null|number,
     material_text: string,
     total_amount: null|number,
+    billing: {
+      bill_date: string, 
+      bill_no: string,
+      delivery_note: string,
+      transporter_name: string,
+      way_bill: string,
+    }
 }
 
 export interface irndataType {
-    irn_no:null|number,
+    mir_no:null|number,
     time:string,
     item_grn:string,
     vendor_address:string,
@@ -57,6 +63,8 @@ export interface CounterStateIRN {
     billData : billDetails,
     orignalData:datatype[],
     totalQuantity : datatype[]
+    odataValue:number | null,
+    hastruevalue:boolean
   }
 
 export interface irnsliiceState {

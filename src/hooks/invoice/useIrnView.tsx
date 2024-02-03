@@ -2,35 +2,69 @@ import { irndataType, irnsliiceState } from '@/type/irn/irn'
 import { datatype } from "@/type/irn/irn";
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
-import { getSelectedValue, getIrnOrignalData, getVendorAdress, getDEliveryAdress, getMainData, getUpirno, getBillData, getIrnchange, getIrnview, deleteIrnLine, getNewIRN, getOrignalData, getTotalQuantity, getIrndata } from '@/redux/irn/irnslicer'
+import { getSelectedValue, getIrnOrignalData, getVendorAdress, getDEliveryAdress, getMainData, getUpirno, getBillData, getIrnchange, getIrnview, deleteIrnLine, getNewIRN, getOrignalData, getIrndata,getOdataValue,getHasTrueValue } from '@/redux/irn/irnslicer'
 import axios from "axios"
 import { StateProps } from '@/type/type'
 import { irnmainall } from '@/components/dataAll/data'
 
 
 export const useIrnView = () => {
-    const { data, irnpoview, selectedValue, mainData, billData } = useSelector((state: irnsliiceState) => state.irnSlice)
+    const { data, irnpoview, selectedValue, mainData, billData,odataValue ,hastruevalue} = useSelector((state: irnsliiceState) => state.irnSlice)
+
+    console.log('odatavalue',odataValue)
     const { baseurl, authToken, userId } = useSelector((state: StateProps) => state.counter)
     const dispatch = useDispatch()
     const [vendorView, setVendorView] = useState('view')
     const [deliveryView, setDeliveryView] = useState('dview')
     const [billingView, setBillingView] = useState('bview')
+    const [indexno,setIndex] = useState<null|number>(null)
+
+   
+
     const handleViewClick = () => {
         dispatch(getIrnview(true))
         handleViewChange()
         dispatch(getIrnchange(false))
 
     }
+
+
+    const handleChange=(value:number|null)=>{
+        if(value===mainData.TotalWithtax){
+           dispatch(getHasTrueValue(true))
+        }else{
+           dispatch(getHasTrueValue(false))
+        }
+
+        dispatch(getOdataValue(value))
+      }
+
+
+      useEffect(()=>{
+       
+        if(odataValue===mainData.TotalWithtax){
+            dispatch(getHasTrueValue(true))
+        }else{
+            dispatch(getHasTrueValue(false))
+         }
+
+      },[indexno])
+
+
+
     const handleDelete = (index: number) => {
         const orignalData = data?.filter((item:any,indexs:number)=>{
             if (index!==indexs){
                 return item
             }
         })
+        setIndex(index)
         newfun(orignalData)
         dispatch(deleteIrnLine({ index }))
+
     }
 
+    
 
 
     const handleGrnchange = () => {
@@ -49,15 +83,21 @@ export const useIrnView = () => {
     const handleInsertPoInGRN = () => {
         PoInsert()
     }
-    const handleUpdateGRN = async (grn_no: number) => {
+
+
+
+
+
+    const handleUpdateGRN = async (irn_no: number) => {
         const newData = {
-            item_pr: JSON.stringify(data),
+            item_grn: JSON.stringify(data),
             user: userId,
             maindata: JSON.stringify(mainData),
             billing: JSON.stringify(billData)
         }
+
         try {
-            const res = await axios.patch(`${baseurl}grn/grncreated/${grn_no}/`, newData, {
+            const res = await axios.patch(`${baseurl}grn/mirocreated/${irn_no}/`, newData, {
                 headers: {
                     Authorization: `Bearer ${authToken?.access}`
                 }
@@ -71,6 +111,7 @@ export const useIrnView = () => {
         }
 
     }
+
     const ResetGRN = () => {
         dispatch(getMainData({ TotalAmount: 0, TotalWithtax: 0, TotalTax: 0 }))
         dispatch(getVendorAdress({ name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' }))
@@ -90,29 +131,34 @@ export const useIrnView = () => {
             PoInsert()
         }
 
-        // GRN operation 
+        // IRN operation 
         if (selectedValue === 'IRN' && irnpoview !== null && !Object.is(irnpoview, NaN)) {
             try {
-                const response = await axios.get(`${baseurl}grn/grnview/${irnpoview}/`, {
+                const response = await axios.get(`${baseurl}grn/mirocreated/${irnpoview}/`, {
                     headers: {
                         Authorization: `Bearer ${authToken?.access}`
                     }
                 })
                 dispatch(getIrndata(response.data))
-                const newData = JSON.parse(response.data.item_po)
+                const newData = JSON.parse(response.data.item_grn)
                 const resData = JSON.parse(response.data.vendor_address)
                 const resDelivery = JSON.parse(response.data.delivery_address)
                 dispatch(getBillData(JSON.parse(response.data.billing)))
+                console.log(response.data.billing)
+
                 dispatch(getVendorAdress(resData))
                 dispatch(getDEliveryAdress(resDelivery))
                 const mainPrice = JSON.parse(response.data.maindata)
                 console.log('newdataview', newData)
-                const newDataUpdata = newData.map((item: any) => {
+                const orignalUpdataData = newData.map((item: any) => {
                     const element = {
                         line_no: item.line_no,
                         pr_no: item.pr_no,
                         po_line: item.po_line,
                         po_no: item.po_no,
+                        grn_line : item.grn_line,
+                        grn_no : item.grn_no,
+                        irn_line : item.irn_line,
                         material_no: item.material_no,
                         material_name: item.material_name,
                         material_unit: item.material_unit,
@@ -122,41 +168,16 @@ export const useIrnView = () => {
                         material_qty: item.material_qty,
                         material_text: item.material_text,
                         total_amount: item.total_amount,
+                        billing : item.billing
                     }
                     return element
                 })
-
-
-
-                const orignalUpdataData = newData.map((item: any) => {
-                    const element = {
-                        line_no: item.line_no,
-                        pr_no: item.pr_no,
-                        po_line: item.po_line,
-                        po_no: item.po_no,
-                        material_no: item.material_no,
-                        material_name: item.material_name,
-                        material_unit: item.material_unit,
-                        material_price: item.material_price,
-                        material_tax: item.material_tax,
-                        total_tax: item.total_tax,
-                        material_qty: item.original_qty_po,
-                        material_text: item.material_text,
-                        total_amount: item.total_amount,
-                    }
-                    return element
-                })
-
                 dispatch(getMainData(mainPrice))
-                dispatch(getIrnOrignalData(newDataUpdata))
-
-                // use for orignal po data 
-                dispatch(getOrignalData(orignalUpdataData));
+                dispatch(getIrnOrignalData(orignalUpdataData))
 
             } catch (error) {
                 console.log(error)
             }
-
         }
 
     }
@@ -169,16 +190,16 @@ export const useIrnView = () => {
                     Authorization: `Bearer ${authToken?.access}`
                 }
             })
-
+            
             const lastIrnLine = data.length > 0 ? data[data.length - 1].irn_line || 0 : 0;
             const newData = JSON.parse(res.data.item_pr)
             const resData = JSON.parse(res.data.vendor_address)
             const resDelivery = JSON.parse(res.data.delivery_address)
             dispatch(getVendorAdress(resData))
             dispatch(getDEliveryAdress(resDelivery))
-
+            
             const newDataUpdata = newData.map((item: any, index: number) => {
-
+                const billing = JSON.parse(item.billing)
                 const element = {
                     line_no: item.line_no,
                     pr_no: item.pr_no,
@@ -196,17 +217,20 @@ export const useIrnView = () => {
                     material_qty: item.material_qty,
                     material_text: item.material_text,
                     total_amount: item.total_amount,
+                    billing : billing
                 }
                 return element
             })
 
-
-
-
             dispatch(getIrnOrignalData(newDataUpdata))
             newfun(newDataUpdata)
 
-
+            if(odataValue===mainData.TotalWithtax){
+                dispatch(getHasTrueValue(true))
+            }else{
+                dispatch(getHasTrueValue(false))
+             }
+  
         } catch (error) {
             console.log('error', error)
         }
@@ -246,8 +270,6 @@ export const useIrnView = () => {
     }
 
   
-
-
     const handleDelivery = () => {
         setDeliveryView(`${deliveryView === 'dview' ? null : 'dview'}`)
     }
@@ -261,5 +283,5 @@ export const useIrnView = () => {
     }
 
 
-    return { handleViewClick, handleGrnchange, handleInsert, handleInsertPoInGRN, handleUpdateGRN, ResetGRN, handleDelete, handleDelivery, handleVdetails, vendorView, deliveryView, handleBilling, billingView }
+    return { handleViewClick, handleGrnchange, handleInsert, handleInsertPoInGRN, handleUpdateGRN, ResetGRN, handleDelete, handleDelivery, handleVdetails, vendorView, deliveryView, handleBilling, billingView,handleChange }
 }

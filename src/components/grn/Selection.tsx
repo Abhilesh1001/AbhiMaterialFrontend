@@ -13,7 +13,7 @@ const SelectionHeader = () => {
   
   return (
     <div >
-    <div className='flex'>
+    <div className='flex'>  
         <input checked={selectedValue === 'PO'} id="default-radio-1" type="radio" value="PO" name="default-radio" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onChange={handleRadioChange} />
         <label htmlFor="PR" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 mr-4 mb-2">PO</label>
 
@@ -21,7 +21,7 @@ const SelectionHeader = () => {
         <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">GRN</label>
     </div>
 
-    <div className='' style={{ display: 'flex' }}>
+    <div className='overflow-auto' style={{ display: 'flex' }}>
         <input type="text" className='form-control w-20 text-sm' onChange={handlePOGRNView} />
 
         {

@@ -24,7 +24,7 @@ const SelectionHeader = () => {
         <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">PO</label>
     </div>
 
-    <div className='' style={{ display: 'flex' }}>
+    <div className='overflow-auto' style={{ display: 'flex' }}>
         <input type="number" className='form-control w-20 text-sm' onChange={handlePRPOView} />
 
         {
