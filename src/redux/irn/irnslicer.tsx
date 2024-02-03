@@ -9,7 +9,7 @@ const initialState: CounterStateIRN = {
   vendoradress: { s_no: null, name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' },
   data: irnmainall,
   billData: { bill_date: null, bill_no: null, delivery_note: null, transporter_name: null, way_bill: null },
-  irndata: { irn_no: null, time: '', item_grn: '', vendor_address: '', delivery_address: '', user: null, maindata: '', billing: '' },
+  irndata: { mir_no: null, time: '', item_grn: '', vendor_address: '', delivery_address: '', user: null, maindata: '', billing: '' },
   selectedValue: 'PO',
   mainData: { TotalAmount: 0, TotalWithtax: 0, TotalTax: 0 },
   newIrnNo: null,
