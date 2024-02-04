@@ -20,6 +20,6 @@ export const irnmainall = [{
   }
 }]
 
-export const baseurl = 'http://127.0.0.1:8000/'
+export const baseurl = 'https://abhileshmaterial.pythonanywhere.com/'
 // export const pybaseurl  = 'https://abhileshmaterial.pythonanywhere.com/'
 

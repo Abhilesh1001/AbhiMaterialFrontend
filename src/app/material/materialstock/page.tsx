@@ -3,10 +3,6 @@ import axios from 'axios'
 import Materialrdumps from '@/components/material/MaterialTable'
 import { baseurl } from '@/components/dataAll/data'
 
-import { cookies } from 'next/headers'
-
-
-
 interface IndexProps {
     tokenRefresh: string | null;
     tokenAccess: string | null;
@@ -15,17 +11,9 @@ interface IndexProps {
 
 
 const getData = async () => {
-    const value = cookies().get('tokenAcess')?.value
-    console.log(value)
-    if(value !==null ){
-        const res = await axios.get(`${baseurl}/grn/materialstock`,{headers:{
-            Authorization :`Bearer ${value}`
-        }})
-        const data = res.data
-        return data
-    }
-    return null
-
+    const res = await axios.get(`${baseurl}/grn/materialstock`)
+    const data = res.data
+    return data
 }
 
 
