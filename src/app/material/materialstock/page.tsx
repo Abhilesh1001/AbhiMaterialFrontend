@@ -1,17 +1,10 @@
 import React from 'react'
 import axios from 'axios'
 import Materialrdumps from '@/components/material/MaterialTable'
-import { baseurl } from '@/components/dataAll/data'
-
-interface IndexProps {
-    tokenRefresh: string | null;
-    tokenAccess: string | null;
-  }
-  
 
 
 const getData = async () => {
-    const res = await axios.get(`${baseurl}/grn/materialstock`)
+    const res = await axios.get(`http://127.0.0.1:8000/grn/materialstock`)
     const data = res.data
     return data
 }
@@ -54,7 +47,6 @@ const Page = async () => {
         </div>
     )
 }
-
 
 
 export default Page
