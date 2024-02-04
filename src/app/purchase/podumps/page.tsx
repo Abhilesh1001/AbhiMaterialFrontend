@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import dynamic from 'next/dynamic';
 import React, { useState,memo } from 'react'
 import axios from 'axios'
@@ -6,6 +6,7 @@ import PrBurron from '@/components/button/PrBurron'
 import {useSelector} from 'react-redux'
 import {StateProps} from '@/type/type'
 import {datatype,podataType,vendorType} from '@/type/type'
+
 
 const Prdumps = dynamic(() => import('@/components/purchaserequest/Prdumps'));
 

@@ -32,7 +32,7 @@ const Signup = () => {
         tc: Yup.boolean().oneOf([true], 'You must agree to the terms'),
     });
 
-
+    console.log(mutation.error)
     const formik = useFormik({
         initialValues: {
             email: '',

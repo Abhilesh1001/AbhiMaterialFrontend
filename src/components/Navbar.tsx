@@ -59,11 +59,6 @@ const Navbar = () => {
             })(); 
             dispatch(getAuthToken(authTokenData));
         }
-
-        
-       
-             
-       
     }, [dispatch]);
 
 
