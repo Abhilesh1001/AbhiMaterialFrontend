@@ -7,6 +7,7 @@ import DumyInput from '@/components/dummyinput/DumyInput'
 
 const Page = () => {
     const [enable, setEnable] = useState<boolean>(false)
+    
 
     const getData = async () => {
         const res = await axios.get(`http://127.0.0.1:8000/grn/materialstock`)
