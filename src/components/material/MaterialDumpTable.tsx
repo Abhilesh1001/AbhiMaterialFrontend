@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 import DumyInput from '@/components/dummyinput/DumyInput'
 interface Materialrdumpsprops{
@@ -38,4 +36,3 @@ const Materialrdumps = async (props:Materialrdumpsprops) => {
 
 
 export default Materialrdumps
-
