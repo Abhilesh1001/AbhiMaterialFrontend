@@ -44,6 +44,12 @@ const Signup = () => {
         validationSchema: validationSchema,
         onSubmit: (values) => {
             console.log(values);
+            const data = {
+                email : values.email,
+                name :values.name,
+                password :values.password,
+                tc : values.tc
+            }
             // Add your form submission logic here
             mutation.mutate(values)
         },

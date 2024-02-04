@@ -3,7 +3,7 @@ import { datatype } from "@/type/irn/irn";
 import {useSelector,useDispatch} from 'react-redux'
 import {irnsliiceState} from '@/type/irn/irn'
 
-import {getSelectedValue,getIrnPoView,getIrnOrignalData,getMainData,getNewIRN,getTotalQuantity,getVendorAdress,getOrignalData,getUpirno,getBillData} from '@/redux/irn/irnslicer'
+import {getSelectedValue,getIrnPoView,getIrnOrignalData,getMainData,getNewIRN,getVendorAdress,getOrignalData,getUpirno,getBillData} from '@/redux/irn/irnslicer'
 
 import {irnmainall} from '@/components/dataAll/data'
 import {useMutation} from '@tanstack/react-query'
@@ -46,7 +46,7 @@ export const useIrn =() =>{
     }))
    
     console.log(mutation.error)
-    
+
     const handlePOGRNView = (e: React.ChangeEvent<HTMLInputElement>) =>{
         dispatch(getIrnPoView(Number(e.target.value)))
     }

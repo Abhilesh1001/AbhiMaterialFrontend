@@ -82,7 +82,7 @@ const Main = () => {
 
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenDumps: `${hidden.hiddenDumps==='hidden'?'flex':'hidden'}`})}>📁 Dumps</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenDumps} flex-col`}>
-                <li>⭐ Material Stock </li>
+                <Link href={'material/materialstock'} onClick={()=>handleClick('Material Stock')}>⭐ Material Stock </Link>
                 <Link href={'purchase/preqdumps'} onClick={()=>handleClick('Purchase Request Dumps')}>⭐ Purchase Request</Link>
                 <Link href={"purchase/podumps"} onClick={()=>handleClick('Purchase Order Dumps')}>⭐ Purchase Order</Link>
                 <Link href={"grn/grndumps"} onClick={()=>handleClick('GRN Dumps')}>⭐  GRN</Link>
