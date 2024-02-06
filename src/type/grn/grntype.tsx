@@ -15,6 +15,7 @@ export interface datatype {
     pr_no: null|number,
     po_no : null|number,
     grn_line: null|number,
+    mrn_no:null|number,
     material_no: null|number,
     material_name: string,
     material_unit: string,

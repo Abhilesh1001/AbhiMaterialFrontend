@@ -51,13 +51,14 @@ export const usePr =()=>{
         } else {
             updatedData[index] = {...updatedData[index],[key]: value,};
         }
-        console.log('updated',updatedData)
         dispatch(getPrData(updatedData));
     }
     const handleForm = () => {
-        const newLineNo = data.length + 1
+        const newFrom = [...data]
+        const lastLine = newFrom.length > 0 ? newFrom[newFrom.length - 1].line_no : 0;
+        const newLine =lastLine === null ? 0 : lastLine + 1;
         dispatch(getPrData([...data, {
-            line_no: newLineNo,
+            line_no: newLine,
             pr_no:null,
             po_no :null,
             material_name: '',

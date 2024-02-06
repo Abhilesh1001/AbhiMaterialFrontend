@@ -5,6 +5,7 @@ import {prSlice} from './pr/prslicer'
 import {grnSlice} from './grn/grnslicer'
 import {shfSlice} from './shf/shfslicer'
 import {irnSlice} from './irn/irnslicer'
+import {matSlice} from './material/matslicer'
 
 
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
      grnslice : grnSlice.reducer,
      shfSlice: shfSlice.reducer,
      irnSlice: irnSlice.reducer,
+     matSlice: matSlice.reducer,
   },
 })
 

@@ -24,18 +24,17 @@ const DataTable: React.FC<DataTableProps> = ({ startDate, endDate, data }) => {
 
     useEffect(() => {
         const transformedData: TableData = {};
-
+            
         const currentDate = new Date(startDate);
         const lastDate = new Date(endDate);
 
         while (currentDate <= lastDate) {
             const formattedDate = currentDate.toISOString().split('T')[0];
             transformedData[formattedDate] = {};
-
+ 
             for (const rdHolderId in data) {
                 const entries = data[rdHolderId];
                 const amount = entries[formattedDate] || null;
-
                 transformedData[formattedDate][rdHolderId] = amount || 0;
             }
 
@@ -45,9 +44,10 @@ const DataTable: React.FC<DataTableProps> = ({ startDate, endDate, data }) => {
         setTableData(transformedData);
     }, [startDate, endDate, data]);
 
+    
+
     const renderTableHeader = () => {
         const rdHolderIds = Object.keys(data);
-
         return (
             <tr>
                 <th className='sticky left-0'><DumyInput indum={'DATE'} /> </th>

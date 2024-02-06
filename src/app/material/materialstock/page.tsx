@@ -4,20 +4,22 @@ import axios from 'axios'
 import PrBurron from '@/components/button/PrBurron'
 import { useQuery } from '@tanstack/react-query'
 import DumyInput from '@/components/dummyinput/DumyInput'
+import {useSelector} from 'react-redux'
+import {StateProps} from '@/type/type'
+
 
 const Page = () => {
     const [enable, setEnable] = useState<boolean>(false)
+    const {baseurl} = useSelector((state:StateProps)=>state.counter)
     
-
     const getData = async () => {
-        const res = await axios.get(`http://127.0.0.1:8000/grn/materialstock`)
+        const res = await axios.get(`${baseurl}grn/materialstock`)
         const data = res.data
         setEnable(false)
         return data
     }
 
-    const { data: res } = useQuery({ queryKey: ['materialStock'], queryFn: getData, enabled: enable })
-    console.log(res)
+    const { data: res } = useQuery({ queryKey: ['materialStock'], queryFn: getData, enabled: enable,staleTime:1000*4 })
     const handleClick = () => {
         setEnable(true)
     }
@@ -27,8 +29,6 @@ const Page = () => {
             <div className="container">
                 <div className='h-3'></div>
                 <PrBurron label='All Material Stock' onClick={handleClick} />
-
-
                 <div className="row">
                     <div className="col-sm-6">
                         <div className=' ml-2 mr-2 h-[87vh] overflow-auto text-nowrap my-2 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
@@ -63,8 +63,6 @@ const Page = () => {
 
                     </div>
                     PrBurron</div>
-
-
             </div>
         </div>
     )

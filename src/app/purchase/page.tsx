@@ -7,7 +7,7 @@ import Aleart from '@/components/alert/Aleart'
 import Loading from '@/components/loading/Loading'
 
 import { prsliiceState } from '@/type/type'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import PrBurron from '@/components/button/PrBurron'
 import { usePrPreview } from '@/hooks/purchaserequest/usePrPreview'
 import { format } from 'date-fns';
@@ -17,7 +17,6 @@ const PurchasePR = () => {
     const { handleChange, handleKeyDown, handleSubmit, handleForm, newPrNo, loadingNewPrCreation } = usePr()
     const { datapr: data,prmaindata } = useSelector((state: prsliiceState) => state.prslicer)
     const {handleUpdate, FormReset,handleDelete,handleView,handlePRView,view,handleChangePr,change,upprno,loadingNewPrUpdate } = usePrPreview()
-    console.log('prdata',data[0].pr_no)
     let formattedDateString = ''
     if (prmaindata.time) {
         const time = prmaindata.time
@@ -25,6 +24,22 @@ const PurchasePR = () => {
         formattedDateString = format<Date>(dateObject, 'dd-MM-yyyy')
     }
 
+
+
+
+    const renderTableHeader = () => {
+        const tableHead = ['','S.No','Line No','Material No','Material Name','Material Unit','Price','Quantity','Total Price','Text','Delete','Created By','Date','Po No','PR Line']
+        return (
+            <tr>
+                {tableHead.map((item,index) => (
+                    <th key={index}>
+                       <div className='ml-2 mr-2 flex'>{item}</div>
+                        </th>
+                ))}
+            </tr>
+        );
+    };
+    
     return (
         <div className=' dark:bg-gray-800 bg-sky-600  min-h-screen'>
             <div className='container mt-4 overflow-auto text-nowrap'>
@@ -47,22 +62,7 @@ const PurchasePR = () => {
                     <div className='h-[360px] overflow-auto my-2 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
                         <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400 ">
                             <thead className='sticky top-0 z-1 bg-sky-800 dark:bg-gray-950 text-gray-50 h-10'>
-                                <tr >
-                                    <th scope="col"></th>
-                                    <th scope="col">S.No</th>
-                                    <th scope="col"><div className='ml-2 mr-2'>Material No</div></th>
-                                    <th scope="col" ><div className='ml-2 mr-2'>Material Name</div></th>
-                                    <th scope="col"><div className='ml-2 mr-2'>Material Unit</div></th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Total Price</th>
-                                    <th scope="col">Text</th>
-                                    <th scope="col">Delete</th>
-                                    <th scope="col">Created By</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Po No</th>
-
-                                </tr>
+                            {renderTableHeader()}
                             </thead>
                             <tbody >
                                 {
@@ -70,6 +70,7 @@ const PurchasePR = () => {
                                         return <tr key={index}>
                                             <th><input type="checkbox" /></th>
                                             <th><DumyInput indum={index + 1} /> </th>
+                                            <th><DumyInput indum={item.line_no} /> </th>
                                             <td>
                                                 {view ?<DumyInput indum={item.material_no} /> :<>{item.po_no !==null ?<DumyInput indum={item.material_no}/>:<input required value={item.material_no !== null ? item.material_no : ''} type="number" onKeyDown={(e) => handleKeyDown(e, index)} onChange={(e) => handleChange(e.target.value, 'material_no', index)} className="form-control  text-sm  w-24" />}</>}
                                             </td>

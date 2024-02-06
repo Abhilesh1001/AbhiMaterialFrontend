@@ -21,6 +21,7 @@ const Main = () => {
         loanpername :string,
         loanColl : string,
         invoice:string,
+        issuematerial : string
     }>({
         hiddenmaterial:"hidden",
         hiddenPr:"hidden",
@@ -35,7 +36,9 @@ const Main = () => {
         rdColl : 'hidden',
         loanpername :'hidden',
         loanColl : 'hidden',
-        invoice:'hidden'
+        invoice:'hidden',
+        issuematerial : 'hidden'
+
 
     })
    
@@ -79,7 +82,6 @@ const Main = () => {
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenVendor} flex-col`}>
                 <Link href={'/vendor'} onClick={()=>handleClick('Vendor create/update/Change')}>⭐ Vendor create/update/Change </Link>
             </ul>  
-
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenDumps: `${hidden.hiddenDumps==='hidden'?'flex':'hidden'}`})}>📁 Dumps</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenDumps} flex-col`}>
                 <Link href={'material/materialstock'} onClick={()=>handleClick('Material Stock')}>⭐ Material Stock </Link>
@@ -87,7 +89,11 @@ const Main = () => {
                 <Link href={"purchase/podumps"} onClick={()=>handleClick('Purchase Order Dumps')}>⭐ Purchase Order</Link>
                 <Link href={"grn/grndumps"} onClick={()=>handleClick('GRN Dumps')}>⭐  GRN</Link>
             </ul>  
-
+            <div className='cursor-pointer' onClick={()=>setHidden({...hidden ,issuematerial :`${hidden.issuematerial==='hidden'?'flex':'hidden'}`})}>📁 Material Issue</div>  
+            <ul className={`ml-8 cursor-pointer ${hidden.issuematerial} flex-col`}>
+                <Link href={'/material/IssueMaterial'} onClick={()=>handleClick('Material Issue/update/View')}>⭐ Material Issue/update/View </Link>
+            </ul> 
+        
             <div className='cursor-pointer' onClick={()=>setHidden({...hidden , hiddenDelivery : `${hidden.hiddenDelivery==='hidden'?'flex':'hidden'}`})}>📁 Delivery Adress under devlopment</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenDelivery} flex-col`}>
                 <li>⭐ Delivery Address create/Update/Change </li>

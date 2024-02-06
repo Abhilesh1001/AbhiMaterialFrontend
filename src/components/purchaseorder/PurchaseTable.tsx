@@ -9,7 +9,7 @@ import PrBurron from '@/components/button/PrBurron'
 
 const PurchaseTable = () => {
     const {data,poview,podata} = useSelector((state:posliiceState)=>state.poslicer)
-
+    console.log('line_no',data)
     const {handleDelete} =usePoview()
     const {handleChange} = usePo()
     let formattedDateString = ''
@@ -28,10 +28,11 @@ const PurchaseTable = () => {
                 <th><input type="checkbox" onChange={(e) => handleChange(e.target.value, 'material_no', index)} />
                 </th>
                 <th scope="row"> <DumyInput indum={index + 1}/></th>
+                <th scope="row"> <DumyInput indum={item.po_line}/></th>
                 <td> <DumyInput indum={item.pr_no} /></td>
                 <td><DumyInput indum={item.material_no} /></td>
                 <td><DumyInput indum={item.material_name} /></td>
-                <td><DumyInput indum={item.material_name} /></td>
+                <td><DumyInput indum={item.material_unit} /></td>
 
                 <td>
                     {poview ? <DumyInput indum={item.material_price}/> :<>{item.grn_no!==null && item.grn_no!==undefined ?<DumyInput indum={item.material_price}/>:<input type="number" value={item.material_price !== null ? item.material_price : ''} onChange={(e) => handleChange(Number(e.target.value), 'material_price', index)} className="form-control  text-sm  w-26" />}</>}
@@ -57,12 +58,11 @@ const PurchaseTable = () => {
                 <td>
                 {poview ? '':<>{item.grn_no !==null && item.grn_no!==undefined ?'':<PrBurron label={'Delete'} onClick={()=>handleDelete(index)} />}</>} </td>
                   
-                    <td >{<DumyInput indum={item.grn_no} />}
-                </td>
-
+                    <td >{<DumyInput indum={item.grn_no} />}</td>
                 <td >{podata.user !==null ?<DumyInput indum={podata.user} />: "user"}</td>
                 <td >{podata.user !==null ?<DumyInput indum={formattedDateString} />: ""}</td>
-               
+                <td >{<DumyInput indum={item.line_no} />}
+                </td>
             </tr>
         })}
 

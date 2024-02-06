@@ -107,6 +107,8 @@ export const useGrnView = () => {
                         pr_no: item.pr_no,
                         po_line: item.po_line,
                         po_no: item.po_no,
+                        grn_line : item.grn_line, 
+                        mrn_no : item.mir_no===0? null:item.mir_no,
                         material_no: item.material_no,
                         material_name: item.material_name,
                         material_unit: item.material_unit,
@@ -165,7 +167,6 @@ export const useGrnView = () => {
                     Authorization: `Bearer ${authToken?.access}`
                 }
             })
-            const lastGrnLine = data.length > 0 ? data[data.length - 1].grn_line || 0 : 0;
             const newData = JSON.parse(res.data.item_pr)
             const resData = JSON.parse(res.data.vendor_address)
             const resDelivery = JSON.parse(res.data.delivery_address)
@@ -181,7 +182,7 @@ export const useGrnView = () => {
                     pr_no: item.pr_no,
                     po_line: item.po_line,
                     po_no:item.po_no,
-                    grn_line: lastGrnLine + 1 + index,
+                    grn_line: index+1,
                     material_no: item.material_no,
                     material_name: item.material_name,
                     material_unit: item.material_unit,
