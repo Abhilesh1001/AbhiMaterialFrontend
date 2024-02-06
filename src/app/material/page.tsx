@@ -1,10 +1,9 @@
 'use client'
 // tyscript 
-import { statePropsMaterial,StateProps } from '@/type/type'
-import { QueryResponse } from '@/type/material/materia-type'
+import {StateProps } from '@/type/type'
 
 // dependencies 
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import Aleart from '@/components/alert/Aleart'
 import Loading from '@/components/loading/Loading'
 
@@ -14,6 +13,14 @@ import { useSelector } from 'react-redux'
 
 // components 
 import TextInput from '@/components/dummyinput/TextInput'
+interface matType {
+    s_no:number | null,
+    material_name:string, 
+    material_group:string,
+    unit:string, 
+    user :string,
+}
+
 
 
 const page = () => {
@@ -21,7 +28,7 @@ const page = () => {
     const {authToken} = useSelector((state:StateProps)=>state.counter)
     const { fetchData, handleSubmit, setDate, data,loadingNewCreation,newMatNo } = useMaterial()
 
-    const { data: matdata } = useQuery<QueryResponse>({ queryKey: ['matData',newMatNo,authToken], queryFn: fetchData })
+    const { data: matdata } = useQuery({ queryKey: ['matData',newMatNo,authToken], queryFn: fetchData })
     return (
         <div className=' dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
             <div className='container'>
@@ -66,7 +73,8 @@ const page = () => {
                             </thead>
                             <tbody>
                                 {
-                                    matdata?.length != undefined && matdata?.length > 0 && matdata?.map(({ s_no, material_name, material_group, unit, user }) => {
+                                    matdata?.length != undefined && matdata?.length > 0 && matdata?.map(( items:matType ) => {
+                                        const {s_no,material_name,material_group,unit,user} = items
                                         return <tr className='odd:bg-sky-600 text-gray-50 odd:dark:bg-gray-900 even:bg-sky-400  even:dark:bg-gray-800 border-b dark:border-gray-700' key={s_no}>
                                             <th className='px-6 py-1' scope="row">{s_no}</th>
                                             <td className='px-6 py-1'>{material_name}</td>
