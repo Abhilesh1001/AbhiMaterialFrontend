@@ -68,7 +68,7 @@ const page = () => {
                                     <th className='px-6 py-1' scope="col">Material Name</th>
                                     <th className='px-6 py-1' scope="col">Material Group</th>
                                     <th className='px-6 py-1' scope="col">Unit</th>
-                                    <th className='px-6 py-1' scope="col">User</th>
+                                    <th className='px-6 py-1' scope="col">User</th> 
                                 </tr>
                             </thead>
                             <tbody>

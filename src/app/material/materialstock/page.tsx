@@ -10,19 +10,24 @@ import {StateProps} from '@/type/type'
 
 const Page = () => {
     const [enable, setEnable] = useState<boolean>(false)
-    const {baseurl} = useSelector((state:StateProps)=>state.counter)
+    const {baseurl,authToken} = useSelector((state:StateProps)=>state.counter)
     
     const getData = async () => {
-        const res = await axios.get(`${baseurl}grn/materialstock`)
+        const res = await axios.get(`${baseurl}grn/materialstock`,{
+            headers:{
+                Authorization:`Bearer ${authToken?.access}`
+            }
+        })
         const data = res.data
         setEnable(false)
         return data
     }
 
-    const { data: res } = useQuery({ queryKey: ['materialStock'], queryFn: getData, enabled: enable,staleTime:1000*4 })
+    const { data: res,error } = useQuery({ queryKey: ['materialStock'], queryFn: getData, enabled: enable,staleTime:1000*4 })
     const handleClick = () => {
         setEnable(true)
     }
+    console.log(error)
     let serialNumber = 0;
     return (
         <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6' >
