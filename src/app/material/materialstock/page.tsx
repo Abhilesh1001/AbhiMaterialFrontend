@@ -67,7 +67,7 @@ const Page = () => {
                     <div className="col-sm-6">
 
                     </div>
-                    PrBurron</div>
+                   </div>
             </div>
         </div>
     )

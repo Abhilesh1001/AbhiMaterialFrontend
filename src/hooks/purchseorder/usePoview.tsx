@@ -154,6 +154,7 @@ export const usePoview = () => {
                         material_qty: item.orignaQtyPr,
                         material_text: item.material_text,
                         total_amount: item.total_amount,
+
                     }
                     return element
                 })

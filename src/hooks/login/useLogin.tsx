@@ -7,18 +7,22 @@ import { jwtDecode } from "jwt-decode";
 import { getUser, getAuthToken, clearAuthToken, clearUser, getUserId } from '@/redux/slice'
 import { StateProps } from '@/type/type'
 import { getMainheader } from '@/redux/slice'
-
-
+import { soundClick,soundSsuccess,soundError} from "@/sound/sound"
 
 export const useLogin = (data: loginred) => {
+   
+    
     const { baseurl, authToken } = useSelector((state: StateProps) => state.counter)
+   
 
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState('')
 
     const dispatch = useDispatch()
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        soundClick?.play()
         setLoading(true)
+
         e.preventDefault()
         try {
             const response = await axios.post(`${baseurl}cus/authlogin/`, data)
@@ -35,11 +39,12 @@ export const useLogin = (data: loginred) => {
             dispatch(getUserId(userToken.user_id))
             dispatch(getMainheader('Index Page'))
             setLoading(false)
+            soundSsuccess?.play()
         } catch (error) {
             console.log(error)
             setError('Email or Password Wrong')
             setLoading(false)
-            
+            soundError?.play()
         }
     }
 // updatetoken 
@@ -72,11 +77,16 @@ const updataToken = async () => {
     }
 }
 function handleLogout() {
+    soundClick?.play()
     document.cookie = 'tokenRefresh=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
     document.cookie = 'tokenAcess=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
     dispatch(clearAuthToken(''))
     dispatch(clearUser(""))
 }
+
+
+
+
 
 return { handleSubmit, handleLogout,error,loading }
 }

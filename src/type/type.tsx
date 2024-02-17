@@ -34,7 +34,9 @@ export type StateProps = {
         },
         user :string,
         userId:number | null
+        hidden : hiddenType
     }   
+    
 }
 export type mainType = { TotalAmount: null|number, TotalWithtax: null|number, TotalTax:null|number }
 
@@ -129,5 +131,23 @@ export interface prmainData {
     totalQuantity:datatype[]
   }
 
+
+export interface hiddenType {
+    hiddenmaterial:string,
+    hiddenPr:string,
+    hiddenPo:string,
+    hiddenGRN:string,
+    hiddenDumps:string,
+    hiddenVendor:string,
+    hiddenDelivery:string,
+    hiddenFundName:string,
+    capitalDis : string,
+    rdpername :string,
+    rdColl : string,
+    loanpername :string,
+    loanColl : string,
+    invoice:string,
+    issuematerial : string
+  }
 
   

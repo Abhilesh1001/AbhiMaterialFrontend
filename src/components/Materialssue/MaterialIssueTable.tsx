@@ -11,7 +11,7 @@ const MaterialIssueTable = () => {
     const {matData:data} =  useSelector((state:matState)=>state.matSlice)
     const {handleKeyDown,handleChange,handleDelete} = useIsMaterial()
     let serialNo = 0
-    const materialIssue = ['S No','Line No','Material No','Material Name','Material Unit', 'Material Qty','Material Issue','Delete']
+    const materialIssue = ['S No','Line No','Material No','Material Name','Material Unit', 'Material Qty','Material Issue','Remarks','Delete']
 
     const renderTableRows = () => {
         return data?.map((item:matType,index) => {
@@ -24,6 +24,8 @@ const MaterialIssueTable = () => {
                         <td ><DumyInput indum={item.material_unit} /></td>
                         <td ><DumyInput indum={item.material_qty} /></td>
                         <td ><input type='number' className='form-control text-sm' value={item.material_issue!==null?item.material_issue:''}  onChange={(e)=>handleChange(Number(e.target.value),'material_issue',index)} /></td>
+
+                        <td ><input type='text' className='form-control text-sm w-60' value={item.material_remarks!==null?item.material_remarks:''}  onChange={(e)=>handleChange(e.target.value,'material_remarks',index)} /></td>
                         <td><PrBurron label={'Delete'} onClick={()=>handleDelete(index)} /></td>
                 </tr>
         })

@@ -1,6 +1,7 @@
 'use client'
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { hiddenType } from '@/type/type';
 
 export interface CounterState {
   baseurl:string,
@@ -9,6 +10,7 @@ export interface CounterState {
   user : string,
   userId : number|null,
   mainheader :string,
+  hidden : hiddenType
 }
 
 const initialState: CounterState = {
@@ -19,7 +21,25 @@ const initialState: CounterState = {
   authToken : null,
   user : "",
   userId:null,
-  mainheader: 'mainPage'
+  mainheader: 'mainPage',
+  hidden : {
+    hiddenmaterial:"hidden",
+    hiddenPr:"hidden",
+    hiddenPo:"hidden",
+    hiddenGRN:"hidden",
+    hiddenDumps:"hidden",
+    hiddenVendor:"hidden",
+    hiddenDelivery:"hidden",
+    hiddenFundName:"hidden",
+    capitalDis :'hidden',
+    rdpername: 'hidden',
+    rdColl : 'hidden',
+    loanpername :'hidden',
+    loanColl : 'hidden',
+    invoice:'hidden',
+    issuematerial : 'hidden'
+  
+  }
 }
 
 export const counterSlice = createSlice({
@@ -50,11 +70,14 @@ export const counterSlice = createSlice({
     getMainheader: (state,action:PayloadAction<string>)=>{
       localStorage.setItem('mainHeader',action.payload)
       state.mainheader = action.payload
+    },
+    getHidden : (state,action:PayloadAction<hiddenType>)=>{
+      state.hidden =action.payload
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { getLogindata,getAuthToken,getUser,clearAuthToken,clearUser,getUserId,clearUserId,getMainheader} = counterSlice.actions
+export const { getLogindata,getAuthToken,getUser,clearAuthToken,clearUser,getUserId,clearUserId,getMainheader,getHidden} = counterSlice.actions
 
 export default counterSlice.reducer

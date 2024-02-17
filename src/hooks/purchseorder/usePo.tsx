@@ -18,7 +18,6 @@ export const usePo = () => {
     const { baseurl, authToken,userId } = useSelector((state: StateProps) => state.counter)
     const { vendoradress, deliveryadress ,data,selectedValue,mainData,orignalData,totalQuantity} = useSelector((state: posliiceState) => state.poslicer)
     const {TotalQuantity} = usePoview()
-    console.log('orignalDAta',totalQuantity,orignalData)
     const [qerror,setQerror] = useState<boolean[]>([])
     const hasTrueValue = qerror.some((value) => value === true);
     const [loadingNewPoCreation, setLoading] = useState(false);
@@ -90,6 +89,7 @@ export const usePo = () => {
 
     // create new PO 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        console.log('ok')
         if (selectedValue === 'PR' && vendoradress.name!=='' && deliveryadress.name !== '' && data[0].material_name !== '') {
             setLoading(true)
             const redata = {

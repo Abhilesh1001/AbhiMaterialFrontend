@@ -4,10 +4,13 @@ export interface matType{
     material_name:string,
     material_unit:string,
     material_qty:number|null,
-    material_issue :null
+    material_issue :null|number 
+    material_remarks:string,
 }
 export interface dataTypeMatIssue {
-    matData : matType[]
+    matData : matType[],
+    orignalData : matType[],
+    totalQuantity :matType[]
 }
 
 export interface matState {
