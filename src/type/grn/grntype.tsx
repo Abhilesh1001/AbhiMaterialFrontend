@@ -54,7 +54,9 @@ export interface CounterStateGRN {
     upgrnno:null|number,
     billData : billDetails,
     orignalData:datatype[],
-    totalQuantity : datatype[]
+    totalQuantity : datatype[],
+    hiddenalert :string,
+    newchang : string
   }
 
 export interface grnsliiceState {

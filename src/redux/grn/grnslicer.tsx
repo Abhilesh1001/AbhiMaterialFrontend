@@ -20,7 +20,10 @@ const initialState: CounterStateGRN = {
     grnchange :false,
     upgrnno : null,
     orignalData :grnmainall,
-    totalQuantity : grnmainall
+    totalQuantity : grnmainall,
+    hiddenalert :'hidden',
+    newchang : "change"
+
 }
 
 
@@ -77,11 +80,17 @@ export const grnSlice = createSlice({
     getTotalQuantity : (state,action:PayloadAction<datatype[]>)=>{
       state.totalQuantity = action.payload
     },
+    setHiddenALert : (state,action:PayloadAction<string>)=>{
+      state.hiddenalert = action.payload
+    },
+    getNewChange :(state,action:PayloadAction<string>)=>{
+      state.newchang = action.payload
+    }
 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { getDEliveryAdress,getVendorAdress,getData,getGrndata,getSelectedValue,getMainData,getNewGRN,getGrnPoView,getGrnview,deleteGrnLine,getGrnchange,getUpgrno,getBillData,getOrignalData,getTotalQuantity} = grnSlice.actions
+export const { getDEliveryAdress,getVendorAdress,getData,getGrndata,getSelectedValue,getMainData,getNewGRN,getGrnPoView,getGrnview,deleteGrnLine,getGrnchange,getUpgrno,getBillData,getOrignalData,getTotalQuantity,setHiddenALert,getNewChange} = grnSlice.actions
 
 export default grnSlice.reducer

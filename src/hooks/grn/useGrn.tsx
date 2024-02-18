@@ -1,7 +1,7 @@
 import { useState,useEffect } from "react";
 import {datatype,grnsliiceState} from '@/type/grn/grntype'
 import {useSelector,useDispatch} from 'react-redux' 
-import {getSelectedValue,getGrnPoView,getData,getMainData,getNewGRN,getTotalQuantity,getVendorAdress,getOrignalData,getUpgrno,getBillData} from '@/redux/grn/grnslicer'
+import {getSelectedValue,getGrnPoView,getData,getMainData,getNewGRN,getTotalQuantity,getVendorAdress,getOrignalData,getUpgrno,getBillData,setHiddenALert,getNewChange} from '@/redux/grn/grnslicer'
 import {grnmainall} from '@/components/dataAll/data'
 import {useMutation} from '@tanstack/react-query'
 import axios from "axios";
@@ -38,9 +38,11 @@ export const useGrn =() =>{
             }
         }),
         onSuccess:(data)=>{
-            dispatch(getNewGRN(data.data.data.po_no))
+            dispatch(getNewGRN(data.data.data.grn_no))
             setLoading(false)
             ResetGRN()
+            dispatch(setHiddenALert('')) 
+            dispatch(getNewChange('change'))
         },
         onError:(error)=>{
             console.log(error)
@@ -72,7 +74,7 @@ export const useGrn =() =>{
         console.log(value,key,index)
         // dispatch(getData(newDataUpdata))
 
-        const newData = [...data]; // Create a copy of the state array
+        const newData = [...data]; 
 
         if (value !== null) {
             if (key === 'total_amount' || key === 'total_tax' || key === 'material_price' || key === 'material_qty' || key === 'material_tax') {
@@ -82,7 +84,7 @@ export const useGrn =() =>{
 
                 if (key === 'material_qty' || key === 'material_price' || key === 'material_tax') {
                     const totalAmount = qty * price;
-                    const total_tax = totalAmount * (tax * 0.01) + totalAmount; // Calculate total_tax based on your logic
+                    const total_tax = totalAmount * (tax * 0.01) + totalAmount; 
                     newData[index] = { ...newData[index], total_amount: totalAmount, total_tax: total_tax };
                 }
             }
@@ -142,11 +144,18 @@ export const useGrn =() =>{
         setQerror([...error]);
 
 
-    }, [data, orignalData]); // Include orignalData in the dependency array
+    }, [data, orignalData]); 
+
+
+    const handleCloseAlert =()=>{
+        dispatch(setHiddenALert('hidden'))   
+        dispatch(getUpgrno(null))
+    }
+    
 
 
 
 
 
-    return {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,handleChange,hasTrueValue}
+    return {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,handleChange,hasTrueValue,handleCloseAlert}
 }

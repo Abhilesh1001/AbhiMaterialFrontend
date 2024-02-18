@@ -3,13 +3,14 @@ import { datatype } from "@/type/irn/irn";
 import {useSelector,useDispatch} from 'react-redux'
 import {irnsliiceState} from '@/type/irn/irn'
 
-import {getSelectedValue,getIrnPoView,getIrnOrignalData,getMainData,getNewIRN,getVendorAdress,getOrignalData,getUpirno,getBillData} from '@/redux/irn/irnslicer'
+import {getSelectedValue,getIrnPoView,getIrnOrignalData,getMainData,getNewIRN,getVendorAdress,getOrignalData,getUpirno,getBillData,setHiddenALert,getNewChange} from '@/redux/irn/irnslicer'
 
 import {irnmainall} from '@/components/dataAll/data'
 import {useMutation} from '@tanstack/react-query'
 import axios from "axios";
 import {  StateProps } from '@/type/type'
 import {useIrnView} from  './useIrnView'
+import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
 
 
 export const useIrn =() =>{
@@ -22,7 +23,7 @@ export const useIrn =() =>{
 
     const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
 
-        console.log(e.target.value)
+        soundClick?.play()
         dispatch(getSelectedValue(e.target.value))
         dispatch(getMainData({ TotalAmount: 0, TotalWithtax: 0, TotalTax: 0 }))
         dispatch(getVendorAdress({ name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' }))
@@ -40,18 +41,26 @@ export const useIrn =() =>{
             }
         }),
         onSuccess:(data)=>{
-            dispatch(getNewIRN(data.data.data.po_no))
+            console.log(data,'data')
+            dispatch(getNewIRN(data.data.data.mir_no))
             ResetGRN()
+            dispatch(setHiddenALert('')) 
+            dispatch(getNewChange('change'))
+            soundSsuccess?.play()
         },
+        onError :(error)=>{
+            soundError?.play()
+            console.log(error)
+        }
     }))
    
-    console.log(mutation.error)
+   
 
     const handlePOGRNView = (e: React.ChangeEvent<HTMLInputElement>) =>{
         dispatch(getIrnPoView(Number(e.target.value)))
     }
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
-
+        soundClick?.play()
         if (selectedValue === 'PO' && vendoradress.name!=='' && deliveryadress.name !== '' && data[0].material_name !== '') {
             const redata = {
                 user : userId,
@@ -68,7 +77,11 @@ export const useIrn =() =>{
 
     }
 
+    const handleCloseAlert =()=>{
+        dispatch(setHiddenALert('hidden'))   
+        // dispatch(getUpgrno(null))
+    }
 
 
-    return {handleRadioChange,handlePOGRNView,handleSubmit,mutation}
+    return {handleRadioChange,handlePOGRNView,handleSubmit,mutation,handleCloseAlert}
 }

@@ -2,10 +2,12 @@ import { irndataType, irnsliiceState } from '@/type/irn/irn'
 import { datatype } from "@/type/irn/irn";
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
-import { getSelectedValue, getIrnOrignalData, getVendorAdress, getDEliveryAdress, getMainData, getUpirno, getBillData, getIrnchange, getIrnview, deleteIrnLine, getNewIRN, getOrignalData, getIrndata,getOdataValue,getHasTrueValue } from '@/redux/irn/irnslicer'
+import { getSelectedValue, getIrnOrignalData, getVendorAdress, getDEliveryAdress, getMainData, getUpirno, getBillData, getIrnchange, getIrnview, deleteIrnLine, getNewIRN, getOrignalData, getIrndata,getOdataValue,getHasTrueValue,setHiddenALert,getNewChange } from '@/redux/irn/irnslicer'
 import axios from "axios"
 import { StateProps } from '@/type/type'
 import { irnmainall } from '@/components/dataAll/data'
+import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
+
 
 
 export const useIrnView = () => {
@@ -22,14 +24,17 @@ export const useIrnView = () => {
    
 
     const handleViewClick = () => {
+        soundClick?.play()
         dispatch(getIrnview(true))
         handleViewChange()
         dispatch(getIrnchange(false))
+
 
     }
 
 
     const handleChange=(value:number|null)=>{
+        soundClick?.play()
         if(value===mainData.TotalWithtax){
            dispatch(getHasTrueValue(true))
         }else{
@@ -53,6 +58,7 @@ export const useIrnView = () => {
 
 
     const handleDelete = (index: number) => {
+        soundClick?.play()
         const orignalData = data?.filter((item:any,indexs:number)=>{
             if (index!==indexs){
                 return item
@@ -68,12 +74,15 @@ export const useIrnView = () => {
 
 
     const handleGrnchange = () => {
+        soundClick?.play()
         dispatch(getIrnview(false))
         handleViewChange()
+        dispatch(getNewChange(''))
         dispatch(getIrnchange(true))
     }
 
     const handleInsert = () => {
+        soundClick?.play()
         console.log('ok', irnpoview)
         handleViewChange()
         dispatch(getIrnview(false))
@@ -89,6 +98,8 @@ export const useIrnView = () => {
 
 
     const handleUpdateGRN = async (irn_no: number) => {
+        soundClick?.play()
+        dispatch(setHiddenALert(''))
         const newData = {
             item_grn: JSON.stringify(data),
             user: userId,
@@ -102,12 +113,15 @@ export const useIrnView = () => {
                     Authorization: `Bearer ${authToken?.access}`
                 }
             })
-            dispatch(getUpirno(res.data.data.grn_no))
+            console.log(res.data.data.mir_no)
+            dispatch(getUpirno(res.data.data.mir_no))
             ResetGRN()
             dispatch(getNewIRN(null))
+            soundSsuccess?.play()
 
         } catch (error) {
             console.log(error)
+            soundError?.play()
         }
 
     }
@@ -117,7 +131,6 @@ export const useIrnView = () => {
         dispatch(getVendorAdress({ name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' }))
         dispatch(getIrnOrignalData(irnmainall))
         dispatch(getOrignalData(irnmainall))
-        dispatch(getUpirno(null))
         dispatch(getBillData({ bill_date: null, bill_no: null, delivery_note: null, transporter_name: null, way_bill: null }))
         dispatch(getSelectedValue('PO'))
     }
@@ -125,7 +138,7 @@ export const useIrnView = () => {
 
 
     const handleViewChange = async () => {
-
+        soundClick?.play()
         // po operation 
         if (selectedValue === 'PO' && irnpoview !== null && !Object.is(irnpoview, NaN)) {
             PoInsert()
@@ -133,6 +146,7 @@ export const useIrnView = () => {
 
         // IRN operation 
         if (selectedValue === 'IRN' && irnpoview !== null && !Object.is(irnpoview, NaN)) {
+            
             try {
                 const response = await axios.get(`${baseurl}grn/mirocreated/${irnpoview}/`, {
                     headers: {
@@ -269,15 +283,17 @@ export const useIrnView = () => {
 
     }
 
-  
     const handleDelivery = () => {
+        soundClick?.play()
         setDeliveryView(`${deliveryView === 'dview' ? null : 'dview'}`)
     }
     const handleVdetails = () => {
+        soundClick?.play()
         setVendorView(`${vendorView === 'view' ? null : 'view'}`)
 
     }
     const handleBilling = () => {
+        soundClick?.play()
         setBillingView(`${billingView === 'bview' ? null : 'bview'}`)
 
     }

@@ -1,10 +1,11 @@
 import { grnsliiceState,datatype } from "@/type/grn/grntype"
 import { useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
-import { getSelectedValue, getGrnPoView, getData, getVendorAdress, getDEliveryAdress, getMainData, getUpgrno, getBillData, getGrnview, getGrnchange, getGrndata,deleteGrnLine, getNewGRN,getOrignalData,getTotalQuantity } from '@/redux/grn/grnslicer'
+import { getSelectedValue, getGrnPoView, getData, getVendorAdress, getDEliveryAdress, getMainData, getUpgrno, getBillData, getGrnview, getGrnchange, getGrndata,deleteGrnLine, getNewGRN,getOrignalData,getTotalQuantity,setHiddenALert,getNewChange } from '@/redux/grn/grnslicer'
 import axios from "axios"
 import { StateProps } from '@/type/type'
 import { grnmainall } from '@/components/dataAll/data'
+import { soundClick,soundError,soundSsuccess } from "@/sound/sound"
 
 
 export const useGrnView = () => {
@@ -16,33 +17,40 @@ export const useGrnView = () => {
     const [billingView, setBillingView] = useState('bview')
 
     const handleViewClick = () => {
+        soundClick?.play()
         dispatch(getGrnview(true))
         handleViewChange()
         dispatch(getGrnchange(false))
 
     }
     const handleDelete = (index: number) => {
+        soundClick?.play()
         console.log(index)
         dispatch(deleteGrnLine({index}))
     }
 
     const handleGrnchange = () => {
+        soundClick?.play()
         dispatch(getGrnview(false))
         handleViewChange()
         dispatch(getGrnchange(true))
+        dispatch(getNewChange(''))
     }
 
     const handleInsert = () => {
-        console.log('ok', grnpoview)
+        soundClick?.play()
         handleViewChange()
         dispatch(getGrnview(false))
 
     }
 
     const handleInsertPoInGRN = () => {
+
         PoInsert()
     }
     const handleUpdateGRN = async (grn_no: number) => {
+        soundClick?.play()
+        dispatch(setHiddenALert(''))
         const newData =  {
             item_pr: JSON.stringify(data),
             user:userId,
@@ -69,7 +77,7 @@ export const useGrnView = () => {
         dispatch(getVendorAdress({ name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: '' }))
         dispatch(getData(grnmainall))
         dispatch(getOrignalData(grnmainall))
-        dispatch(getUpgrno(null))
+        
         dispatch(getBillData({ bill_date: null, bill_no: null, delivery_note: null, transporter_name: null, way_bill: null }))
         dispatch(getSelectedValue('PO'))
     }
@@ -251,13 +259,16 @@ export const useGrnView = () => {
 
 
     const handleDelivery = () => {
+        soundClick?.play()
         setDeliveryView(`${deliveryView === 'dview' ? null : 'dview'}`)
     }
     const handleVdetails = () => {
+        soundClick?.play()
         setVendorView(`${vendorView === 'view' ? null : 'view'}`)
 
     }
     const handleBilling = () => {
+        soundClick?.play()
         setBillingView(`${billingView === 'bview' ? null : 'bview'}`)
 
     } 

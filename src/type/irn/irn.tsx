@@ -64,7 +64,9 @@ export interface CounterStateIRN {
     orignalData:datatype[],
     totalQuantity : datatype[]
     odataValue:number | null,
-    hastruevalue:boolean
+    hastruevalue:boolean,
+    hiddenalert :string,
+    newchang : string
   }
 
 export interface irnsliiceState {

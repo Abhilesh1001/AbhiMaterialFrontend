@@ -94,7 +94,7 @@ export const usePo = () => {
 
     // create new PO 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log('ok')
+        console.log('okusepo')
         soundClick?.play()
         if (selectedValue === 'PR' && vendoradress.name!=='' && deliveryadress.name !== '' && data[0].material_name !== '') {
             setLoading(true)

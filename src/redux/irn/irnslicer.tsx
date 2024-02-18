@@ -20,7 +20,9 @@ const initialState: CounterStateIRN = {
   orignalData: irnmainall,
   totalQuantity: irnmainall,
   odataValue: null,
-  hastruevalue: false
+  hastruevalue: false,
+  hiddenalert :'hidden',
+  newchang : "change"
 }
 
 
@@ -82,12 +84,18 @@ export const irnSlice = createSlice({
     },
     getHasTrueValue: (state, action: PayloadAction<boolean>) => {
       state.hastruevalue = action.payload
+    },
+    setHiddenALert : (state,action:PayloadAction<string>)=>{
+      state.hiddenalert = action.payload
+    },
+    getNewChange :(state,action:PayloadAction<string>)=>{
+      state.newchang = action.payload
     }
 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { getDEliveryAdress, getVendorAdress, getIrnOrignalData, getIrndata, getSelectedValue, getMainData, getNewIRN, getIrnPoView, getIrnview, deleteIrnLine, getIrnchange, getUpirno, getBillData, getOrignalData, getTotalQuantity, getOdataValue, getHasTrueValue } = irnSlice.actions
+export const { getDEliveryAdress, getVendorAdress, getIrnOrignalData, getIrndata, getSelectedValue, getMainData, getNewIRN, getIrnPoView, getIrnview, deleteIrnLine, getIrnchange, getUpirno, getBillData, getOrignalData, getTotalQuantity, getOdataValue, getHasTrueValue,setHiddenALert,getNewChange } = irnSlice.actions
 
 export default irnSlice.reducer
