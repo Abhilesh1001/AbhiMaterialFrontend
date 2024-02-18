@@ -84,8 +84,10 @@ export interface datatypePr {
 
 export interface prsliiceState {
     prslicer:{
-    datapr : datatypePr[]
-    prmaindata : prmainData
+    datapr : datatypePr[],
+    prmaindata : prmainData,
+    hiddenalert?:string,
+    newchang?:string,
 }
     
   }
@@ -112,8 +114,11 @@ export interface prmainData {
   
   export interface CounterState {
     datapr : datatypePr[],
-    prmaindata : prmainData
+    prmaindata : prmainData,
+    hiddenalert?:string,
+    newchang?:string,
   }
+
   
   export interface CounterStatePo {
     deliveryadress:vendorType,
@@ -129,6 +134,8 @@ export interface prmainData {
     uppono:null|number
     orignalData:datatype[]
     totalQuantity:datatype[]
+    hiddenalert :string
+    newchang : string,
   }
 
 

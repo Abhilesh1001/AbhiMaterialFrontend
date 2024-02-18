@@ -18,7 +18,9 @@ const initialState: CounterStatePo = {
     pochange :false,
     uppono : null,
     orignalData :pomainall,
-    totalQuantity : pomainall
+    totalQuantity : pomainall,
+    hiddenalert :'hidden',
+    newchang : "change"
 }
 
 
@@ -72,12 +74,19 @@ export const poSlice = createSlice({
     getTotalQuantity : (state,action:PayloadAction<datatype[]>)=>{
       state.totalQuantity = action.payload
     },
+    setHiddenALert : (state,action:PayloadAction<string>)=>{
+      state.hiddenalert = action.payload
+    },
+    getNewChange :(state,action:PayloadAction<string>)=>{
+      state.newchang = action.payload
+    }
+
 
   },
  
 })
 
 // Action creators are generated for each case reducer function
-export const { getDEliveryAdress,getVendorAdress,getData,getPoData,getSelectedValue,getMainData,getNewPO,getPoPrView,getPoview,deletePoLine,getPochange,getUppono,getOrignalData,getTotalQuantity} = poSlice.actions
+export const { getDEliveryAdress,getVendorAdress,getData,getPoData,getSelectedValue,getMainData,getNewPO,getPoPrView,getPoview,deletePoLine,getPochange,getUppono,getOrignalData,getTotalQuantity,setHiddenALert,getNewChange} = poSlice.actions
 
 export default poSlice.reducer

@@ -8,9 +8,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios';
 import {useMutation} from '@tanstack/react-query'
 import { usePoview } from './usePoview'
+import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
 
 // redux 
-import { getData,getPoData,getSelectedValue,getMainData,getNewPO,getVendorAdress,getPoPrView,getPoview, getPochange,getUppono, getOrignalData,getTotalQuantity } from '@/redux/po/poslicer';
+import { getData,getPoData,getSelectedValue,getMainData,getNewPO,getVendorAdress,getPoPrView,getPoview, getPochange,getUppono, getOrignalData,getTotalQuantity,setHiddenALert,getNewChange } from '@/redux/po/poslicer';
 
 
 export const usePo = () => {
@@ -35,10 +36,14 @@ export const usePo = () => {
             dispatch(getVendorAdress({name: '', phone_no: null, vendor_name: '', address: '', gst: '', email: ''}))
             dispatch(getData(pomainall))
             getUppono(null)
+            dispatch(setHiddenALert(''))  
+            dispatch(getNewChange('change'))
+            soundSsuccess?.play()
         },
         onError:(error)=>{
             console.log(error)
             setLoading(false)
+            soundError?.play()
         }
     }))
    
@@ -90,6 +95,7 @@ export const usePo = () => {
     // create new PO 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         console.log('ok')
+        soundClick?.play()
         if (selectedValue === 'PR' && vendoradress.name!=='' && deliveryadress.name !== '' && data[0].material_name !== '') {
             setLoading(true)
             const redata = {
@@ -105,6 +111,7 @@ export const usePo = () => {
     }
 
     const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        soundClick?.play()
         dispatch(getSelectedValue(e.target.value));
         dispatch(getData(pomainall))
         dispatch(getPoData( {po_no:null,time:'',item_pr:'',vendor_address:'',delivery_address:'',user:null,maindata:''}))
@@ -144,9 +151,11 @@ export const usePo = () => {
     }, [data, orignalData]); // Include orignalData in the dependency array
 
 
-
+    const handleCloseAlert =()=>{
+        dispatch(setHiddenALert('hidden'))   
+    }
     
 
 
-    return { handleSubmit, handleChange,handlePRPOView, handleRadioChange,loadingNewPoCreation,hasTrueValue }
+    return { handleSubmit, handleChange,handlePRPOView, handleRadioChange,loadingNewPoCreation,hasTrueValue,mutation,handleCloseAlert }
 }

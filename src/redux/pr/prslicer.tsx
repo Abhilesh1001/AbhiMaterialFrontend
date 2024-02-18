@@ -8,7 +8,9 @@ import {praldata,prmainall} from '@/components/dataAll/data'
 
 const initialState: CounterState = {
     datapr :praldata,
-    prmaindata : prmainall
+    prmaindata : prmainall,
+    hiddenalert :'hidden',
+    newchang :'change'
 }
 
 
@@ -30,6 +32,12 @@ export const prSlice = createSlice({
     },
     setPrMainData : (state,action:PayloadAction<prmainData>) =>{
       state.prmaindata = action.payload
+    },
+    setHiddenALert : (state,action:PayloadAction<string>)=>{
+      state.hiddenalert = action.payload
+    },
+    getNewChange :(state,action:PayloadAction<string>)=>{
+      state.newchang = action.payload
     }
 
 }
@@ -37,6 +45,6 @@ export const prSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { getPrData,resetPr,deleteLine,setPrMainData} = prSlice.actions
+export const { getPrData,resetPr,deleteLine,setPrMainData,setHiddenALert,getNewChange} = prSlice.actions
 
 export default prSlice.reducer

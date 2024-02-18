@@ -10,13 +10,14 @@ export interface CounterState {
   user : string,
   userId : number|null,
   mainheader :string,
-  hidden : hiddenType
+  hidden : hiddenType,
+  alerthidden : string
 }
 
 const initialState: CounterState = {
   // https://abhileshmaterial.pythonanywhere.com/
   // http://127.0.0.1:8000/
-  baseurl : 'https://abhileshmaterial.pythonanywhere.com/',
+  baseurl : 'http://127.0.0.1:8000/',
   logindata : {},
   authToken : null,
   user : "",
@@ -39,7 +40,8 @@ const initialState: CounterState = {
     invoice:'hidden',
     issuematerial : 'hidden'
   
-  }
+  },
+  alerthidden :'hidden'
 }
 
 export const counterSlice = createSlice({
@@ -74,7 +76,10 @@ export const counterSlice = createSlice({
     getHidden : (state,action:PayloadAction<hiddenType>)=>{
       state.hidden =action.payload
     }
+    
   },
+  
+
 })
 
 // Action creators are generated for each case reducer function

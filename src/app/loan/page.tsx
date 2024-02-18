@@ -12,6 +12,8 @@ import { updataData } from '@/type/type'
 const Vendor = () => {
     const { setEnabled, mutation, data, vid, setVid, loanholder, handleSubmit, setLoanholder, handleKeyDown, handleCreate, handleChange, handleUPdate, change, sfcreate, mutationUpdate, updateData } = useLoan()
 
+    
+
 
     return (
         <div className='dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>

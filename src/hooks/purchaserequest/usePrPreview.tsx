@@ -1,17 +1,22 @@
+
+
 import {useDispatch,useSelector} from 'react-redux'
 import {praldata,prmainall} from '@/components/dataAll/data'
 
 
-// dependencies
-import {useQuery} from '@tanstack/react-query'
+// dependencies 
 import axios from 'axios'
+import { soundClick,soundError,soundSsuccess } from '@/sound/sound'
 
 // typeScript 
 import {datatypePr,StateProps,prsliiceState} from '@/type/type'
 
 // reducer 
-import {resetPr,deleteLine,getPrData,setPrMainData} from '@/redux/pr/prslicer'
+import {resetPr,deleteLine,getPrData,setPrMainData,setHiddenALert,getNewChange} from '@/redux/pr/prslicer'
+
+
 import { ChangeEvent, useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
 
 
 
@@ -21,12 +26,11 @@ export const usePrPreview =() =>{
     const { baseurl, authToken,userId } = useSelector((state: StateProps) => state.counter)
     const [prno,setPrno] = useState<number|null>(null)
     const [view,setView] =useState(false)
-    const [change,setChange] = useState(false)
-    const [upprno,setUpprno] = useState<number|null>(null)
-    const [loadingNewPrUpdate,setloadingPrUpdata] = useState(false)
+    const [change,setChange] = useState('change')
 
     const dispatch =useDispatch()
     const handleView = async ()=>{
+        soundClick?.play()
         setView(true)
         if(prno !== null){
             try{
@@ -55,7 +59,9 @@ export const usePrPreview =() =>{
                     return element
                 })
                 dispatch(getPrData(mapDataUpdata))
+                soundSsuccess?.play()
             }catch(error){
+                soundError?.play()
             }
         }
         
@@ -63,47 +69,57 @@ export const usePrPreview =() =>{
     }
 
     const handlePRView = (e: ChangeEvent<HTMLInputElement>) =>{
+        soundClick?.play()
         setPrno(Number(e.target.value))
     }
     const FormReset =() =>{
+        soundClick?.play()
        dispatch(resetPr(praldata))
        dispatch(setPrMainData(prmainall))
        setView(false)
-       setChange(false)
+       setChange('change')
+      
     }
     const handleDelete = (index:number)=>{
+        soundClick?.play()
         if( data.length > 1){
             dispatch(deleteLine({index}))
-            
         }
     }
 
     const handleChangePr = () =>{
+        soundClick?.play()
         handleView()
         setView(false)
-        setChange(true)
+        setChange('')
+        dispatch(getNewChange(''))
     }
+
+
+
+    const mutationUpdate =  useMutation<any,any,any,unknown>({
+        mutationFn : async (newData)=>{
+                return await axios.patch(`${baseurl}mat/createpurchase/${prno}/`,newData,{
+                    headers :{
+                        Authorization : `Bearer ${authToken?.access}`
+                    }
+                })
+        },
+        onSuccess:(data)=>{
+            FormReset()
+        }
+
+    })
+
+
     const handleUpdate = async () =>{
-        setloadingPrUpdata(true)
+        soundClick?.play()
+        dispatch(setHiddenALert(''))
         const nweData = {
             item_json : JSON.stringify(data)
         }
-        console.log(nweData)
-        try {
-            const res = await axios.patch(`${baseurl}mat/createpurchase/${prno}/`,nweData,{
-                headers :{
-                    Authorization : `Bearer ${authToken?.access}`
-                }
-            })
-            setUpprno(res.data.data.pr_no)
-            FormReset()
-            setloadingPrUpdata(false)
-        }catch(error) {
-            console.log(error)
-            setloadingPrUpdata(false)
-        }
-        console.log(data)
+        mutationUpdate.mutate(nweData)
     }
    
-    return {FormReset,handleDelete,handleView,handlePRView,view,handleChangePr,change,handleUpdate,upprno,loadingNewPrUpdate}   
+    return {FormReset,handleDelete,handleView,handlePRView,view,handleChangePr,change,handleUpdate,mutationUpdate}   
 } 

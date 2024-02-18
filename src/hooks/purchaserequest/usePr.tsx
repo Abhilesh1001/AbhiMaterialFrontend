@@ -7,16 +7,18 @@ import axios from 'axios'
 
 // hooks 
 import {useMutation} from '@tanstack/react-query'
-import {getPrData,setPrMainData} from '@/redux/pr/prslicer'
+import {getPrData,setPrMainData,setHiddenALert,getNewChange} from '@/redux/pr/prslicer'
 import { praldata } from '@/components/dataAll/data'
+import { soundClick,soundError,soundSsuccess } from '@/sound/sound'
 
 export const usePr =()=>{
     const { baseurl, authToken, user, userId } = useSelector((state: StateProps) => state.counter)
     const [loadingNewPrCreation, setLoading] = useState(false);
     const { datapr:data} = useSelector((state: prsliiceState) => state.prslicer)
-    const [newPrNo,setNewPrNo] = useState<null|number>(null)
-    console.log(data)
+    const [hidden,setHidden] = useState('hidden')
     const dispatch = useDispatch()
+
+
     const mutation = useMutation<any,any,any,unknown>({
         mutationFn : async (dataRes:any)=>
             await axios.post(`${baseurl}mat/createpurchase`, dataRes, {
@@ -25,14 +27,16 @@ export const usePr =()=>{
                 }
             }),
             onError:(e) =>{
+                soundError?.play()
                 console.log(e)
                 setLoading(false)
             },
             onSuccess:(data, variables, context)=>{
-                  setNewPrNo(data.data.data.pr_no)
+                soundSsuccess?.play()          
                   setLoading(false)
                 // setNewMatNo(data.data.data.s_no) 
-                dispatch(getPrData(praldata))             
+                dispatch(getNewChange('change'))
+                dispatch(getPrData(praldata))  
             }
             ,
     })
@@ -53,7 +57,9 @@ export const usePr =()=>{
         }
         dispatch(getPrData(updatedData));
     }
+
     const handleForm = () => {
+        soundClick?.play()
         const newFrom = [...data]
         const lastLine = newFrom.length > 0 ? newFrom[newFrom.length - 1].line_no : 0;
         const newLine =lastLine === null ? 0 : lastLine + 1;
@@ -74,13 +80,14 @@ export const usePr =()=>{
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        soundClick?.play()
         e.preventDefault()
         setLoading(true)
         const result = {
             user: userId,
             item_json: JSON.stringify(data)
         }
-
+        dispatch(setHiddenALert(''))   
         mutation.mutate(result)
     }
 
@@ -88,6 +95,7 @@ export const usePr =()=>{
         const value = (e.target as HTMLInputElement).value;
         console.log('ok')
         if (e.key === 'Enter') {
+            soundClick?.play()
             const id = parseInt(value)
             e.preventDefault();
             console.log('Enter key pressed!');
@@ -118,6 +126,7 @@ export const usePr =()=>{
 
 
             } catch (error) {
+                soundError?.play()
                 console.log(error)
 
             }
@@ -127,7 +136,12 @@ export const usePr =()=>{
         }
     }
 
+    
+    const handleCloseAlert =()=>{
+        dispatch(setHiddenALert('hidden'))   
+    }
+
    
 
-    return {handleChange,handleKeyDown,handleSubmit,handleForm,newPrNo,loadingNewPrCreation}
+    return {handleChange,handleKeyDown,handleSubmit,handleForm,loadingNewPrCreation,handleCloseAlert,hidden,mutation}
 }

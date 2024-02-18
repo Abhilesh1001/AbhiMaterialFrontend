@@ -2,8 +2,10 @@ import { useState } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios';
 import { posliiceState, StateProps,datatype } from '@/type/type'
-import { getData, getPoData, getPoview, getSelectedValue, deletePoLine, getPochange, getUppono, getMainData, getNewPO, getOrignalData,getTotalQuantity } from '@/redux/po/poslicer';
+import { getData, getPoData, getPoview, getSelectedValue, deletePoLine, getPochange, getUppono, getMainData, getNewPO, getOrignalData,getTotalQuantity,getNewChange,setHiddenALert } from '@/redux/po/poslicer';
 import { pomainall } from '@/components/dataAll/data'
+import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
+import { useMutation } from "@tanstack/react-query";
 
 
 export const usePoview = () => {
@@ -20,13 +22,16 @@ export const usePoview = () => {
     }
 
     const handleInsert = () => {
+        soundClick?.play()
         dispatch(getPoview(false))
         handleViewChange()
     }
     const handlePochange = () => {
+        soundClick?.play()
         dispatch(getPoview(false))
         handleViewChange()
         dispatch(getPochange(true))
+        dispatch(getNewChange(''))
     }
 
     const handleViewClick = () => {
@@ -37,6 +42,7 @@ export const usePoview = () => {
 
 
     const PrInsert = async () => {
+        soundClick?.play()
         try {
             const res = await axios.get(`${baseurl}mat/createpurchase/${poprview}/`, {
                 headers: {
@@ -86,10 +92,9 @@ export const usePoview = () => {
             }
 
 
-
-
         } catch (error) {
             console.log(error)
+            soundError?.play()
         }
     }
 
@@ -170,29 +175,44 @@ export const usePoview = () => {
     }
 
     const handleDelete = (index: number) => {
+        soundClick?.play()
         dispatch(deletePoLine({ index }))
     }
-    const handleUpdatePo = async (po_no: number) => {
+    const handleUpdatePo = (po_no: number) => {
+        soundClick?.play()
         console.log('poview',po_no)
+        dispatch(setHiddenALert(''))
         const newData = {
             item_pr: JSON.stringify(data),
             user: userId,
             maindata: JSON.stringify(mainData)
         }
-        try {
-            const res = await axios.patch(`${baseurl}mat/createpo/${po_no}/`, newData, {
+        // console.log(po_no,newData)
+        mutationUpdate.mutate({neaData : newData,po_no:po_no})
+    }
+
+
+    const mutationUpdate = useMutation<any,any,any,unknown>({
+        mutationFn : async  (data)=>{
+            console.log(data)
+            return await axios.patch(`${baseurl}mat/createpo/${data.po_no}/`, data.neaData, {
                 headers: {
                     Authorization: `Bearer ${authToken?.access}`
                 }
             })
-            dispatch(getUppono(res.data.data.po_no))
+        },
+        onSuccess :(data)=>{
+            dispatch(getUppono(data.data.data.po_no))
             ResetPo()
             dispatch(getNewPO(null))
+            soundSsuccess?.play()
+        },
+        onError :(error) =>{
+            console.log('error',error)
+        }   
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    })
+    console.log('outside',mutationUpdate.data)
 
     const ResetPo = () => {
         dispatch(getData(pomainall))
@@ -201,7 +221,6 @@ export const usePoview = () => {
         dispatch(getOrignalData(pomainall))
 
     }
-
 
     // removeDublicates 
     function removeDuplicates(originalData: datatype[]): datatype[] {
@@ -247,14 +266,15 @@ export const usePoview = () => {
 
 
     const handleDelivery = () => {
+        soundClick?.play()
         setDeliveryView(`${deliveryView === 'dview' ? null : 'dview'}`)
     }
     const handleVdetails = () => {
+        soundClick?.play()
         setVendorView(`${vendorView === 'view' ? null : 'view'}`)
-
     }
 
    
     
-    return { handlePoview, handlePochange, handleViewClick, handleInsert, handleDelete, handleInsertPrInpo, handleUpdatePo, ResetPo,TotalQuantity,handleDelivery,vendorView,deliveryView,handleVdetails }
+    return { handlePoview, handlePochange, handleViewClick, handleInsert, handleDelete, handleInsertPrInpo, handleUpdatePo, ResetPo,TotalQuantity,handleDelivery,vendorView,deliveryView,handleVdetails,mutationUpdate }
 }
