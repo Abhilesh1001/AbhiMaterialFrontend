@@ -118,7 +118,7 @@ export const useMaterial = () =>{
             material_group:'',
             unit : '',
         })
-        setSfcreate('create')
+       
         setChange('')
 
     }
@@ -136,6 +136,7 @@ export const useMaterial = () =>{
         }})},
         onSuccess:(data)=>{
             soundSsuccess?.play()
+            
         },
         onError:(error)=>{
             console.log('error',error)

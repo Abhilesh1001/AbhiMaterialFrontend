@@ -53,10 +53,10 @@ const ProcumentMenu = () => {
             </ul>  
             <div className='cursor-pointer' onClick={()=>dispatch(getHidden({...hidden , hiddenDumps: `${hidden.hiddenDumps==='hidden'?'flex':'hidden'}`}))}>📁 Dumps</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.hiddenDumps} flex-col`}>
-                <Link href={'material/materialstock'} onClick={()=>handleClick('Material Stock')}>⭐ Material Stock </Link>
-                <Link href={'purchase/preqdumps'} onClick={()=>handleClick('Purchase Request Dumps')}>⭐ Purchase Request</Link>
-                <Link href={"purchase/podumps"} onClick={()=>handleClick('Purchase Order Dumps')}>⭐ Purchase Order</Link>
-                <Link href={"grn/grndumps"} onClick={()=>handleClick('GRN Dumps')}>⭐  GRN</Link>
+                <Link href={'/material/materialstock'} onClick={()=>handleClick('Material Stock')}>⭐ Material Stock </Link>
+                <Link href={'/purchase/preqdumps'} onClick={()=>handleClick('Purchase Request Dumps')}>⭐ Purchase Request</Link>
+                <Link href={"/purchase/podumps"} onClick={()=>handleClick('Purchase Order Dumps')}>⭐ Purchase Order</Link>
+                <Link href={"/grn/grndumps"} onClick={()=>handleClick('GRN Dumps')}>⭐  GRN</Link>
             </ul>  
             <div className='cursor-pointer' onClick={()=>dispatch(getHidden({...hidden ,issuematerial :`${hidden.issuematerial==='hidden'?'flex':'hidden'}`}))}>📁 Material Issue</div>  
             <ul className={`ml-8 cursor-pointer ${hidden.issuematerial} flex-col`}>

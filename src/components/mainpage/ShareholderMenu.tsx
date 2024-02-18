@@ -38,19 +38,19 @@ const ShareholderMenu = () => {
     <div className='cursor-pointer' onClick={()=>dispatch(getHidden({...hidden , rdColl : `${hidden.rdColl==='hidden'?'flex':'hidden'}`}))}>📁 Add RD Collection</div>  
     <ul className={`ml-8 cursor-pointer ${hidden.rdColl} flex-col`}>
         <Link href={'/rdname/rdcoldata'} onClick={()=>handleClick(' Rd Collection')}>⭐ Rd Collection</Link>
-        <Link href={'rdname/rdcolpday'} onClick={()=>handleClick('Rd Collection View')}>⭐ Rd Collection View</Link>
+        <Link href={'/rdname/rdcolpday'} onClick={()=>handleClick('Rd Collection View')}>⭐ Rd Collection View</Link>
     </ul>  
 
     <div className='cursor-pointer' onClick={()=>dispatch(getHidden({...hidden ,loanpername :`${hidden.loanpername==='hidden'?'flex':'hidden'}`}))}>📁 Loan Person</div>  
     <ul className={`ml-8 cursor-pointer ${hidden.loanpername} flex-col`}>
-        <Link href={'loan/'} onClick={()=>handleClick('Loan person Create /Delete /Update')}>⭐ Loan person Create /Delete /Update </Link>
+        <Link href={'/loan/'} onClick={()=>handleClick('Loan person Create /Delete /Update')}>⭐ Loan person Create /Delete /Update </Link>
     </ul>  
 
     <div className='cursor-pointer' onClick={()=>dispatch(getHidden({...hidden , loanColl: `${hidden.loanColl==='hidden'?'flex':'hidden'}`}))}>📁 Loan Collection</div>  
     <ul className={`ml-8 cursor-pointer ${hidden.loanColl} flex-col`}>
-        <Link href={'loan/loancoldata'} onClick={()=>handleClick('Loan Collection')}>⭐ Loan Collection</Link>
-        <Link href={'loan/loancolpday'} onClick={()=>handleClick('Loan Colleection View')}>⭐ Loan Colleection View</Link>
-        <Link href={'loan/loanamount'} onClick={()=>handleClick('Loan amount create/change/view')}>⭐ Loan amount create/change/view</Link>
+        <Link href={'/loan/loancoldata'} onClick={()=>handleClick('Loan Collection')}>⭐ Loan Collection</Link>
+        <Link href={'/loan/loancolpday'} onClick={()=>handleClick('Loan Colleection View')}>⭐ Loan Colleection View</Link>
+        <Link href={'/loan/loanamount'} onClick={()=>handleClick('Loan amount create/change/view')}>⭐ Loan amount create/change/view</Link>
     </ul>  
 
 </div>
