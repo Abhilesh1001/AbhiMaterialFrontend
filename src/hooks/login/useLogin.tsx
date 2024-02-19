@@ -10,19 +10,13 @@ import { getMainheader } from '@/redux/slice'
 import { soundClick,soundSsuccess,soundError} from "@/sound/sound"
 
 export const useLogin = (data: loginred) => {
-   
-    
     const { baseurl, authToken } = useSelector((state: StateProps) => state.counter)
-   
-
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState('')
-
     const dispatch = useDispatch()
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         soundClick?.play()
         setLoading(true)
-
         e.preventDefault()
         try {
             const response = await axios.post(`${baseurl}cus/authlogin/`, data)
