@@ -6,8 +6,8 @@ interface TextInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   width?: string;
   css?: string;
-  name : string;
-  label : string
+  name? : string;
+  label? : string
 }
 
 const TextInputText: React.FC<TextInputProps> = ({ value, type, onChange, width, name, css,label}) => {

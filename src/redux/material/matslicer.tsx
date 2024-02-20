@@ -8,7 +8,8 @@ import { matissueMain } from '@/components/dataAll/data'
 const initialState: dataTypeMatIssue = {
     matData :matissueMain,
     orignalData : matissueMain,
-    totalQuantity : matissueMain
+    totalQuantity : matissueMain,
+    miview:null 
 }
 
 export const matSlice = createSlice({
@@ -23,6 +24,9 @@ export const matSlice = createSlice({
     },
     getTotalQuantity : (state,action:PayloadAction<matType[]>)=>{
         state.totalQuantity = action.payload
+    },
+    getMiView:(state,action:PayloadAction<number|null>)=>{
+        state.miview = action.payload
     }
 
 }
@@ -30,6 +34,6 @@ export const matSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { getMatData,getOrignalData,getTotalQuantity} = matSlice.actions
+export const { getMatData,getOrignalData,getTotalQuantity,getMiView} = matSlice.actions
 
 export default matSlice.reducer

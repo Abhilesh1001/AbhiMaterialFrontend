@@ -6,10 +6,15 @@ import {matState,matType} from '@/type/material/materia-type'
 import PrBurron from '../button/PrBurron';
 import TableHead from '../dummyinput/TableHead';
 
+interface dataType {
+    viewdata :string 
+    changeData:string
+}
 
-const MaterialIssueTable = () => {
+
+const MaterialIssueTable = (props:dataType) => {
     const {matData:data} =  useSelector((state:matState)=>state.matSlice)
-    const {handleKeyDown,handleChange,handleDelete} = useIsMaterial()
+    const {handleKeyDown,handleChange,handleDelete,view,change} = useIsMaterial()
     let serialNo = 0
     const materialIssue = ['S No','Line No','Material No','Material Name','Material Unit', 'Material Qty','Material Issue','Remarks','Delete']
 
@@ -19,14 +24,16 @@ const MaterialIssueTable = () => {
            return  <tr key={index}>
                     <td><DumyInput indum={serialNo} /></td>
                     <td ><DumyInput indum={item.mi_line} /></td>
-                        <td ><input type='number' value={item.material_no!==null?item.material_no:''} className='form-control text-sm' onKeyDown={(e)=>handleKeyDown(e,index)} onChange={(e)=>handleChange(Number(e.target.value),'material_no',index)} /></td>
+                        <td >{props.viewdata !=='change'  ?<DumyInput indum={item.material_no} />: <input type='number' value={item.material_no!==null?item.material_no:''} className='form-control text-sm' onKeyDown={(e)=>handleKeyDown(e,index)} onChange={(e)=>handleChange(Number(e.target.value),'material_no',index)} />}</td>
+
                         <td ><DumyInput indum={item.material_name} /></td>
                         <td ><DumyInput indum={item.material_unit} /></td>
                         <td ><DumyInput indum={item.material_qty} /></td>
-                        <td ><input type='number' className='form-control text-sm' value={item.material_issue!==null?item.material_issue:''}  onChange={(e)=>handleChange(Number(e.target.value),'material_issue',index)} /></td>
+                        <td >{props.viewdata !=='change' ?<DumyInput indum={item.material_issue} />:<input type='number' className='form-control text-sm' value={item.material_issue!==null?item.material_issue:''}  onChange={(e)=>handleChange(Number(e.target.value),'material_issue',index)} />}</td>
 
-                        <td ><input type='text' className='form-control text-sm w-60' value={item.material_remarks!==null?item.material_remarks:''}  onChange={(e)=>handleChange(e.target.value,'material_remarks',index)} /></td>
-                        <td><PrBurron label={'Delete'} onClick={()=>handleDelete(index)} /></td>
+                        <td >{props.viewdata !=='change'?<DumyInput indum={item.material_remarks} />:<input type='text' className='form-control text-sm w-60' value={item.material_remarks!==null?item.material_remarks:''}  onChange={(e)=>handleChange(e.target.value,'material_remarks',index)} />}</td>
+
+                        <td>{props.viewdata !=='change' ?'':<PrBurron label={'Delete'} onClick={()=>handleDelete(index)} />}</td>
                 </tr>
         })
     };

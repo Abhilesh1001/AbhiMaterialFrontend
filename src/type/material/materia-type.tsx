@@ -10,7 +10,8 @@ export interface matType{
 export interface dataTypeMatIssue {
     matData : matType[],
     orignalData : matType[],
-    totalQuantity :matType[]
+    totalQuantity :matType[],
+    miview:null|number 
 }
 
 export interface matState {
