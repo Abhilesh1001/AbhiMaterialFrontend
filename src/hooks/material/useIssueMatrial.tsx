@@ -6,6 +6,7 @@ import { dataTypeMatIssue, matType, matState } from '@/type/material/materia-typ
 import { getMatData, getOrignalData, getTotalQuantity, getMiView } from '@/redux/material/matslicer'
 import { useMutation } from '@tanstack/react-query'
 import { matissueMain } from '@/components/dataAll/data'
+import { soundClick,soundError,soundSsuccess } from '@/sound/sound'
 
 
 
@@ -20,6 +21,7 @@ export function useIsMaterial(val?: string) {
     const [change,setChange] = useState('change')
 
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+        soundClick?.play()
         const value = (e.target as HTMLInputElement).value
         if (e.key == 'Enter') {
             const newData = [...data]
@@ -53,11 +55,13 @@ export function useIsMaterial(val?: string) {
 
             } catch (error) {
                 console.log(error)
+                soundError?.play()
             }
         }
     }
 
     const handleChange = (value: Number | string, key: keyof matType, index: number) => {
+        soundClick?.play()
         const updata = [...data]
         updata[index] = { ...updata[index], [key]: value }
         console.log(updata)
@@ -68,6 +72,7 @@ export function useIsMaterial(val?: string) {
     }
 
     function handleClick() {
+        soundClick?.play()
         const newFrom = [...data]
         const lastLine = newFrom.length > 0 ? newFrom[newFrom.length - 1].mi_line : 0;
         const newLine = lastLine === null ? 0 : lastLine + 1;
@@ -87,6 +92,7 @@ export function useIsMaterial(val?: string) {
             }),
         onSuccess: (data) => {
             dispatch(getMatData([{ mi_line: 1, material_no: null, material_name: '', material_unit: '', material_qty: null, material_issue: null, material_remarks: '' }]))
+            soundSsuccess?.play()
         },
         onError: (error) => {
             console.log(error)
@@ -97,6 +103,7 @@ export function useIsMaterial(val?: string) {
 
     const handleSubmit = () => {
         console.log('data', data)
+        soundClick?.play()
         const result = {
             user: userId,
             item_issue: JSON.stringify(data)
@@ -106,7 +113,7 @@ export function useIsMaterial(val?: string) {
     }
 
     const handleDelete = (index: number) => {
-        console.log(index)
+       soundClick?.play()
         if (data.length > 1) {
             const update = [...data]
             const updateData = update?.filter((item: any, indexs: number) => {
@@ -204,6 +211,7 @@ export function useIsMaterial(val?: string) {
     }
 
     const handleInsertMIssuse = async () => {
+        soundClick?.play()
         
         if(miview!==null){
             try {
@@ -266,10 +274,16 @@ export function useIsMaterial(val?: string) {
                 }
             })
         },
+        onSuccess:()=>{
+            soundSsuccess?.play()
+        },
+        onError:()=>{
+            soundError?.play()
+        }
     })
  
     const handleUpdate= async ()=>{
-        console.log(data)
+        soundClick?.play()
         const newData = {
             user : userId,
             item_issue : JSON.stringify(data)

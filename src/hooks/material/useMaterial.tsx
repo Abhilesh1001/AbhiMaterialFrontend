@@ -4,6 +4,7 @@ import {statePropsMaterial} from '@/type/type'
 import { useEffect, useState } from "react";
 import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
 import { useQuery,useMutation } from '@tanstack/react-query'
+import { toast } from 'react-toastify';
 
 
 
@@ -23,8 +24,7 @@ export const useMaterial = () =>{
     })
 
     const mutation = useMutation<any,any,any,unknown>({
-        mutationFn : async (dataRes:any)=>
-            await axios.post(`${baseurl}mat/creatematerial`,dataRes,{headers:{
+        mutationFn : async (dataRes:any)=>await axios.post(`${baseurl}mat/creatematerial`,dataRes,{headers:{
                 Authorization : `Bearer ${authToken?.access}`
             }}),
             onError:(e) =>{
@@ -54,12 +54,26 @@ export const useMaterial = () =>{
         console.log('ok')
         setLoading(true)
         e.preventDefault()
+
+        if (!data.material_name || !data.material_group || !data.unit) {
+            // You can show an error message to the user here
+            soundError?.play()
+            toast.error('Fill all the required Fileds',{position:'top-center'})
+            return;
+        }
+        if(data.material_name.length <4){
+            soundError?.play()
+            toast.error('Enter Material Name Greater than 4 charactor',{position:'top-center'})
+            return
+        }
+
         const dataRes = {
             material_name : data.material_name,
             material_group:data.material_group,
             unit : data.unit,
             user : userId
         }
+        
         mutation.mutate(dataRes)
 
     }
@@ -102,6 +116,18 @@ export const useMaterial = () =>{
     // setEnabled,
     const handleUPdate =() =>{
         soundClick?.play()
+
+        if (!vid){
+            soundError?.play()
+            toast.error('Enter Material No. for Update',{position:'top-center'})
+            return
+        }
+
+        if(!data.material_name || !data.material_group || !data.unit ){
+            soundError?.play()
+            toast.error('Enter all required fileds',{position:'top-center'})
+        }
+
         const newData = {
             material_name : data.material_name,
             material_group:data.material_group,

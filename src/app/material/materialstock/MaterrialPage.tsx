@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query'
 import DumyInput from '@/components/dummyinput/DumyInput'
 import {useSelector} from 'react-redux'
 import {StateProps} from '@/type/type'
+import { soundClick } from '@/sound/sound'
+
 
 const MaterrialPage = () => {
 
@@ -13,6 +15,7 @@ const MaterrialPage = () => {
     const {baseurl,authToken} = useSelector((state:StateProps)=>state.counter)
     
     const getData = async () => {
+        
         const res = await axios.get(`${baseurl}grn/materialstock`,{
             headers:{
                 Authorization:`Bearer ${authToken?.access}`
@@ -25,6 +28,7 @@ const MaterrialPage = () => {
 
     const { data: res,error } = useQuery({ queryKey: ['materialStock'], queryFn: getData, enabled: enable,staleTime:1000*4 })
     const handleClick = () => {
+        soundClick?.play()
         setEnable(true)
     }
     console.log(error)

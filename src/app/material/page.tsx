@@ -4,7 +4,6 @@
 
 // dependencies 
 import PrBurron from '@/components/button/PrBurron'
-import Aleart from '@/components/alert/Aleart'
 import Loading from '@/components/loading/Loading'
 
 // hooks 
@@ -25,15 +24,10 @@ interface matType {
 const page = () => {
 
     const { handleSubmit, setDate, data, loadingNewCreation, newMatNo, setEnabled, handleUPdate, handleCreate, handleChange, change, mutation, handleKeyDown, setVid, mutationUpdate, sfcreate } = useMaterial()
-    console.log(mutation.data)
-
-    console.log(mutationUpdate.data, 'mutation data')
+    console.log(mutation.error,'mutationeror')
     return (
         <div className=' dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
             <div className='container'>
-
-               
-
 
                 <div className="row my-4">
                     <div className="col-sm-6 my-4">
@@ -56,6 +50,7 @@ const page = () => {
                             <label htmlFor="material name" className='dark:text-gray-50 form-label text-sm'>Material Name</label>
 
                             <TextInput onChange={(e) => setDate({ ...data, material_name: e.target.value })} value={data.material_name} />
+
                             <label htmlFor="Material No" className="form-label dark:text-gray-50 text-sm">Material Group</label>
                             <select onChange={(e) => setDate({ ...data, material_group: e.target.value })} value={data.material_group} required className="form-select form-select-lg text-xs dark:text-white dark:bg-slate-950" aria-label="Large select example">
                                 {/* <option value='material_group' selected>Material Group</option> */}
