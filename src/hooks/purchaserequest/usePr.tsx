@@ -10,6 +10,7 @@ import {useMutation} from '@tanstack/react-query'
 import {getPrData,setPrMainData,setHiddenALert,getNewChange} from '@/redux/pr/prslicer'
 import { praldata } from '@/components/dataAll/data'
 import { soundClick,soundError,soundSsuccess } from '@/sound/sound'
+import { toast } from 'react-toastify'
 
 export const usePr =()=>{
     const { baseurl, authToken, user, userId } = useSelector((state: StateProps) => state.counter)
@@ -83,12 +84,39 @@ export const usePr =()=>{
         soundClick?.play()
         e.preventDefault()
         setLoading(true)
+       console.log(data)
+
+        const resData =data.map((item)=>{
+            if(!item.line_no || !item.material_name || !item.material_no || !item.material_price || !item.material_qty || !item.material_text || !item.material_unit){
+                soundError?.play()
+                toast.error('Enter all required input fileds',{position:'top-center'})
+                mutation.reset()
+                return true 
+            }else{
+                return false
+            }
+        })
+
         const result = {
             user: userId,
             item_json: JSON.stringify(data)
         }
-        dispatch(setHiddenALert(''))   
-        mutation.mutate(result)
+        dispatch(setHiddenALert('')) 
+        console.log(resData)
+        const resSome = resData.some((res)=>{
+            if (res===false){
+                return false 
+            }else{
+                return true
+            }
+        })
+
+
+
+        if(!resSome){
+            // console.log('ok............')
+            mutation.mutate(result)
+        }
     }
 
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>, indexval: number) => {
