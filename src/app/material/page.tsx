@@ -19,8 +19,6 @@ interface matType {
     user: string,
 }
 
-
-
 const page = () => {
 
     const { handleSubmit, setDate, data, loadingNewCreation, newMatNo, setEnabled, handleUPdate, handleCreate, handleChange, change, mutation, handleKeyDown, setVid, mutationUpdate, sfcreate } = useMaterial()

@@ -12,6 +12,7 @@ import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
 
 // redux 
 import { getData,getPoData,getSelectedValue,getMainData,getNewPO,getVendorAdress,getPoPrView,getPoview, getPochange,getUppono, getOrignalData,getTotalQuantity,setHiddenALert,getNewChange } from '@/redux/po/poslicer';
+import { toast } from 'react-toastify';
 
 
 export const usePo = () => {
@@ -41,7 +42,7 @@ export const usePo = () => {
             soundSsuccess?.play()
         },
         onError:(error)=>{
-            console.log(error)
+            // console.log(error)
             setLoading(false)
             soundError?.play()
         }
@@ -49,7 +50,7 @@ export const usePo = () => {
    
 
     const handleChange = async (value: any, key: keyof datatype, index: number) => {
-        const newData:datatype[] = [...data]; // Create a copy of the state array
+        const newData:datatype[] = [...data]; 
         
         if (value !== null) {
             if (key === 'total_amount' || key === 'total_tax' || key === 'material_price' || key === 'material_qty' || key === 'material_tax') {
@@ -59,7 +60,7 @@ export const usePo = () => {
 
                 if (key === 'material_qty' || key === 'material_price' || key === 'material_tax') {
                     const totalAmount = qty * price;
-                    const total_tax = totalAmount * (tax * 0.01) + totalAmount; // Calculate total_tax based on your logic
+                    const total_tax = totalAmount * (tax * 0.01) + totalAmount; 
                     newData[index] = { ...newData[index], total_amount: totalAmount, total_tax: total_tax };
                 }
             }
@@ -94,10 +95,31 @@ export const usePo = () => {
 
     // create new PO 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log('okusepo')
+        mutation.reset()
         soundClick?.play()
+        // console.log(vendoradress)
+        if(vendoradress.name==='' || vendoradress.s_no===null){
+            // console.log('errro')
+            toast.error('Enter vendor Details',{position:'top-center'})
+            soundError?.play()
+            return
+        }
+        
+        const dataRes  = data.map((item)=>{
+            // console.log(item)
+            if(item.material_price===0 || item.material_qty===0 || item.material_tax===0 || item.material_text==='' || item.material_tax===null){
+                return false
+            }else{
+                return true
+            }
+        })
+        
+        const resSome =  dataRes.some((res)=>{
+                return res ===false
+        })
+
         if (selectedValue === 'PR' && vendoradress.name!=='' && deliveryadress.name !== '' && data[0].material_name !== '') {
-            setLoading(true)
+           
             const redata = {
                 user : userId,
                 item_pr : JSON.stringify(data),
@@ -105,7 +127,15 @@ export const usePo = () => {
                 delivery_address :JSON.stringify(deliveryadress),
                 maindata :JSON.stringify(mainData)
             }
-            mutation.mutate(redata)
+            if(!resSome){
+                setLoading(true)
+                mutation.mutate(redata)
+            }else{
+                soundError?.play()
+                toast.error('Enter all required Fileds',{position:'top-center'})
+            }
+
+
         }
 
     }
@@ -148,7 +178,7 @@ export const usePo = () => {
 
         
 
-    }, [data, orignalData]); // Include orignalData in the dependency array
+    }, [data, orignalData]); 
 
 
     const handleCloseAlert =()=>{

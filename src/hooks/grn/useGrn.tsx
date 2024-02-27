@@ -1,12 +1,19 @@
+
 import { useState,useEffect } from "react";
 import {datatype,grnsliiceState} from '@/type/grn/grntype'
-import {useSelector,useDispatch} from 'react-redux' 
+
+// redux 
 import {getSelectedValue,getGrnPoView,getData,getMainData,getNewGRN,getTotalQuantity,getVendorAdress,getOrignalData,getUpgrno,getBillData,setHiddenALert,getNewChange} from '@/redux/grn/grnslicer'
+import {useSelector,useDispatch} from 'react-redux' 
+
+
 import {grnmainall} from '@/components/dataAll/data'
 import {useMutation} from '@tanstack/react-query'
 import axios from "axios";
 import {  StateProps } from '@/type/type'
 import {useGrnView} from  './useGrnView'
+import { toast } from "react-toastify";
+import { soundError, soundSsuccess } from "@/sound/sound";
 
 
 export const useGrn =() =>{
@@ -15,7 +22,6 @@ export const useGrn =() =>{
     const { baseurl, authToken,userId } = useSelector((state: StateProps) => state.counter)
     const [loadingNewPoCreation, setLoading] = useState(false);
     const {data,grnpoview,selectedValue,vendoradress,deliveryadress,mainData,billData,orignalData,totalQuantity} = useSelector((state:grnsliiceState)=>state.grnslice)
-    console.log('orignalDAta',totalQuantity,orignalData)
     const [qerror,setQerror] = useState<boolean[]>([])
     const hasTrueValue = qerror.some((value) => value === true);
 
@@ -38,11 +44,13 @@ export const useGrn =() =>{
             }
         }),
         onSuccess:(data)=>{
+            soundSsuccess?.play()
             dispatch(getNewGRN(data.data.data.grn_no))
             setLoading(false)
             ResetGRN()
             dispatch(setHiddenALert('')) 
             dispatch(getNewChange('change'))
+
         },
         onError:(error)=>{
             console.log(error)
@@ -53,9 +61,32 @@ export const useGrn =() =>{
     const handlePOGRNView = (e: React.ChangeEvent<HTMLInputElement>) =>{
         dispatch(getGrnPoView(Number(e.target.value)))
     }
+
+
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+
+
+        if(billData.bill_date===null || billData.bill_date=='' || billData.bill_no===null || billData.bill_no==='' || billData.delivery_note===null || billData.delivery_note===''|| billData.transporter_name===null || billData.transporter_name ==='' ||billData.way_bill ===null || billData.way_bill==='' ){
+            toast.error('Enter Billing address details',{position:'top-center'})
+            soundError?.play()
+            return
+        }
+
+
+        const resData = data.map((item)=>{
+            if(item.material_qty===null || item.material_qty===0){
+                return false
+            }else{
+                return true
+            }
+        }) 
+
+        const resSome = resData.some((item)=>{
+            return item===false
+        }) 
+
         if (selectedValue === 'PO' && vendoradress.name!=='' && deliveryadress.name !== '' && data[0].material_name !== '') {
-            setLoading(true)
+            
             const redata = {
                 user : userId,
                 item_po : JSON.stringify(data),
@@ -64,14 +95,18 @@ export const useGrn =() =>{
                 maindata :JSON.stringify(mainData),
                 billing : JSON.stringify(billData)
             }
-            console.log(redata)
             
-            mutation.mutate(redata)
+            if(!resSome){
+                setLoading(true)
+                mutation.mutate(redata)
+            }else{
+                soundError?.play()
+                toast.error('Enter all required Fields',{position:'top-center'})
+            }
         }
 
     }
     const handleChange =(value: any, key: keyof datatype, index: number) =>{
-        console.log(value,key,index)
         // dispatch(getData(newDataUpdata))
 
         const newData = [...data]; 
@@ -130,9 +165,9 @@ export const useGrn =() =>{
             const orignalItem = orignalData.find(
                 (orignalItem) => orignalItem.po_line === item.po_line && orignalItem.po_no === item.po_no
             );
-            console.log(item?.material_qty,orignalItem?.material_qty)
+            // console.log(item?.material_qty,orignalItem?.material_qty)
             if (item?.material_qty !== null && orignalItem?.material_qty !== null && orignalItem !== undefined) {
-                console.log('error',)
+                // console.log('error',)
                 if (item?.material_qty > orignalItem?.material_qty) {
                     error.push(true);
                 } else {
@@ -152,10 +187,5 @@ export const useGrn =() =>{
         dispatch(getUpgrno(null))
     }
     
-
-
-
-
-
     return {handleRadioChange,handlePOGRNView,handleSubmit,loadingNewPoCreation,handleChange,hasTrueValue,handleCloseAlert}
 }

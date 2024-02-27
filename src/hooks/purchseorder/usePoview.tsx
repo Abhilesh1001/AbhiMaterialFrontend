@@ -1,11 +1,19 @@
+
+// hooks 
 import { useState } from "react"
+import { useMutation } from "@tanstack/react-query";
+
+// redux 
 import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios';
-import { posliiceState, StateProps,datatype } from '@/type/type'
 import { getData, getPoData, getPoview, getSelectedValue, deletePoLine, getPochange, getUppono, getMainData, getNewPO, getOrignalData,getTotalQuantity,getNewChange,setHiddenALert } from '@/redux/po/poslicer';
+
+
+// dependences/datatype
 import { pomainall } from '@/components/dataAll/data'
 import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
-import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { posliiceState, StateProps,datatype } from '@/type/type'
+import axios from 'axios';
 
 
 export const usePoview = () => {
@@ -93,7 +101,8 @@ export const usePoview = () => {
 
 
         } catch (error) {
-            console.log(error)
+            // console.log(error)
+            toast.error('Provide Correct PR no',{position:'top-center'})
             soundError?.play()
         }
     }
@@ -167,7 +176,9 @@ export const usePoview = () => {
                 dispatch(getOrignalData(orignalUpdataData));
 
             } catch (error) {
-                console.log(error)
+                // console.log(error)
+                soundError?.play()
+                toast.error('Enter Correct PO No',{position:'top-center'})
             }
 
         }
@@ -179,22 +190,44 @@ export const usePoview = () => {
         dispatch(deletePoLine({ index }))
     }
     const handleUpdatePo = (po_no: number) => {
+        mutationUpdate.reset()
         soundClick?.play()
-        console.log('poview',po_no)
+        
         dispatch(setHiddenALert(''))
+
+
+        const dataRes  = data.map((item)=>{
+            // console.log(item)
+            if(item.material_price===0 || item.material_qty===0 || item.material_tax===0 || item.material_text==='' || item.material_tax===null){
+                return false
+            }else{
+                return true
+            }
+        })
+        
+        const resSome =  dataRes.some((res)=>{
+                return res ===false
+        })
+
+
         const newData = {
             item_pr: JSON.stringify(data),
             user: userId,
             maindata: JSON.stringify(mainData)
         }
-        // console.log(po_no,newData)
-        mutationUpdate.mutate({neaData : newData,po_no:po_no})
+       
+        if(!resSome){
+            mutationUpdate.mutate({neaData : newData,po_no:po_no})
+        }else{
+            soundError?.play()
+            toast.error('Enter all required Fileds',{position:'top-center'})
+        }
     }
 
 
     const mutationUpdate = useMutation<any,any,any,unknown>({
         mutationFn : async  (data)=>{
-            console.log(data)
+            // console.log(data)
             return await axios.patch(`${baseurl}mat/createpo/${data.po_no}/`, data.neaData, {
                 headers: {
                     Authorization: `Bearer ${authToken?.access}`
@@ -212,14 +245,13 @@ export const usePoview = () => {
         }   
 
     })
-    console.log('outside',mutationUpdate.data)
+    // console.log('outside',mutationUpdate.data)
 
     const ResetPo = () => {
         dispatch(getData(pomainall))
         dispatch(getSelectedValue('PR'))
         dispatch(getMainData({ TotalAmount: null, TotalWithtax: null, TotalTax: null }))
         dispatch(getOrignalData(pomainall))
-
     }
 
     // removeDublicates 

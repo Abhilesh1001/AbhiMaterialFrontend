@@ -18,6 +18,7 @@ import {useGrnView} from '@/hooks/grn/useGrnView'
 import {grnsliiceState } from '@/type/grn/grntype'
 import { useGrn } from '@/hooks/grn/useGrn' 
 
+
 const GoodReceipt = () => {
   const {newGrnNo,upgrnno,hiddenalert,newchang} = useSelector((state:grnsliiceState)=>state.grnslice)
 
@@ -32,11 +33,9 @@ const GoodReceipt = () => {
 
     <div className='h-6 p-4 flex flex-col'>
                     {hiddenalert !== "hidden" && <div>
-
                         {newchang == 'change' && <div> {newGrnNo && <><Aleart label={'Created'} alertname={'GRN'} onClose={handleCloseAlert} newMat={newGrnNo} /></>}</div>}
                         {newchang !== 'change' && <div>{upgrnno && <><Aleart label={'Updated'} alertname={'GRN'} onClose={handleCloseAlert} newMat={upgrnno} /></>}</div>}
                     </div>}
-
                 </div>
 
       <div className='my-3'>

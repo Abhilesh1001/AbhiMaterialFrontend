@@ -2,15 +2,14 @@ import React,{memo} from 'react'
 import DumyInput from '@/components/dummyinput/DumyInput'
 import {useSelector} from 'react-redux'
 import { irnsliiceState } from '@/type/irn/irn'
-
-import {useIrn} from '@/hooks/invoice/useIrn'
 import {useIrnView} from '@/hooks/invoice/useIrnView'
 import PrBurron from '@/components/button/PrBurron'
+import { format } from 'date-fns';
+
 
 const IrnTable = () => {
 
-const {data,irnview} = useSelector((state:irnsliiceState)=>state.irnSlice)
-  console.log(data)
+const {data,irnview,irndata} = useSelector((state:irnsliiceState)=>state.irnSlice)
   const {handleDelete} =useIrnView()
 
   return (
@@ -34,8 +33,8 @@ const {data,irnview} = useSelector((state:irnsliiceState)=>state.irnSlice)
 
                 <td><DumyInput indum={item.total_tax} /></td>
                 <td><DumyInput indum={item.material_text}/></td>
-                <td ><DumyInput indum={'user Name'} /></td>
-                <td ><DumyInput indum={'date'} /></td>
+                <td ><DumyInput indum={irndata.user===null?'User':irndata.user} /></td>
+                <td ><DumyInput indum={irndata.user===null?'date':format(irndata.time,'dd-mm-yyyy')} /></td>
                 <td ><DumyInput indum={item.billing.bill_date} /></td>
                 <td ><DumyInput indum={item.billing.bill_no} /></td>
                 <td ><DumyInput indum={item.billing.delivery_note} /></td>

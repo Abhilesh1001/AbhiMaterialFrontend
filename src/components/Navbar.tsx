@@ -8,23 +8,30 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getAuthToken } from '@/redux/slice'
 import PrBurron from './button/PrBurron'
 import { useRouter } from 'next/navigation';
-import { soundClick } from '@/sound/sound'
+import { soundClick,soundError,soundSsuccess } from '@/sound/sound'
 import { IoMdMenu } from "react-icons/io";
 import ShareholderMenu from './mainpage/ShareholderMenu'
 import ProcumentMenu from './mainpage/ProcumentMenu'
 import { useMenu } from '@/hooks/menu/useMenu'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+
 
 export type StateProps = {
     counter: {
         user: string | null,
         mainheader: string,
+        authToken :{
+            access :string
+        }
+        baseurl : string
     }
 }
 
 
 const Navbar = () => {
     const dispatch = useDispatch()
-    const { user, mainheader } = useSelector((state: StateProps) => state.counter)
+    const { user, mainheader,authToken,baseurl } = useSelector((state: StateProps) => state.counter)
     const data = { email: '', password: '' }
     const { handleLogout } = useLogin(data)
     const {handleClickMenu,hiddenmenu} = useMenu()
@@ -75,7 +82,43 @@ const Navbar = () => {
         dispatch(getMainheader(value))
     }
 
-   
+    const checkAuthorization = async ()=>{
+        if(authToken?.access){
+            try{
+                const data = await axios.get(`${baseurl}cus/authuserpro/`,{
+                    headers :{
+                        Authorization : `Bearer ${authToken?.access}`
+                    }
+                })
+                
+            }catch(error){
+                console.log('errro',error)
+                toast.error('Your sesson has expired Please Login',{position:'top-center'})
+                handleLogout()
+                soundError?.play()
+            }
+        }
+       
+    }
+
+
+    useEffect (()=>{
+        
+        checkAuthorization()
+
+    },[authToken?.access])
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     return (

@@ -11,6 +11,7 @@ import axios from "axios";
 import {  StateProps } from '@/type/type'
 import {useIrnView} from  './useIrnView'
 import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
+import { toast } from "react-toastify";
 
 
 export const useIrn =() =>{
@@ -60,6 +61,13 @@ export const useIrn =() =>{
         dispatch(getIrnPoView(Number(e.target.value)))
     }
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+
+      if(billData.bill_date===null || billData.bill_date===''|| billData.bill_no===null||billData.bill_no===''|| billData.delivery_note===null || billData.delivery_note===''){
+        soundError?.play()
+        toast.error('Enter Billing Details',{position:'top-center'})
+        return
+      }
+
         soundClick?.play()
         if (selectedValue === 'PO' && vendoradress.name!=='' && deliveryadress.name !== '' && data[0].material_name !== '') {
             const redata = {

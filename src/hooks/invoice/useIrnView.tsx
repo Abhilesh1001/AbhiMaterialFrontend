@@ -7,6 +7,7 @@ import axios from "axios"
 import { StateProps } from '@/type/type'
 import { irnmainall } from '@/components/dataAll/data'
 import { soundClick,soundError,soundSsuccess } from "@/sound/sound";
+import { toast } from 'react-toastify';
 
 
 
@@ -100,6 +101,14 @@ export const useIrnView = () => {
     const handleUpdateGRN = async (irn_no: number) => {
         soundClick?.play()
         dispatch(setHiddenALert(''))
+        if(billData.bill_date===null || billData.bill_date===''|| billData.bill_no===null||billData.bill_no===''|| billData.delivery_note===null || billData.delivery_note===''){
+            soundError?.play()
+            toast.error('Enter Billing Details',{position:'top-center'})
+            return
+          }
+
+
+
         const newData = {
             item_grn: JSON.stringify(data),
             user: userId,
@@ -191,6 +200,8 @@ export const useIrnView = () => {
 
             } catch (error) {
                 console.log(error)
+                soundError?.play()
+                toast.error('Enter Correct IRN No.',{position:'top-center'})
             }
         }
 
@@ -246,6 +257,8 @@ export const useIrnView = () => {
              }
   
         } catch (error) {
+            soundError?.play()
+            toast.error('Enter Correct PO No.',{position:'top-center'})
             console.log('error', error)
         }
     }

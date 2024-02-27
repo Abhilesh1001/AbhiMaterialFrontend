@@ -1,11 +1,17 @@
+// typescript 
 import { grnsliiceState,datatype } from "@/type/grn/grntype"
 import { useState } from "react"
-import { useSelector, useDispatch } from 'react-redux'
-import { getSelectedValue, getGrnPoView, getData, getVendorAdress, getDEliveryAdress, getMainData, getUpgrno, getBillData, getGrnview, getGrnchange, getGrndata,deleteGrnLine, getNewGRN,getOrignalData,getTotalQuantity,setHiddenALert,getNewChange } from '@/redux/grn/grnslicer'
-import axios from "axios"
 import { StateProps } from '@/type/type'
 import { grnmainall } from '@/components/dataAll/data'
+
+// redux 
+import { useSelector, useDispatch } from 'react-redux'
+import { getSelectedValue, getGrnPoView, getData, getVendorAdress, getDEliveryAdress, getMainData, getUpgrno, getBillData, getGrnview, getGrnchange, getGrndata,deleteGrnLine, getNewGRN,getOrignalData,getTotalQuantity,setHiddenALert,getNewChange } from '@/redux/grn/grnslicer'
+
+// dependencies  
+import axios from "axios"
 import { soundClick,soundError,soundSsuccess } from "@/sound/sound"
+import { toast } from "react-toastify"
 
 
 export const useGrnView = () => {
@@ -25,7 +31,6 @@ export const useGrnView = () => {
     }
     const handleDelete = (index: number) => {
         soundClick?.play()
-        console.log(index)
         dispatch(deleteGrnLine({index}))
     }
 
@@ -49,15 +54,36 @@ export const useGrnView = () => {
         PoInsert()
     }
     const handleUpdateGRN = async (grn_no: number) => {
+
         soundClick?.play()
+        if(billData.bill_date===null || billData.bill_date=='' || billData.bill_no===null || billData.bill_no==='' || billData.delivery_note===null || billData.delivery_note===''|| billData.transporter_name===null || billData.transporter_name ==='' ||billData.way_bill ===null || billData.way_bill==='' ){
+            toast.error('Enter Billing address details',{position:'top-center'})
+            soundError?.play()
+            return
+        }
+
+
+        const resData = data.map((item)=>{
+            if(item.material_qty===null || item.material_qty===0){
+                return false
+            }else{
+                return true
+            }
+        }) 
+
+        const resSome = resData.some((item)=>{
+            return item===false
+        }) 
+
         dispatch(setHiddenALert(''))
         const newData =  {
-            item_pr: JSON.stringify(data),
+            item_po: JSON.stringify(data),
             user:userId,
             maindata : JSON.stringify(mainData),
             billing : JSON.stringify(billData)
         }
         try{
+           if (!resSome){
             const res = await axios.patch(`${baseurl}grn/grncreated/${grn_no}/`,newData,{
                 headers:{
                     Authorization :`Bearer ${authToken?.access}`
@@ -66,7 +92,10 @@ export const useGrnView = () => {
             dispatch(getUpgrno(res.data.data.grn_no))    
             ResetGRN()
             dispatch(getNewGRN(null))
-
+           }else{
+                soundError?.play()
+                toast.error('Enter required Fields',{position:'top-center'})
+           }
         }catch(error) {
             console.log(error)
         }
@@ -100,7 +129,7 @@ export const useGrnView = () => {
                     }
                 })
                 dispatch(getGrndata(response.data))
-                console.log(response.data.item_po)
+                // console.log(response.data.item_po)
                 const newData = JSON.parse(response.data.item_po)
                 const resData = JSON.parse(response.data.vendor_address)
                 const resDelivery = JSON.parse(response.data.delivery_address)
@@ -108,7 +137,7 @@ export const useGrnView = () => {
                 dispatch(getVendorAdress(resData))
                 dispatch(getDEliveryAdress(resDelivery))
                 const mainPrice = JSON.parse(response.data.maindata)
-                console.log('newdataview',newData)
+                // console.log('newdataview',newData)
                 const newDataUpdata = newData.map((item: any) => {
                     const element = {
                         line_no: item.line_no,
@@ -153,14 +182,13 @@ export const useGrnView = () => {
                
                 dispatch(getMainData(mainPrice))
                 dispatch(getData(newDataUpdata))
-
                 // use for orignal po data 
                 dispatch(getOrignalData(orignalUpdataData));
 
-
-
             } catch (error) {
-                console.log(error)
+                soundError?.play()
+                toast.error('Enter Correct GRN No.',{position:'top-center'})
+                
             }
 
         }
@@ -211,7 +239,9 @@ export const useGrnView = () => {
                 dispatch(getTotalQuantity(totalQty))
                 dispatch(getOrignalData(remmodeData));
         } catch (error) {
-            console.log('error',error)
+            // console.log('error',error)
+            soundError?.play()
+            toast.error('Enter correct PO no',{position:'top-center'})
         }
     }
 

@@ -28,7 +28,7 @@ const Billing = () => {
         </thead>
         <tbody>
                 <tr>
-                    <td>{grnview ?<DumyInput indum={billData.bill_date}/>:<input required type="string" value={billData.bill_date != null ? billData.bill_date : ''} onChange={(e) => handleChange(e.target.value, 'bill_date')} className="form-control  text-sm  w-full" placeholder='DD.MM.YYYY' />}</td>
+                    <td>{grnview ?<DumyInput indum={billData.bill_date}/>:<input required type="date" value={billData.bill_date != null ? billData.bill_date : ''} onChange={(e) => handleChange(e.target.value, 'bill_date')} className="form-control  text-sm  w-full" placeholder='DD.MM.YYYY' />}</td>
 
                     <td>{grnview ?<DumyInput indum={billData.bill_no}/>:<input required type="text" value={billData.bill_no != null ? billData.bill_no : ''} onChange={(e) => handleChange(e.target.value, 'bill_no')} className="form-control  text-sm  w-full" />}</td>
 

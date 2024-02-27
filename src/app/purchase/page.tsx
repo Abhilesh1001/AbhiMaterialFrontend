@@ -2,14 +2,15 @@
 
 // components 
 import DumyInput from '@/components/dummyinput/DumyInput'
-import { usePr } from '@/hooks/purchaserequest/usePr'
 import Aleart from '@/components/alert/Aleart'
 import Loading from '@/components/loading/Loading'
-
-import { prsliiceState } from '@/type/type'
-import { useSelector } from 'react-redux'
-import PrBurron from '@/components/button/PrBurron'
+// customhooks 
+import { usePr } from '@/hooks/purchaserequest/usePr'
 import { usePrPreview } from '@/hooks/purchaserequest/usePrPreview'
+// redux /dependencies 
+import { useSelector } from 'react-redux'
+import { prsliiceState } from '@/type/type'
+import PrBurron from '@/components/button/PrBurron'
 import { format } from 'date-fns';
 import { MdDelete } from "react-icons/md";
 

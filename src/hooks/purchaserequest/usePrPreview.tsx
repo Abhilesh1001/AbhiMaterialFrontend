@@ -1,6 +1,5 @@
 
 
-import { useDispatch, useSelector } from 'react-redux'
 import { praldata, prmainall } from '@/components/dataAll/data'
 
 
@@ -12,7 +11,9 @@ import { soundClick, soundError, soundSsuccess } from '@/sound/sound'
 import { datatypePr, StateProps, prsliiceState } from '@/type/type'
 
 // reducer 
+import { useDispatch, useSelector } from 'react-redux'
 import { resetPr, deleteLine, getPrData, setPrMainData, setHiddenALert, getNewChange } from '@/redux/pr/prslicer'
+
 
 
 import { ChangeEvent, useState } from 'react'

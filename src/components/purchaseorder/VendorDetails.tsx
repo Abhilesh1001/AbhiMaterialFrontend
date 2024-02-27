@@ -32,7 +32,6 @@ const VendorDetails = () => {
         vendorAdress = JSON.parse(podata.vendor_address)
     }
 
-
     const handleClickVendor = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
         if (e.target.value !== '') {
@@ -67,7 +66,7 @@ const VendorDetails = () => {
                 </thead>
                 <tbody>
                         <tr>
-                            <td>{selectedValue==='PO'? <DumyInput indum={vendorAdress.s_no !== null && vendorAdress.s_no !== undefined ?vendorAdress.s_no:''} />:<input type="text" className="form-control text-sm w-24"  onChange={(e) => handleClickVendor(e)} />}</td>
+                            <td>{selectedValue==='PO'? <DumyInput indum={vendorAdress.s_no !== null && vendorAdress.s_no !== undefined ?vendorAdress.s_no:''} />:<input type="number" className="form-control text-sm w-24"  onChange={(e) => handleClickVendor(e)} />}</td>
                             { 
                             <><td><DumyInput indum= {selectedValue==='PO'?vendorAdress.vendor_name:vendor.name} /></td>
                             <td><DumyInput indum={selectedValue==='PO'?vendorAdress.phone_no:vendor.phone_no} /></td>
