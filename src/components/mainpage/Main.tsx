@@ -1,4 +1,3 @@
-
 import React, {memo } from 'react'
 import ShareholderMenu from './ShareholderMenu'
 import ProcumentMenu from './ProcumentMenu'

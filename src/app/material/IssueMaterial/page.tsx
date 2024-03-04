@@ -5,7 +5,6 @@ import MaterialIssueTable from '@/components/Materialssue/MaterialIssueTable'
 import { useIsMaterial } from '@/hooks/material/useIssueMatrial'
 import Loading from '@/components/loading/Loading'
 import {matState} from '@/type/material/materia-type'
-import TextInput from '@/components/dummyinput/TextInput'
 
 const Vendor = () => {
 
