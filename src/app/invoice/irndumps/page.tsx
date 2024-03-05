@@ -11,9 +11,7 @@ import { irndataType,billDetails,datatype } from '@/type/irn/irn'
 import DumyInput from '@/components/dummyinput/DumyInput'
 import { vendorType } from '@/type/type'
 import {format, parseISO} from 'date-fns'
-
-
-
+import { CSVLink} from "react-csv";
 
 const IrnDumps = () => {
     const [enable, setEnable] = useState<boolean>(false)
@@ -30,8 +28,8 @@ const IrnDumps = () => {
         return res.data
     }
 
-    const {data,error} =  useQuery({ queryKey: ['irndata'], queryFn: fetchData, enabled: enable,staleTime:1000*4 })
-    console.log('data',data)
+    const {data,error,isLoading,isError} =  useQuery({ queryKey: ['irndata'], queryFn: fetchData, enabled: enable,staleTime:1000*4 })
+    console.log('data',data,error)
 
     const handleClick=()=>{
         soundClick?.play()
@@ -41,13 +39,46 @@ const IrnDumps = () => {
      let serialNumber=0
     const tableHead = ['S No','Line No','MRN No','Material No','Material Name','Material Unit','Price','Quantity','Total Price','Material Tax','Total Amount with Tax','Text','Created By','Date','Po No','PR No','GRN NO','Vendor Id','Vendor Name','Deliver Id','Delivery Name','Bill No','Bill Data','Delivery Note']
 
+
+    let csvData:any=[]
+    if(data){
+     const newData = data?.map((item:irndataType ) => {
+       const newItem = JSON.parse(item.item_grn)
+       const vendorDetails: vendorType = JSON.parse(item.vendor_address)
+       const DeliveryDetails: vendorType = JSON.parse(item.delivery_address)
+       const billingDetails: billDetails = JSON.parse(item.billing)
+       return newItem.map((itemJson: datatype, indexs: number)=>{
+                return [itemJson.irn_line,item.mir_no,itemJson.material_no,itemJson.material_name,itemJson.material_unit,itemJson.material_price,itemJson.material_qty,itemJson.total_amount,itemJson.material_tax,itemJson.total_tax,itemJson.material_text,item.user,item.time,itemJson.po_line,itemJson.po_no,itemJson.line_no,itemJson.pr_no,itemJson.grn_line,itemJson.grn_no,vendorDetails.s_no,vendorDetails.name,DeliveryDetails.s_no,DeliveryDetails.name,billingDetails.bill_no,billingDetails.bill_date,billingDetails.delivery_note]
+       })
+     })
+ 
+     csvData = [
+       ["MRN Line", "MRN No", 'Material No', 'Material Name', 'Material Unit', 'Price', 'Qty', 'Total Price', 'Material Tax', 'Total Amount with Tax', 'Text', 'created by', 'Date', 'Po line', 'Po no', 'PR Line', 'PR no','GRN Line','GRN No', 'Vendor Id', 'Vendor Name', 'Delivery Id', 'Delivery Name', 'Bill No', 'Bill Date', 'Bill Note'],
+       ...newData?.flat()
+     ];
+ 
+    }
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6'>
         
          <div className=''>
         <div className='h-3'></div>
             <div className='flex text-gray-50 text-center'>
+            <div className='bg-gray-900 ml-10 pt-1 pb-1 pl-2 pr-2 text-sm rounded hover:bg-slate-800 drop-shadow-sm border-white shadow-sm border-1'><CSVLink filename={'my-file.csv'}  data={csvData}>Export Excel</CSVLink></div>
             <div><PrBurron label='All IRN' onClick={handleClick}/></div>
+                {isLoading && <Loading />}
+                
             {/* <div>{isLoading && <Loading />}</div> */}
            
             </div>
@@ -73,7 +104,6 @@ const IrnDumps = () => {
                                 const billingDetails:billDetails = JSON.parse(item.billing)
                                 return newItem.map((itemJson:datatype,indexs:number)=>{    
                                     serialNumber += 1;
-                                    
                                     return <tr key={indexs}>
                                         <td></td>
                                         <td><DumyInput indum={serialNumber}/></td>
