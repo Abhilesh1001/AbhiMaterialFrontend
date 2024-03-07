@@ -7,6 +7,7 @@ import DumyInput from '@/components/dummyinput/DumyInput'
 import {useSelector} from 'react-redux'
 import {StateProps} from '@/type/type'
 import { soundClick } from '@/sound/sound'
+import { CSVLink } from 'react-csv'
 
 
 const MaterrialPage = () => {
@@ -31,13 +32,29 @@ const MaterrialPage = () => {
         soundClick?.play()
         setEnable(true)
     }
-    console.log(error)
     let serialNumber = 0;
+
+    let csvData: any[] = [];
+
+    if (res) {
+        const newData = res?.map((item: any) => {
+            return [item.material_no, item.material_name, item.material_unit, item.material_qty];
+        });
+    
+        csvData = [
+            ['Material No', 'Material Name', 'Material Unit', 'Quantity'],
+            ...newData 
+        ];
+    }
+    
   return (
     <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6' >
             <div className="container">
                 <div className='h-3'></div>
-                <PrBurron label='All Material Stock' onClick={handleClick} />
+                <div className='flex'>
+            <div className='dark:bg-gray-900 ml-10  pt-1 pb-1 pl-2 pr-2 text-sm rounded hover:dark:bg-slate-800 drop-shadow-sm border-white shadow-sm border-1'><CSVLink filename={'PO-file.csv'}  data={csvData}>Export Excel</CSVLink></div>
+            <PrBurron label='All Purchase Order' onClick={handleClick}/>
+           </div>
                 <div className="row">
                     <div className="col-sm-6">
                         <div className=' ml-2 mr-2 h-[87vh] overflow-auto text-nowrap my-2 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>

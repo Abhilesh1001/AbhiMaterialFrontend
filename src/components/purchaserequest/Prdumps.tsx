@@ -21,7 +21,6 @@ const Prdumps = (props:propdaData) => {
        const DeliveryDetails:vendorType = JSON.parse(item.delivery_address)
        return newItem.map((itemJson:datatype,indexs:number)=>{    
            serialNumber += 1;
-           
            return <tr key={indexs}>
                <td></td>
                <td><DumyInput indum={serialNumber}/></td>
@@ -37,7 +36,7 @@ const Prdumps = (props:propdaData) => {
                <td><DumyInput indum={itemJson.total_tax} /></td>
                <td><DumyInput indum={itemJson.material_text} /></td>
                <td><DumyInput indum={item.user} /></td>
-               <td><DumyInput indum={format(parseISO(item.time),'dd.MM.yy HH.mm.ss')} /></td>
+               <td><DumyInput indum={format(parseISO(item.time),'dd.MM.yy')} /></td>
                <td><DumyInput indum={itemJson.pr_no} /></td>
                <td><DumyInput indum={itemJson.line_no} /></td>
                <td><DumyInput indum={vendorDetails.s_no !==undefined ? vendorDetails.s_no:''  } /></td>
@@ -46,7 +45,6 @@ const Prdumps = (props:propdaData) => {
                <td><DumyInput indum={DeliveryDetails.vendor_name} /></td>
            </tr>
        })
-
     })}
    </tbody>
   )

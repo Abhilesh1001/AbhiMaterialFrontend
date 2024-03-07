@@ -7,6 +7,7 @@ import {StateProps} from '@/type/type'
 import DumyInput from '@/components/dummyinput/DumyInput'
 import {datatypePr,prmainData} from '@/type/type'
 import {format, parseISO} from 'date-fns'
+import { CSVLink } from 'react-csv'
 
 
 const Page = () => {
@@ -28,30 +29,46 @@ const Page = () => {
    }
    let serialNumber = 0;
 
+   const tableHead = ["S No",'Line No','PR No','Material No','Material Name','Material Unit','Price','Quantity','Total Price','Text','Created By','Date']
+
+   let csvData:any=[]
+   if(data){
+    const newData = data?.map((item:prmainData ) => {
+      const newItem = JSON.parse(item.item_json)
+      return newItem.map((itemJson: datatypePr)=>{
+               return [itemJson.line_no,item.pr_no,itemJson.material_no,itemJson.material_name,itemJson.material_unit,itemJson.material_price,itemJson.material_qty,itemJson.total_price,itemJson.material_text,item.user,item.time]
+      })
+    })
+
+    csvData = [
+        ['Line No','PR No','Material No','Material Name','Material Unit','Price','Quantity','Total Price','Text','Created By','Date']
+     ,
+      ...newData?.flat()
+    ];
+
+
+
+
+   }
+
   return (
     <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6'>
         <div></div>
         <div className=' container'>
             <div className='h-3'></div>
-            <PrBurron label='All Purchase Request' onClick={handleClick}/>
+            <div className='flex'>
+            <div className='dark:bg-gray-900 ml-10  pt-1 pb-1 pl-2 pr-2 text-sm rounded hover:dark:bg-slate-800 drop-shadow-sm border-white shadow-sm border-1'><CSVLink filename={'PR-file.csv'}  data={csvData}>Export Excel</CSVLink></div>
+            <PrBurron label='All Purchase Order' onClick={handleClick}/>
+           </div>
         </div>
         <div className=' ml-2 mr-2 h-[550px] overflow-auto text-nowrap my-2 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-500 sm:rounded-lg'>
                         <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400 ">
                             <thead className='sticky top-0 z-1 bg-sky-800 dark:bg-gray-950 text-gray-50 h-10'>
                                 <tr >
                                     <th scope="col"></th>
-                                    <th scope="col">S.No</th>
-                                    <th scope="col">Line No</th>
-                                    <th scope="col">Pr No</th>
-                                    <th scope="col"><div className='ml-2 mr-2'>Material No</div></th>
-                                    <th scope="col" ><div className='ml-2 mr-2'>Material Name</div></th>
-                                    <th scope="col"><div className='ml-2 mr-2'>Material Unit</div></th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Total Price</th>
-                                    <th scope="col">Text</th>
-                                    <th scope="col">Created By</th>
-                                    <th scope="col">Date</th>
+                                   {tableHead.map((item)=>{
+                                    return <th key={item} scope="col"><div className='ml-2 mr-2'>{item}</div></th>
+                                   })}
                                 </tr>
                             </thead>
                             <tbody >
@@ -72,7 +89,7 @@ const Page = () => {
                                         <td><DumyInput indum={itemJson.total_price} /></td>
                                         <td><DumyInput indum={itemJson.material_text} /></td>
                                         <td><DumyInput indum={item.user} /></td>
-                                        <td><DumyInput indum={format(parseISO(item.time),'dd.MM.yy HH.mm.ss')} /></td>
+                                        <td><DumyInput indum={format(parseISO(item.time),'dd.MM.yy')} /></td>
                                         
                                     </tr>
                                 })

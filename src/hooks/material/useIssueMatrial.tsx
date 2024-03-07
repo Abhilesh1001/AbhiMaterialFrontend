@@ -109,6 +109,8 @@ export function useIsMaterial(val?: string) {
             item_issue: JSON.stringify(data)
         }
 
+       
+        console.log('ok')
         mutation.mutate(result)
     }
 
@@ -221,7 +223,6 @@ export function useIsMaterial(val?: string) {
                     }
                 })
                 const item_issue = JSON.parse(res?.data?.item_issue)
-                console.log(item_issue)
                 const newItem = [...item_issue]
                 const itemUpdata = item_issue.map((item: matType) => {
                     const itemNew = {
