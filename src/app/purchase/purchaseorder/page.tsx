@@ -37,7 +37,6 @@ const PurchaseOrder = () => {
         );
     };
 
-    console.log(hiddenalert, 'hidden alert')
     return (
         <div className=' dark:bg-gray-800 bg-sky-600 min-h-screen' >
             <div className='container mt-4 overflow-auto text-nowrap'>
