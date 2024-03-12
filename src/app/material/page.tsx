@@ -43,7 +43,6 @@ const page = () => {
                         {change === 'create' && <><label htmlFor="Material No" className="form-label mb-2 dark:text-gray-50 text-sm">Material No</label>
                             <input type="number" onKeyDown={(e) => handleKeyDown(e)} onChange={(e) => setVid(e.target.value)} className="form-control mb-2  text-sm dark:text-white dark:bg-slate-950" /></>}
 
-
                         {sfcreate == 'create' && <form onSubmit={handleSubmit}>
                             <label htmlFor="material name" className='dark:text-gray-50 form-label text-sm'>Material Name</label>
 

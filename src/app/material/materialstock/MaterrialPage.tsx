@@ -53,7 +53,7 @@ const MaterrialPage = () => {
                 <div className='h-3'></div>
                 <div className='flex'>
             <div className='dark:bg-gray-900 ml-10  pt-1 pb-1 pl-2 pr-2 text-sm rounded hover:dark:bg-slate-800 drop-shadow-sm border-white shadow-sm border-1'><CSVLink filename={'PO-file.csv'}  data={csvData}>Export Excel</CSVLink></div>
-            <PrBurron label='All Purchase Order' onClick={handleClick}/>
+            <PrBurron label='View' onClick={handleClick}/>
            </div>
                 <div className="row">
                     <div className="col-sm-6">

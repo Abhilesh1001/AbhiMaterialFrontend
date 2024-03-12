@@ -1,19 +1,15 @@
 'use client'
-
 import Loading from '@/components/loading/Loading'
 import PrBurron from '@/components/button/PrBurron'
 import TextInput from '@/components/dummyinput/TextInput'
 import {useSelector,useDispatch} from 'react-redux'
-
-
 import DumyInput from '@/components/dummyinput/DumyInput'
 import {loancollData} from '@/type/shareholder/shareholde'
 import { format,parseISO } from 'date-fns';
 import { useLoancoldata } from '@/hooks/loan/useLoancoldata'
-import RdperPersonDis from '@/components/rd/RdperPersonDsis'
+import RdperPersonDis from '@/components/loan/LoanPersonDisplay'
 import {shfStateTypr} from '@/type/shareholder/shareholde'
 import { getHideData } from '@/redux/shf/shfslicer'
-
 
 
 const Vendor = () => {

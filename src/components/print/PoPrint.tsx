@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import './printcss.css'
 import { useSelector } from 'react-redux';
 import { posliiceState, mainType, vendorType } from '@/type/type'
 import { format } from 'date-fns';
@@ -24,12 +25,16 @@ const PoPrint = React.forwardRef<HTMLDivElement>((props, ref) => {
         return `@page { margin: ${marginTop} ${marginRight} ${marginBottom} ${marginLeft} !important;}  `;
       };
 
-  
-
+     let count = Math.round(document.body.clientHeight / 3508);
+    for (var i = 1; i <= count; ++i) { 
+      document.body.innerHTML+= '<footer style="margin-top: ' + (297*i -10) + 'mm">' + i + '/' + count + '</footer>';
+    }
 
     return (
         <div ref={ref} className='' style={{ width: '210mm', height: '297mm' }}>
+          
             <style>{getPageMargins()}</style>
+            
             <div className="row">
                 <div className="col-sm-8">
                     <div className="font-bold text-2xl text-blue-600">Mayroor Studio Limited.</div>
@@ -71,6 +76,7 @@ const PoPrint = React.forwardRef<HTMLDivElement>((props, ref) => {
                         <th className="text-nowrap">S No</th>
                         <th className="text-nowrap">Description</th>
                         <th className="text-nowrap">Qty</th>
+                        <th className="text-nowrap">Unit</th>
                         <th className="text-nowrap">Unit Price</th>
                         <th className="text-nowrap">Tax</th>
                         <th className="text-nowrap">Total</th>
@@ -88,6 +94,7 @@ const PoPrint = React.forwardRef<HTMLDivElement>((props, ref) => {
                                 </div>
                             </td>
                             <td>{item.material_qty}</td>
+                            <td>{item.material_unit}</td>
                             <td>{item.material_price}</td>
                             <td>{item.material_tax}</td>
                             <td>{item.total_amount}</td>
@@ -104,9 +111,6 @@ const PoPrint = React.forwardRef<HTMLDivElement>((props, ref) => {
                 </div>
                 
             </div>
-
-
-
         </div>
     );
 });

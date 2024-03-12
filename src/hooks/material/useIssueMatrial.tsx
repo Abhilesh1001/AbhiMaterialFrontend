@@ -7,6 +7,8 @@ import { getMatData, getOrignalData, getTotalQuantity, getMiView } from '@/redux
 import { useMutation } from '@tanstack/react-query'
 import { matissueMain } from '@/components/dataAll/data'
 import { soundClick,soundError,soundSsuccess } from '@/sound/sound'
+import { toast } from 'react-toastify'
+
 
 
 
@@ -19,11 +21,13 @@ export function useIsMaterial(val?: string) {
     const hasTrueValue = qerror.some((value) => value === true);
     const [view,setView] =useState('change')
     const [change,setChange] = useState('change')
+    const [issueno,setIssueNo] = useState(null)
 
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-        soundClick?.play()
+       
         const value = (e.target as HTMLInputElement).value
         if (e.key == 'Enter') {
+            soundClick?.play()
             const newData = [...data]
             try {
                 const data = await axios.get(`${baseurl}grn/materialstock/${value}`, {
@@ -61,7 +65,6 @@ export function useIsMaterial(val?: string) {
     }
 
     const handleChange = (value: Number | string, key: keyof matType, index: number) => {
-        soundClick?.play()
         const updata = [...data]
         updata[index] = { ...updata[index], [key]: value }
         console.log(updata)
@@ -72,7 +75,6 @@ export function useIsMaterial(val?: string) {
     }
 
     function handleClick() {
-        soundClick?.play()
         const newFrom = [...data]
         const lastLine = newFrom.length > 0 ? newFrom[newFrom.length - 1].mi_line : 0;
         const newLine = lastLine === null ? 0 : lastLine + 1;
@@ -104,14 +106,36 @@ export function useIsMaterial(val?: string) {
     const handleSubmit = () => {
         console.log('data', data)
         soundClick?.play()
+        mutation.reset()
+
+        const dataRes  = data.map((item)=>{
+            // console.log(item)
+            if(item.material_no===0 || item.material_qty===0 || item.material_qty===null || item.material_name==='' || item.material_name===null || item.material_no===null || item.material_remarks===null || item.material_remarks===null || item.material_issue===null || item.material_issue===0){
+                return false
+            }else{
+                return true
+            }
+        })
+        
+        const resSome =  dataRes.some((res)=>{
+                return res ===false
+        })
+
+
         const result = {
             user: userId,
             item_issue: JSON.stringify(data)
         }
 
        
+        if(!resSome){
+            mutation.mutate(result)
+        }else{
+            soundError?.play()
+            toast.error('Enter all required Fileds',{position:'top-center'})
+        }
         console.log('ok')
-        mutation.mutate(result)
+        
     }
 
     const handleDelete = (index: number) => {
@@ -144,7 +168,6 @@ export function useIsMaterial(val?: string) {
 
         return result;
     }
-
 
 
     function TotalQuantity(originalData: matType[]): matType[] {
@@ -208,12 +231,18 @@ export function useIsMaterial(val?: string) {
         console.log('ok')
         setView('')
         setChange('change')
+       
         handleInsertMIssuse()
 
     }
 
     const handleInsertMIssuse = async () => {
         soundClick?.play()
+        if (miview==null || miview===0){
+            soundError?.play()
+            toast.error('Enter Material Issue No',{position:'top-center'})
+            return 
+        }
         
         if(miview!==null){
             try {
@@ -241,6 +270,7 @@ export function useIsMaterial(val?: string) {
                 const newDataforRemove = [...itemUpdata]
                 const orignal = removeDuplicates(newDataforRemove)
                 dispatch(getOrignalData(orignal))
+                setIssueNo(res.data.issue_no)                
             } catch (error) {
                 console.log(error)
             }
@@ -265,11 +295,10 @@ export function useIsMaterial(val?: string) {
         dispatch(getMiView(Number(e.target.value)))
     }
 
-
-
     const mutationUpdata = useMutation<any,any,any,unknown>({
+        
         mutationFn: async (payload)=>{
-            return await axios.patch(`${baseurl}grn/materialissuecreate/${miview}/`,payload, {
+            return await axios.patch(`${baseurl}grn/materialissuecreate/${issueno}/`,payload, {
                 headers: {
                     Authorization: `Bearer ${authToken?.access}`
                 }
@@ -277,6 +306,7 @@ export function useIsMaterial(val?: string) {
         },
         onSuccess:()=>{
             soundSsuccess?.play()
+            handleReset()
         },
         onError:()=>{
             soundError?.play()
@@ -285,13 +315,44 @@ export function useIsMaterial(val?: string) {
  
     const handleUpdate= async ()=>{
         soundClick?.play()
+        if (miview==null || miview===0){
+            soundError?.play()
+            toast.error('Enter Material Issue No',{position:'top-center'})
+            return 
+        }
+  
+        const dataRes  = data.map((item)=>{
+            // console.log(item)
+            if(item.material_no===0 || item.material_qty===0 || item.material_qty===null || item.material_name==='' || item.material_name===null || item.material_no===null || item.material_remarks===null || item.material_remarks===null || item.material_issue===null || item.material_issue===0){
+                return false
+            }else{
+                return true
+            }
+        })
+        
+        const resSome =  dataRes.some((res)=>{
+                return res ===false
+        })
+
+
+
+
+
         const newData = {
             user : userId,
             item_issue : JSON.stringify(data)
         }
+        console.log(newData)
 
-        mutationUpdata.mutate(newData)
-        handleReset()
+
+
+        if(!resSome){
+            mutationUpdata.mutate(newData)
+        }else{
+            soundError?.play()
+            toast.error('Enter all required Fileds',{position:'top-center'})
+        }
+        
     }
 
 
