@@ -1,4 +1,3 @@
-
 import { usePo } from '@/hooks/purchseorder/usePo'
 import { posliiceState, mainType } from '@/type/type'
 import React, { memo, useEffect, useRef, useState } from 'react'
@@ -15,14 +14,11 @@ const SelectionHeader = () => {
     const { handleRadioChange, handlePRPOView, handleSubmit, loadingNewPoCreation, hasTrueValue } = usePo()
     const { handleViewClick, handlePochange, handleInsert, handleInsertPrInpo, handleUpdatePo, ResetPo } = usePoview()
     const { podata, selectedValue, mainData, pochange } = useSelector((state: posliiceState) => state.poslicer)
-
     const componentRef = useRef(null);
     const handlePrint = useReactToPrint({ 
         content: () => componentRef.current, 
         
-       
     });
-
 
     return (
         <div >
@@ -49,7 +45,7 @@ const SelectionHeader = () => {
                     selectedValue === 'PR' && <>
                         <PrBurron label={'Insert PR'} onClick={handleInsert} />
 
-                        {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-green-400 text-gray-800 bg-green-400  dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button> : <PrBurron label='Save' />}
+                        {!hasTrueValue ? <button className="btn btn-success btn-sm mx-2 dark:bg-green-400 text-gray-800 bg-green-400  dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button> : <PrBurron label='Save' />}
 
                     </>
                 }
@@ -57,7 +53,7 @@ const SelectionHeader = () => {
                 <div className="hidden">
                     <PoPrint ref={componentRef} />
                 </div>
-                <button className="btn btn-warning mx-2  text-gray-800 dark:bg-slate-800  bg-sky-300 dark:text-gray-50 h-8 text-sm" onClick={handlePrint} type='button'>Print</button>
+                <button className="btn btn-warning mx-2 btn-sm  text-gray-800 dark:bg-slate-800  bg-sky-300 dark:text-gray-50 h-8 text-sm" onClick={handlePrint} type='button'>Print</button>
                 <div className='flex items-center mr-4 text-slate-50'>Total Tax</div>
                 <div className='flex items-center  text-green-400'>{mainData.TotalTax}</div>
                 <div className='flex items-center ml-4 dark:text-slate-50'>Total Amount</div>

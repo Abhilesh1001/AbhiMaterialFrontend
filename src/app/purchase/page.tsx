@@ -80,7 +80,7 @@ const PurchasePR = () => {
                                             <th><DumyInput indum={index + 1} /> </th>
                                             <th><DumyInput indum={item.line_no} /> </th>
                                             <td>
-                                                {view ? <DumyInput indum={item.material_no} /> : <>{item.po_no !== null ? <DumyInput indum={item.material_no} /> : <input required value={item.material_no !== null ? item.material_no : ''} type="number" onKeyDown={(e) => handleKeyDown(e, index)} onChange={(e) => handleChange(e.target.value, 'material_no', index)} className="form-control  text-sm  w-24" />}</>}
+                                                {view ? <DumyInput indum={item.material_no} /> : <>{item.po_no !== null ? <DumyInput indum={item.material_no} /> : <input required value={item.material_no !== null ? item.material_no : ''} type="number" onKeyDown={(e) => handleKeyDown(e, index)} onChange={(e) => handleChange(e.target.value, 'material_no', index)} className="form-control   text-sm  w-24" />}</>}
                                             </td>
                                             <td><DumyInput indum={item.material_name} /></td>
                                             <td><DumyInput indum={item.material_unit} /></td>

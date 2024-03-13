@@ -25,10 +25,6 @@ const PoPrint = React.forwardRef<HTMLDivElement>((props, ref) => {
         return `@page { margin: ${marginTop} ${marginRight} ${marginBottom} ${marginLeft} !important;}  `;
       };
 
-     let count = Math.round(document.body.clientHeight / 3508);
-    for (var i = 1; i <= count; ++i) { 
-      document.body.innerHTML+= '<footer style="margin-top: ' + (297*i -10) + 'mm">' + i + '/' + count + '</footer>';
-    }
 
     return (
         <div ref={ref} className='' style={{ width: '210mm', height: '297mm' }}>

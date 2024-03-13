@@ -24,8 +24,8 @@ const RdpersonTable = () => {
             </tr>
         </thead>
         <tbody className=' text-gray-50 text-center'> 
-            {rdNewData?.map((items:rdholderName)=>{
-                return  <tr key={items.rdp_id}>
+            { rdNewData!== null && rdNewData?.map((items:rdholderName)=>{
+                return  <tr key={`holderId_${items.rdp_id}`}>
                 <th scope="row"><DumyInput indum={items.rdp_id !==undefined?items.rdp_id:null}/></th>
                 <td><DumyInput indum={items.name}/></td>
                 <td><DumyInput indum={items.phone_no}/>{}</td>

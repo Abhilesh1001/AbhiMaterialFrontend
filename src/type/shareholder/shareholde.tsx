@@ -83,3 +83,15 @@ export type shfStateTypr = {
         loanNewNameData:loanholderName[]
     }   
 }
+
+
+export type rdintresttype = {
+    rd_intrest_id?:number|null
+    name : string,
+    holdetId : number |null,
+    start_date : string,
+    closing_date :string
+    isactive:boolean,
+    duration:null|number,
+    intrestrate:null|number  
+}

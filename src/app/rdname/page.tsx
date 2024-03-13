@@ -1,60 +1,75 @@
 'use client'
 import React from 'react'
-import Loading from '@/components/loading/Loading'
 import PrBurron from '@/components/button/PrBurron'
-import TextInput from '@/components/dummyinput/TextInput'
 import dynamic from 'next/dynamic';
+import Rdintrest from '@/components/rd/Rdintrest'
+import RDperson from '@/components/rd/RDperson'
 
 import { useRdname } from '@/hooks/rd/useRdname'
 
 const RdpersonTable = dynamic(() => import('@/components/rd/RdpersonTable'));
 
 const Vendor = () => {
-    const {setEnabled,mutation,data,setVid,vid,handleSubmit,rdholder,setrdholder,handleUPdate,change,handleCreate,handleChange,sfcreate,handleKeyDown,updateData,mutationUpdate} = useRdname()
-    console.log(sfcreate)
+  const { setEnabled} = useRdname()
 
   return (
     <div className='dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
-        <div className='container'>  
-        <div className="row my-4">
-            <div className="col-sm-4 mt-4">
-                <div>
-                   <PrBurron   onClick={handleCreate} label={'Create'}/>
-                   <PrBurron onClick={()=>setEnabled(true)} label={'View'} />
-                   <PrBurron  onClick={handleChange} label={'Change'}/>
-                   {change==='create' && <PrBurron  onClick={handleUPdate} label={'Update'}/>}
+      <div className='container'>
+        <div className='h-4'></div>
+        <div className="my-6">
+            <div>
+              {/* Rd Person  */}
+              <button className="btn btn-sm mr-2 bg-sky-500 dark:bg-gray-900" onClick={() => {
+                const modal = document.getElementById('my_modal_1') as HTMLDialogElement;
+                if (modal) {
+                  modal.showModal();
+                }
+              }}>Add Rd Person</button>
+              <dialog id="my_modal_1" className="modal">
+                <div className="modal-box bg-sky-600 dark:bg-gray-800">
+                  <RDperson />
+                  <div className="modal-action">
+                    <form method="dialog">
+                      {/* if there is a button in form, it will close the modal */}
+                      <button className="btn">Close</button>
+                    </form>
+                 </div>
                 </div>
-                <div>
+              </dialog>
+
+              {/* Rd intrest  */}
+              <button className="btn btn-sm bg-sky-500 dark:bg-gray-900" onClick={() => {
+                const modal = document.getElementById('my_modal_2') as HTMLDialogElement;
+                if (modal) {
+                  modal.showModal();
+                }
+              }}>Add Rd Intrest</button>
+              <dialog id="my_modal_2" className="modal">
+                <div className="modal-box bg-sky-600 dark:bg-gray-800">
+                  <Rdintrest />
+                  <div className="modal-action">
+                    <form method="dialog">
+                      {/* if there is a button in form, it will close the modal */}
+                      <button className="btn">Close</button>
+                    </form>
+                 </div>
                 </div>
-                {change!=='create' && <div className='w-full h-4 flex justify-center my-4'>{mutation.isPending && <Loading />} {mutation.isSuccess && <div><div>{data!==undefined && data.data.msg } RD Holder Id {data!==undefined && data.data.data.rdp_id}</div></div>}</div>}
+              </dialog>
 
-
-                {change==='create' && <div className='w-full h-4 flex justify-center my-4'>{mutationUpdate.isPending && <Loading />} {mutationUpdate.isSuccess && <div><div>{updateData!==undefined && updateData.data.msg } RD Holder Id {updateData!==undefined && updateData.data.data.rdp_id}</div></div>}</div>}
-
-                {change ==='create' && <><label htmlFor="Vendor" className="form-label text-sm">RD Holder Id</label>
-
-                <input required value={vid} type="number" onKeyDown={(e) => handleKeyDown(e)} onChange={(e)=>setVid(e.target.value)} className="form-control  text-sm  w-full" /></>}
-
-                {sfcreate ==='create' &&  <form onSubmit={handleSubmit}>
-                <label htmlFor="Name" className="form-label text-sm">Name</label>
-                <TextInput value={rdholder.name} onChange = {(e)=>setrdholder({...rdholder,name :e.target.value})} />
-                <label htmlFor="Phone" className="form-label text-sm ">Phone No</label>
-                <TextInput value={rdholder.phone_no}onChange = {(e)=>setrdholder({...rdholder,phone_no :e.target.value})} />
-
-                <label htmlFor="Email" className="form-label text-sm">Email</label>
-                <TextInput type={'email'}  value={rdholder.email} onChange = {(e)=>setrdholder({...rdholder,email :e.target.value})} />
-                <label htmlFor="pan" className="form-label text-sm">Pan</label>
-                <TextInput  css={'mb-4'} value={rdholder.pan_no} onChange = {(e)=>setrdholder({...rdholder,pan_no:e.target.value})} />
-               {change!=='create' && <PrBurron label={'Submit'} buttomType={'submit'} />}
-               </form>}
+                {/* Rdintrest end  */}
+              <PrBurron onClick={() => setEnabled(true)} label={'View'} />
             </div>
+            <div>
+            </div>
+ 
 
-            <RdpersonTable />
-          
+
+          <RdpersonTable />
+
         </div>
+      </div>
     </div>
-    </div>
-    
+
   )
 }
 

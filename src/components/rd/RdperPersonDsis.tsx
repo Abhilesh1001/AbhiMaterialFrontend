@@ -85,7 +85,7 @@ const RdperPersonDis: React.FC<RdperPersonDsisProps>  = (props) => {
                            
                         </tbody>
                     </table>
-                    </div>
+            </div>
     </div>
   )
 }
