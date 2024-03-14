@@ -21,8 +21,6 @@ interface Data {
 const App: React.FC = () => {
     const {setDate,date,handleClick,data} = useRdcolpday()
 
-    
-
     return (
         <div className='dark:bg-gray-800 bg-sky-600 min-h-screen mt-6'>
             <div className='h-3'></div>

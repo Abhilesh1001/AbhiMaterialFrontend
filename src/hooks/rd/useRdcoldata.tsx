@@ -25,21 +25,23 @@ export const useRdcoldata =()=>{
     const handleHOderView = async ()=>{
 
         try{
-            const res = await axios.get(`${baseurl}shar/rdname`,{headers:{
+            const res = await axios.get(`${baseurl}shar/rdintrest`,{headers:{
                 Authorization:`Bearer ${authToken?.access}`
               }})
-              const dataCol =  res.data.map((items:{rdp_id:number,name:string})=>{
+
+              console.log(res)
+              const dataCol =  res.data.map((items:{rd_intrest_id:number,person_name:string})=>{
                     const neData = {
                         user:userId,
-                        person : items.rdp_id,
-                        name : items.name,
+                        person : items.rd_intrest_id,
+                        name : items.person_name,
                         amount_collected : null,
                         remarks: null
                     }
                     return neData
               })
               setRdcollection(dataCol)
-        }catch(error){
+        }catch(error){  
             console.log(error)
         }
 
@@ -47,16 +49,33 @@ export const useRdcoldata =()=>{
 
     const mutation = useMutation<MyData,any,any,unknown>({
         mutationFn: async (newTodo:collData[]) => {
-          return await axios.post(`${baseurl}shar/rdcoll`, newTodo,{headers:{
+          return await axios.post(`${baseurl}shar/rdcollectionnew`, newTodo,{headers:{
             Authorization:`Bearer ${authToken?.access}`
           }})} ,
           onSuccess: () => {
             setRdcollection([{user:userId,person :null,amount_collected : null,remarks: '',name:''}])
           },  
+          onError :(error)=>{
+            console.log(error)
+          }
     })
     
     const handleSubmit = async () =>{
-     mutation.mutate(rdcollection) 
+
+        
+
+        const newData = rdcollection.map((items)=>{
+            const data = {
+               user : userId,
+               rd_intrest:items.person,
+               amount_collected : items.amount_collected,
+               remarks :items.remarks,
+            }
+            return data
+        })
+        console.log(newData,'........')
+
+     mutation.mutate(newData) 
 }
 
 
@@ -72,13 +91,13 @@ export const useRdcoldata =()=>{
     const fetchData = async ()=>{
         console.log('ok',Id)
         setEnable(false)
-        const res =await  axios.get(`${baseurl}shar/rdcoll/${Id}`,{
+        const res =await  axios.get(`${baseurl}shar/rdcollectionnew/${Id}`,{
             headers:{
                 Authorization:`Bearer ${authToken?.access}`
               }
         })
 
-        // console.log(res.data)
+        console.log(res.data)
         return res.data
     }
 
@@ -86,7 +105,6 @@ export const useRdcoldata =()=>{
     console.log(data,'data')
 
     const handleclickrdcolallview=(id:number|null)=>{
-        
         setEnable(true)
         setId(id)
 

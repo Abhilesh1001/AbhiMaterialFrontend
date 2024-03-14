@@ -100,11 +100,9 @@ export const useRdintrest=()=>{
             interest_rate : rdintrest.intrestrate
             }
 
-            console.log(newDatata,'.............')
         mutationUpdate.mutate(newDatata)
 
     }
-
 
     const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         const value = (e.target as HTMLInputElement).value;

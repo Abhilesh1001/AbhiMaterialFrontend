@@ -1,4 +1,3 @@
-
 export interface shareholderName {
     Sh_id?: null|number,
     name: string,
