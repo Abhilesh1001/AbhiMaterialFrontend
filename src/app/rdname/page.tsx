@@ -11,7 +11,6 @@ const RdpersonTable = dynamic(() => import('@/components/rd/RdpersonTable'));
 
 const Vendor = () => {
   const { setEnabled} = useRdname()
-
   return (
     <div className='dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
       <div className='container'>
