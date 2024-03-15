@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useMemo} from 'react'
 import DumyInput from '../dummyinput/DumyInput';
 import {getHideData} from '@/redux/shf/shfslicer'
 import {useSelector,useDispatch} from 'react-redux'
@@ -43,13 +43,15 @@ const RdperPersonDis: React.FC<RdperPersonDsisProps>  = (props) => {
    
     const { start_date, duration, amount_collected,person_name,interest, } = prodataitem[0];
 
-    const renderTableRows = () => {
+    
+
+    const renderTableRows = useMemo(() => {
         const prodataitem = props?.prodataitem;
         const rows: any = [];
     
         if (!prodataitem || prodataitem.length === 0) {
             return null; 
-        }
+        }   
     
         const { start_date, duration, amount_collected } = prodataitem[0];
     
@@ -71,9 +73,12 @@ const RdperPersonDis: React.FC<RdperPersonDsisProps>  = (props) => {
         }
     
         return rows;
-    };
+    },[props?.prodataitem[0].duration])
+
     
-    const newRenswreddata = renderTableRows()
+    const newRenswreddata = renderTableRows
+
+    console.log(newRenswreddata)
 
     newRenswreddata.map((item:any)=>{
         props?.prodataitem.map((items)=>{
@@ -117,12 +122,6 @@ const RdperPersonDis: React.FC<RdperPersonDsisProps>  = (props) => {
 
     const newItem = newData()
     
-// console.log(newData(),'...................newData')
-
-
-   
-    // console.log('result',newRenswreddata)
-
 
   return (
     <div>

@@ -8,7 +8,7 @@ import {useSelector} from 'react-redux'
 const LoanPerTable = () => {
     const {loanNewNameData} = useSelector((state:shfStateTypr)=>state.shfSlice)
     // const {newData} = useLoan()
-    console.log('loanName',loanNewNameData)
+    // console.log('loanName',loanNewNameData)
   return (
     <div className="col-sm-8 relative text-nowrap overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-600 sm:rounded-lg  h-[80vh]">
     <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400">

@@ -60,11 +60,7 @@ const Vendor = () => {
             </div>
             <div>
             </div>
- 
-
-
           <RdpersonTable />
-
         </div>
       </div>
     </div>
