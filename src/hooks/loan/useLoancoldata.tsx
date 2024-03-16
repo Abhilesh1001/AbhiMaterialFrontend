@@ -1,97 +1,118 @@
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import {useSelector,useDispatch} from 'react-redux'
-import {StateProps} from '@/type/type'
-import {useMutation,useQuery} from '@tanstack/react-query'
-import {loancollData} from '@/type/shareholder/shareholde'
+import { useSelector, useDispatch } from 'react-redux'
+import { StateProps } from '@/type/type'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { loancollData } from '@/type/shareholder/shareholde'
 
 interface MyData {
-    data :{
-       msg:string
+    data: {
+        msg: string
     }
 }
 
 
 
 
-export const useLoancoldata=()=>{
+export const useLoancoldata = () => {
 
 
-    const {baseurl,authToken,userId} = useSelector((state:StateProps)=>state.counter)
-    const [rdcollection,setRdcollection] = useState<loancollData[]>([{user:userId,loan_person :null,amount_collected : null,remarks: '',name:''}])
-    console.log('rdcoll',rdcollection)
-   
+    const { baseurl, authToken, userId } = useSelector((state: StateProps) => state.counter)
+    const [loancollection, setLoancollection] = useState<loancollData[]>([{ user: userId, loan_person: null, amount_collected: null, remarks: '', name: '' }])
+    console.log('rdcoll', loancollection)
 
-    const handleHOderView = async ()=>{
 
-        try{
-            const res = await axios.get(`${baseurl}shar/loanname`,{headers:{
-                Authorization:`Bearer ${authToken?.access}`
-              }})
-              const dataCol =  res.data.map((items:{loan_id:number,name:string})=>{
-                    const neData = {
-                        user:userId,
-                        loan_person : items.loan_id,
-                        name : items.name,
-                        amount_collected : null,
-                        remarks: null
-                    }
-                    return neData
-              })
-              setRdcollection(dataCol)
-        }catch(error){
+    const handleHOderView = async () => {
+        //gjgjhg 
+
+        try {
+            const res = await axios.get(`${baseurl}shar/loanamount`, {
+                headers: {
+                    Authorization: `Bearer ${authToken?.access}`
+                }
+            })
+            console.log(res)
+
+            const dataCol = res.data.map((items: { id: number, person_name: string }) => {
+                const neData = {
+                    user: userId,
+                    loan_person: items.id,
+                    name: items.person_name,
+                    amount_collected: null,
+                    remarks: null
+                }
+                return neData
+            })
+            setLoancollection(dataCol)
+        } catch (error) {
             console.log(error)
         }
 
     }
 
-    const mutation = useMutation<MyData,any,any,unknown>({
-        mutationFn: async (newTodo:loancollData[]) => {
-          return await axios.post(`${baseurl}shar/loancoll`, newTodo,{headers:{
-            Authorization:`Bearer ${authToken?.access}`
-          }})} ,
-          onSuccess: () => {
-            setRdcollection([{user:userId,loan_person :null,amount_collected : null,remarks: '',name:''}])
-          },  
+    const mutation = useMutation<MyData, any, any, unknown>({
+        mutationFn: async (newTodo: any) => {
+            return await axios.post(`${baseurl}shar/loancollectionnew`, newTodo, {
+                headers: {
+                    Authorization: `Bearer ${authToken?.access}`
+                }
+            })
+        },
+        onSuccess: () => {
+            setLoancollection([{ user: userId, loan_person: null, amount_collected: null, remarks: '', name: '' }])
+        },
+        onError: (error) => {
+            console.log(error)
+        }
     })
 
 
-    const handleSubmit = async () =>{
-        console.log(rdcollection)    
+    const handleSubmit = async () => {
+       
 
-        mutation.mutate(rdcollection)
-    
-}
+        const data = loancollection.map((item) => {
+            const newData = {
+                loan_intrest: item.loan_person,
+                amount_collected: item.amount_collected,
+                remarks: item.remarks,
+                user: userId
+            }
 
+            return newData
+        })
+        mutation.mutate(data)
 
-    const handleChange = (value:string|number,key:keyof loancollData,index:number )=>{
-        const freData:any = [...rdcollection]
-        freData[index][key]=value
-        setRdcollection(freData)
     }
 
-    const [enable,setEnable] = useState(false)
-    const [Id,setId] = useState<null|number>(null)
 
-    const fetchData = async ()=>{
-        console.log('ok',Id)
+    const handleChange = (value: string | number, key: keyof loancollData, index: number) => {
+        const freData: any = [...loancollection]
+        freData[index][key] = value
+        setLoancollection(freData)
+    }
+
+    const [enable, setEnable] = useState(false)
+    const [Id, setId] = useState<null | number>(null)
+
+    const fetchData = async () => {
+        console.log('ok', Id)
         setEnable(false)
-        const res =await  axios.get(`${baseurl}shar/loancoll/${Id}`,{
-            headers:{
-                Authorization:`Bearer ${authToken?.access}`
-              }
+        const res = await axios.get(`${baseurl}shar/loancollectionnew/${Id}`, {
+            headers: {
+                Authorization: `Bearer ${authToken?.access}`
+            }
         })
 
 
         return res.data
     }
 
-    const {data} = useQuery({queryKey:[`allCollLoanData${Id}`],queryFn:fetchData,enabled:enable})
-    console.log(data,'data')
+    const { data } = useQuery({ queryKey: [`allCollLoanData${Id}`], queryFn: fetchData, enabled: enable })
+    console.log(data, 'data')
 
-    const handleclickrdcolallview=(id:number|null)=>{
-        
+    const handleclickrdcolallview = (id: number | null) => {
+
         setEnable(true)
         setId(id)
 
@@ -99,5 +120,5 @@ export const useLoancoldata=()=>{
 
 
 
-    return {handleHOderView,handleSubmit,rdcollection,handleChange,mutation,handleclickrdcolallview,data}
+    return { handleHOderView, handleSubmit, loancollection, handleChange, mutation, handleclickrdcolallview, data }
 }

@@ -31,7 +31,7 @@ export const useLoancolpday=()=>{
         }
         console.log(dateData)
         try {
-            const res = await axios.post(`${baseurl}shar/loanDataView`, dateData,{
+            const res = await axios.post(`${baseurl}shar/loanDataNewView`, dateData,{
                 headers : {
                     Authorization : `Bearer ${authToken?.access}`
                 }

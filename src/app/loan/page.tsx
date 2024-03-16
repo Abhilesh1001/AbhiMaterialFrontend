@@ -10,7 +10,7 @@ import LoanPersonCreate from '@/components/loan/LoanPersonCreate'
 
 
 const Vendor = () => {
-    const { setEnabled, mutation, data, vid, setVid, loanholder, handleSubmit, setLoanholder, handleKeyDown, handleCreate, handleChange, handleUPdate, change, sfcreate, mutationUpdate, updateData } = useLoan()
+    const { setEnabled} = useLoan()
 
 
     return (

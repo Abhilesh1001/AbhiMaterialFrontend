@@ -63,6 +63,7 @@ const Vendor = () => {
                             </tbody>
                         </table>
                     </div>
+                    
                     <dialog id="my_modal_2" className="modal">
                         <div className="modal-box w-11/12 max-w-5xl bg-sky-600 dark:bg-gray-800 mt-0">
                             <div className="modal-action">

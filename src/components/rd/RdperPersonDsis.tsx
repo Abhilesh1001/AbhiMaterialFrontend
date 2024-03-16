@@ -1,7 +1,5 @@
 import React,{useMemo} from 'react'
 import DumyInput from '../dummyinput/DumyInput';
-import {getHideData} from '@/redux/shf/shfslicer'
-import {useSelector,useDispatch} from 'react-redux'
 import { format,parseISO,addDays } from 'date-fns'
 import TextInput from '../dummyinput/TextInput';
 
@@ -25,7 +23,6 @@ interface RdperPersonDsisProps {
 }
 
 const RdperPersonDis: React.FC<RdperPersonDsisProps>  = (props) => {
-    const dispatch= useDispatch()
 
     console.log(props.prodataitem,'.......................................')
 
