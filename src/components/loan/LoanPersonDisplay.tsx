@@ -25,7 +25,7 @@ interface RdperPersonDsisProps {
 }
 const RdperPersonDis: React.FC<RdperPersonDsisProps>  = (props) => {
     
-    
+    console.log(props.prodataitem,'.......................................')
 
     const prodataitem = props?.prodataitem;
         if (!prodataitem || prodataitem.length === 0) {
@@ -96,14 +96,13 @@ const RdperPersonDis: React.FC<RdperPersonDsisProps>  = (props) => {
             interest = Number(beginningValue) * Number(inter) * 0.01 / Number(dura);
             principle =  Number(items.emi) - Number(interest.toFixed(2))
             
-    
             const data = {
                 date: items.date,
                 days: items.days,
                 balanceamount: beginningValue?.toFixed(2),
                 emi: items.emi,
                 intrest: interest.toFixed(2),
-                principle : principle.toFixed,
+                principle : principle.toFixed(2),
                 endingvalue: (Number(beginningValue) - Number(principle)).toFixed(2)
             };
     

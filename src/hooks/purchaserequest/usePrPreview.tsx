@@ -155,7 +155,6 @@ export const usePrPreview = () => {
 
         console.log('resDa', resData)
         if (!resSome) {
-            console.log('............ok')
             mutationUpdate.mutate(nweData)
         }
 

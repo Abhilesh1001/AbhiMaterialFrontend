@@ -1,9 +1,6 @@
 
 'use client'
 import React from 'react'
-import {StateProps } from '@/type/type'
-import { useSelector } from 'react-redux'
-import { useQuery } from '@tanstack/react-query'
 import { useMaterial } from '@/hooks/material/useMaterial'
 interface matType {
     s_no:number | null,
@@ -15,13 +12,8 @@ interface matType {
 
 
 const MaterialDisplaytable = () => {
-    const { fetchData,newMatNo } = useMaterial()
-
-    const {authToken} = useSelector((state:StateProps)=>state.counter)
-
-    const { data: matdata } = useQuery({ queryKey: ['matData',newMatNo,authToken], queryFn: fetchData })
-
-
+    const {matdata } = useMaterial()
+   console.log(matdata)
   return (
     <div className="col-sm-6 relative overflow-y-auto shadow-md dark:bg-gray-900 mt-2 bg-sky-600 sm:rounded-lg max-h-screen h-full">
     <table className="w-full text-sm mt-4 text-left rtl:text-right text-gray-500 bg-sky-600 dark:text-gray-400">

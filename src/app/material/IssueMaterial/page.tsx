@@ -25,9 +25,9 @@ const Vendor = () => {
 
                    {view!=='change' ? '': <PrBurron onClick={handleClick} label={'Add Form'}/>}
 
-                   { change!=='change' ? <> {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-green-400 text-gray-800 bg-green-400  dark:text-gray-50 h-8 text-sm" type='button' onClick={handleUpdate} >Update</button>: <PrBurron  buttomType={'button'} label={'Update'} />}</>  :'' }
+                   { change!=='change' ? <> {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-green-400 text-gray-800 bg-green-400 btn-sm  dark:text-gray-50 h-8 text-sm" type='button' onClick={handleUpdate} >Update</button>: <PrBurron  buttomType={'button'} label={'Update'} />}</>  :'' }
 
-                   {change==='change'?<>{!hasTrueValue ?<>{view==='change' && <button className="btn btn-success mx-2 dark:bg-green-400 text-gray-800 bg-green-400  dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>}</>:<PrBurron label='Save'/>}</>:''}
+                   {change==='change'?<>{!hasTrueValue ?<>{view==='change' && <button className="btn btn-success mx-2 dark:bg-green-400 text-gray-800 bg-green-400  dark:text-gray-50 h-8 text-sm btn-sm" type='button' onClick={handleSubmit} >Save</button>}</>:<PrBurron label='Save'/>}</>:''}
                    
                    <PrBurron  onClick={handleReset} label={'Reset'}/> 
                     {mutation.isPending && <Loading />}

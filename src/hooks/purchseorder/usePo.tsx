@@ -49,7 +49,7 @@ export const usePo = () => {
     }))
    
 
-    const handleChange = async (value: any, key: keyof datatype, index: number) => {
+    const handleChange = async (value: any, key: keyof datatype, index: number) => { 
         const newData:datatype[] = [...data]; 
         
         if (value !== null) {
@@ -86,6 +86,7 @@ export const usePo = () => {
                 }
                 return acc
             }, 0)
+            
             dispatch(getMainData({ TotalAmount: TotalAmount, TotalWithtax: TotalWithtax, TotalTax: TotalTax }))
             dispatch(getData((newData)));
             const totalQuality = TotalQuantity(data)

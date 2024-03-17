@@ -23,7 +23,7 @@ export const useMaterial = () =>{
     })
 
     const mutation = useMutation<any,any,any,unknown>({
-        mutationFn : async (dataRes:any)=>await axios.post(`${baseurl}mat/creatematerial`,dataRes,{headers:{
+         mutationFn : async (dataRes:any)=>await axios.post(`${baseurl}mat/creatematerial`,dataRes,{headers:{
                 Authorization : `Bearer ${authToken?.access}`
             }}),
             onError:(e) =>{
@@ -57,7 +57,7 @@ export const useMaterial = () =>{
         if (!data.material_name || !data.material_group || !data.unit) {
             // You can show an error message to the user here
             soundError?.play()
-            toast.error('Fill all the required Fileds',{position:'top-center'})
+            toast.error(`Fill all the required Fileds ${data.material_group} ${data.unit} ${data.material_name}`,{position:'top-center'})
             return;
         }
         if(data.material_name.length <4){
@@ -169,7 +169,8 @@ export const useMaterial = () =>{
         }
     })
    
+    const { data: matdata } = useQuery({ queryKey: ['matData',mutation.data,authToken], queryFn: fetchData })
 
 
-    return {fetchData,handleSubmit,setDate,data,loadingNewCreation,newMatNo,setEnabled,handleUPdate,handleCreate,handleChange,change,mutation,handleKeyDown,setVid,mutationUpdate,sfcreate}
+    return {handleSubmit,setDate,data,loadingNewCreation,newMatNo,setEnabled,handleUPdate,handleCreate,handleChange,change,mutation,handleKeyDown,setVid,mutationUpdate,sfcreate,matdata}
 }

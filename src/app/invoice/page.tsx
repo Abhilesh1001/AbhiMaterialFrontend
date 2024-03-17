@@ -31,8 +31,8 @@ const InvoiceReceipt = () => {
       <div className='container mt-4 overflow-auto text-nowrap'>
         <div className='h-6 p-4 flex flex-col'>
           {hiddenalert !== "hidden" && <div>
-            {newchang == 'change' && <div> {newIrnNo && <><Aleart label={'Created'} alertname={'GRN'} onClose={handleCloseAlert} newMat={newIrnNo} /></>}</div>}
-            {newchang !== 'change' && <div>{upirnno && <><Aleart label={'Updated'} alertname={'GRN'} onClose={handleCloseAlert} newMat={upirnno} /></>}</div>}
+            {newchang == 'change' && <div> {newIrnNo && <><Aleart label={'Created'} alertname={'IRN'} onClose={handleCloseAlert} newMat={newIrnNo} /></>}</div>}
+            {newchang !== 'change' && <div>{upirnno && <><Aleart label={'Updated'} alertname={'IRN'} onClose={handleCloseAlert} newMat={upirnno} /></>}</div>}
           </div>}
 
         </div>

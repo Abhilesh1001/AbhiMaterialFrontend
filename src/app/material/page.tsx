@@ -21,7 +21,7 @@ interface matType {
 
 const page = () => {
 
-    const { handleSubmit, setDate, data, loadingNewCreation, newMatNo, setEnabled, handleUPdate, handleCreate, handleChange, change, mutation, handleKeyDown, setVid, mutationUpdate, sfcreate } = useMaterial()
+    const { handleSubmit, setDate, data, handleUPdate, handleCreate, handleChange, change, mutation, handleKeyDown, setVid, mutationUpdate, sfcreate } = useMaterial()
     console.log(mutation.error,'mutationeror')
     return (
         <div className=' dark:bg-gray-800 bg-sky-600 h-auto text-gray-50  min-h-screen'>
@@ -64,7 +64,7 @@ const page = () => {
                                 <option value="box">BOX</option>
                                 <option value="gram">GRAM</option>
                             </select>
-                            {change !== 'create' && <button type='submit' className="btn btn-secondary bg-sky-500 dark:bg-gray-600  dark:text-gray-50 text-gray-50">Submit</button>}
+                            {change !== 'create' && <button type='submit' className="btn btn-info mx-2 btn-sm dark:btn-neutral">Submit</button>}
                         </form>}
                     </div>
 

@@ -62,17 +62,17 @@ const Signup = () => {
                 {mutation?.isSuccess && <div>{mutation.data.data.msg}</div>}
                 {mutation?.error?.response?.data?.errors?.email[0]}
                 <TextInputText label={'Email'} type={'email'} name="email" value={formik.values.email} onChange={formik.handleChange} />
-                {formik.errors.email}
+                {<div className='dark:text-gray-50'>{formik.errors.email}</div>}
                 <TextInputText label={'Name'} name="name" value={formik.values.name} onChange={formik.handleChange} />
-                {formik.errors.name}
+                {<div className='dark:text-gray-50'>{}</div>}
                 <TextInputText label={'Password'} type={'password'} name="password" value={formik.values.password} onChange={formik.handleChange} />
-                {formik.errors.password}
+                {<div className='dark:text-gray-50'>{formik.errors.password}</div>}
                 <TextInputText label={'Confirm Password'} type={'password'} name="password2" value={formik.values.password2} onChange={formik.handleChange} />
-                {formik.errors.password2}
-               <div className='flex items-center'>
-               <input type="checkbox" className="rounded-md dark:bg-slate-600 p-2 items-center"
+                {<div className='dark:text-gray-50'>{formik.errors.password2}</div>} 
+               <div className='flex items-center'> 
+               <input type="checkbox" className="rounded-md  p-2 items-center bg-sky-800 dark:checkbox checkbox checkbox-info  mb-3 mt-2"
                 checked={formik.values.tc} onChange={formik.handleChange} name="tc" />
-                <div className="form-label">Do you Agree</div>
+                <div className="form-label w-full mx-2 mt-2"><div className='dark:text-gray-50'>Do you Agree</div></div>
                </div>
                 <PrBurron label={'Submit'} buttomType={'submit'} />
             </form>

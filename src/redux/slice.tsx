@@ -17,7 +17,8 @@ export interface CounterState {
 const initialState: CounterState = {
   // https://abhileshmaterial.pythonanywhere.com/
   // http://127.0.0.1:8000/
-  baseurl : 'https://abhileshmaterial.pythonanywhere.com/',
+  // https://abhileshsharefund.pythonanywhere.com/
+  baseurl : 'https://abhileshsharefund.pythonanywhere.com/',
   logindata : {},
   authToken : null,
   user : "",

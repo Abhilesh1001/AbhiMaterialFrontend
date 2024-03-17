@@ -187,8 +187,54 @@ export const usePoview = () => {
 
     const handleDelete = (index: number) => {
         soundClick?.play()
+        const orignalData = data?.filter((item:any,indexs:number)=>{
+            if (index!==indexs){
+                return item
+            }
+        })
+        newfun(orignalData)
+
+
+
         dispatch(deletePoLine({ index }))
     }
+
+
+
+    function newfun(newDataUpdata:any) {
+        const newData = [...newDataUpdata]
+        console.log(newData, 'newData')
+        const TotalAmount = newData.reduce((acc, item) => {
+            if (item.total_amount !== null) {
+                acc += item.total_amount
+            }
+            return acc
+        }, 0)
+
+        const TotalWithTax = newData.reduce((acc,item)=>{
+            if (item.total_tax!==null){
+                acc += item.total_tax
+            }
+            return acc
+        },0)
+
+        const TotalTax = newData.reduce((acc, item) => {
+                      console.log(typeof item.material_tax)
+                        if (item.total_amount !== null && item.material_tax !== null) {
+                            acc += item.total_amount * (item.material_tax * 0.01)
+                        }
+                        return acc
+                    }, 0)
+   
+     dispatch(getMainData({ TotalAmount: TotalAmount, TotalWithtax: TotalWithTax, TotalTax: TotalTax }))
+
+    }
+
+
+
+
+
+
     const handleUpdatePo = (po_no: number) => {
         mutationUpdate.reset()
         soundClick?.play()

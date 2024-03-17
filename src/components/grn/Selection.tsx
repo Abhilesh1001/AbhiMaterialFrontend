@@ -28,20 +28,20 @@ const SelectionHeader = () => {
             selectedValue === 'GRN' && <>
             <PrBurron label={'View'} onClick={handleViewClick} />
             <PrBurron label={'Change'} onClick={handleGrnchange} />
-                {grnchange && <>{!hasTrueValue?<button className="btn btn-success mx-2  text-gray-800 dark:bg-green-500 bg-green-500 dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdateGRN(Number(grndata.grn_no))} >Update</button>:<PrBurron label='Update'/>}</>}
+                {grnchange && <>{!hasTrueValue?<button className="btn btn-success mx-2  text-gray-800 dark:bg-green-500 bg-green-500 btn-sm dark:text-gray-50 h-8 text-sm" type='button' onClick={()=>handleUpdateGRN(Number(grndata.grn_no))} >Update</button>:<PrBurron label='Update'/>}</>}
             </>
         }
         {
             selectedValue === 'PO' && <> 
             <PrBurron label={'Insert PO'} onClick={handleInsert} />
 
-            {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-green-800 text-gray-800 bg-green-500 dark:text-gray-50 h-8 text-sm" type='button' onClick={handleSubmit} >Save</button>:<PrBurron label='Save'/>}
+            {!hasTrueValue ? <button className="btn btn-success mx-2 dark:bg-green-800 text-gray-800 bg-green-500 dark:text-gray-50 h-8 text-sm  btn-sm" type='button' onClick={handleSubmit} >Save</button>:<PrBurron label='Save'/>}
 
             </>
         }
         <PrBurron label={'Reset'} onClick={ResetGRN} />
         
-        <button className="btn btn-warning mx-2  text-gray-800 dark:bg-slate-800  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button'>Print</button>
+        <button className="btn btn-warning mx-2  btn-sm  text-gray-800 dark:bg-slate-800  bg-sky-300 dark:text-gray-50 h-8 text-sm" type='button'>Print</button>
         <div className='flex items-center mr-4 text-slate-50'>Total Tax</div>
         <div className='flex items-center  text-green-400'>{mainData.TotalTax}</div>
         <div className='flex items-center ml-4 dark:text-slate-50'>Total Amount</div>
