@@ -52,8 +52,6 @@ export const useLogin = (data: loginred) => {
             dispatch(getUser(userToken.name))
             dispatch(getUserId(userToken.user_id))
             
-            
-
             let interval = setInterval(() => {
                 updataToken()
             }, time)

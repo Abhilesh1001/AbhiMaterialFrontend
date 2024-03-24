@@ -34,7 +34,6 @@ const InvoiceReceipt = () => {
             {newchang == 'change' && <div> {newIrnNo && <><Aleart label={'Created'} alertname={'IRN'} onClose={handleCloseAlert} newMat={newIrnNo} /></>}</div>}
             {newchang !== 'change' && <div>{upirnno && <><Aleart label={'Updated'} alertname={'IRN'} onClose={handleCloseAlert} newMat={upirnno} /></>}</div>}
           </div>}
-
         </div>
         <div className='my-3'>
           <PrBurron onClick={handleDelivery} label={'Delivery Adress'} />

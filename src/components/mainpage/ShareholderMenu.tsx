@@ -29,6 +29,7 @@ const ShareholderMenu = () => {
     <div className='cursor-pointer' onClick={()=>dispatch(getHidden({...hidden,capitalDis:`${hidden.capitalDis==='hidden'?'flex':'hidden'}`}))}>📁 CAPITAL DISCLOUSRE </div>  
     <ul className={`ml-8 cursor-pointer ${hidden.capitalDis} flex-col`}>
         <Link href={'/shfndname/shfdata'} onClick={()=>handleClick('Fund Deposite /View Total Deposite')}>⭐ Create Fund Deposite /View Total Deposite</Link>
+        <Link href={'/shfndname/cashflow'} onClick={()=>handleClick('Cash Flow Data')}>⭐ Cash Flow View</Link>
     </ul>  
     <div className='cursor-pointer' onClick={()=>dispatch(getHidden({...hidden ,rdpername : `${hidden.rdpername==='hidden'?'flex':'hidden'}`}))}>📁 Rd Person</div>  
     <ul className={`ml-8 cursor-pointer ${hidden.rdpername} flex-col`}>

@@ -12,7 +12,6 @@ import Loading from '../loading/Loading';
 
 const Signup = () => {
 
-
     const {baseurl} = useSelector((state:StateProps)=>state.counter)
     const mutation = useMutation<any,any,any,any>({
         mutationFn: async (data)=>{
