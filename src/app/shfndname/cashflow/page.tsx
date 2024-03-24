@@ -117,12 +117,12 @@ const Page = () => {
             <div className="container">
                 <div className='h-6'></div>
 
-                <button onClick={handleClick}>ViewData</button>
-                <div className=' ml-2 mr-2 mt-4 h-[85vh] overflow-auto  text-nowrap my-2 relative overflow-y-auto shadow-md dark:bg-gray-900  bg-sky-500 sm:rounded-lg'>
+                <button className='bg-gray-600 mt-4 rounded p-2 hover:bg-gray-500' onClick={handleClick}>ViewData</button>
+                <div className=' ml-2 mr-2 mt-4 h-[70vh] overflow-auto w-[50vw] text-nowrap my-2 relative overflow-y-auto shadow-md dark:bg-gray-900  bg-sky-500 sm:rounded-lg'>
                     <table className="w-full text-sm text-left rtl:text-right dark:bg-slate-700 text-gray-500 bg-sky-500 dark:text-gray-400 ">
                         <thead className='sticky top-0 z-1 bg-sky-800 dark:bg-gray-950 text-gray-50 h-10'>
                             <tr >
-                                <th>Date</th>
+                                <th><div className='ml-2'>Date</div></th>
                                 <th>Journal</th>
                                 <th>Debit</th>
                                 <th>Credit</th>
